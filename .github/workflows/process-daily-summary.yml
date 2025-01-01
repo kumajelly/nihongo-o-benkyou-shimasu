@@ -45,7 +45,20 @@ jobs:
           OUTPUT_FILE="processed/$(basename $INPUT_FILE)"
           CONTENT=$(cat $INPUT_FILE)
 
-          ESCAPED_PROMPT=$(echo "Translate the following text to JLPT N5 level Japanese:\n\n$CONTENT" | jq -Rs .)
+          ESCAPED_PROMPT=$(echo "Translate the following text to JLPT N5 level Japanese. Please provide the following details:
+
+1. Translation: The text translated into Japanese with appropriate kanji, hiragana, and grammar.
+2. Romaji: The romanized pronunciation of the translated Japanese text.
+3. Sentence Breakdown:
+   - Break down each sentence and explain its key components:
+     - Particles: Identify and explain the function of any particles used.
+     - Verbs: Specify the verb, its dictionary form, and its conjugation.
+     - Adjectives: Identify adjectives and their type (e.g., i-adjective, na-adjective).
+   - Provide a brief explanation of the grammar used in the sentence.
+4. Vocabulary List: List the key words used in the translation along with their meanings, part of speech (noun, verb, adjective, etc.), and usage examples.
+
+Here is the text:
+$CONTENT" | jq -Rs .)
 
           # Make the API call
           RESPONSE=$(curl -s https://api.openai.com/v1/chat/completions \
@@ -72,7 +85,7 @@ jobs:
           echo "Contents of $OUTPUT_FILE:"
           cat $OUTPUT_FILE
 
-      # Step 6: Add a timestamp to the processed file
+      # Step 6: Add timestamp to the processed file
       - name: Add timestamp to processed file
         run: |
           OUTPUT_FILE="processed/$(basename ${{ env.INPUT_FILE }})"
