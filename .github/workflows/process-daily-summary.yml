@@ -53,8 +53,6 @@ jobs:
                           "     - Adjectives: Identify adjectives and their type (e.g., i-adjective, na-adjective).\n" +
                           "   - Provide a brief explanation of the grammar used in the sentence.\n" +
                           "4. Vocabulary List: List the key words used in the translation along with their meanings, part of speech (noun, verb, adjective, etc.), and usage examples.\n" +
-                          "5. Original English Text (Footer): Include the original English sentences as a footer, clearly marked as \"Original English Text.\"\n\n" +
-                          "Here is the text:\n" + $text)
             }],
             "max_tokens": 2000
           }')
