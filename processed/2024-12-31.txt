@@ -1,42 +1,40 @@
 1. **Translation**:
-今日は大晦日です。天気は寒くて曇っていました。明日は2025年の元日です。
+今日は大晦日です。天気は寒く曇っていました。
+明日は2025年の元日です。
 
 2. **Romaji**:
-Kyou wa oomisoka desu. Tenki wa samukute kumotte imashita. Ashita wa nisen nijuu go nen no ganjitsu desu.
+Kyou wa oomisoka desu. Tenki wa samuku kumotte imashita.
+Ashita wa nisen nijuu-gon nen no ganjitsu desu.
 
 3. **Sentence Breakdown**:
    - 今日は大晦日です。
-     - 今日 (kyou) = today
-     - は (wa) = topic marker
-     - 大晦日 (oomisoka) = New Year's Eve
-     - です (desu) = copula (to be)
-     - Translation: "Today is New Year's Eve."
-  
-   - 天気は寒くて曇っていました。
-     - 天気 (tenki) = weather
-     - は (wa) = topic marker
-     - 寒くて (samukute) = cold (conjunction)
-     - 曇っていました (kumotte imashita) = was cloudy
-     - Translation: "The weather was cold and cloudy."
-     
+     - 今日 (kyou) - "today" 
+     - は (wa) - topic marking particle
+     - 大晦日 (oomisoka) - "New Year's Eve"
+     - です (desu) - copula (to be)
+   - 天気は寒く曇っていました。
+     - 天気 (tenki) - "weather"
+     - は (wa) - topic marking particle
+     - 寒く (samuku) - adverbial form of the i-adjective "cold" (samui)
+     - 曇っていました (kumotte imashita) - "was cloudy" (verb: 曇る (kumoru) in て-form + いました)
    - 明日は2025年の元日です。
-     - 明日 (ashita) = tomorrow
-     - は (wa) = topic marker
-     - 2025年 (nisen nijuu go nen) = 2025
-     - の (no) = possessive particle
-     - 元日 (ganjitsu) = New Year’s Day
-     - です (desu) = copula (to be)
-     - Translation: "Tomorrow will be New Year’s Day 2025."
+     - 明日 (ashita) - "tomorrow" 
+     - は (wa) - topic marking particle
+     - 2025年 (nisen nijuu-gon nen) - "2025"
+     - の (no) - possessive particle
+     - 元日 (ganjitsu) - "New Year's Day"
+     - です (desu) - copula (to be)
 
 4. **Vocabulary List**:
-   - 今日 (kyou) = today (noun)
-   - 大晦日 (oomisoka) = New Year's Eve (noun)
-   - 天気 (tenki) = weather (noun)
-   - 寒い (samui) = cold (i-adjective)
-   - 曇っていました (kumotte imashita) = was cloudy (verb phrase)
-   - 明日 (ashita) = tomorrow (noun)
-   - 2025年 (nisen nijuu go nen) = 2025 (noun)
-   - 元日 (ganjitsu) = New Year’s Day (noun)
+   - 今日 (kyou) - today (noun)
+   - 大晦日 (oomisoka) - New Year's Eve (noun)
+   - 天気 (tenki) - weather (noun)
+   - 寒い (samui) - cold (i-adjective)
+   - 曇る (kumoru) - to become cloudy (verb)
+   - 明日 (ashita) - tomorrow (noun)
+   - 2025年 (nisen nijuu-gon nen) - 2025 (noun)
+   - 元日 (ganjitsu) - New Year's Day (noun)
 
 5. **Original English Text**:
-"Today, is New Year's Eve. The weather was cold and cloudy.\nTomorrow will be New Year’s Day 2025.\n"
+"Today, is New Year's Eve. The weather was cold and cloudy.
+Tomorrow will be New Year’s Day 2025."
