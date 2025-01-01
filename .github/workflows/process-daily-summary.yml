@@ -1,6 +1,11 @@
 name: Daily Process Summary
 on:
   workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date to process (YYYY-MM-DD)'
+        required: false
+        default: ''
   schedule:
     - cron: "0 8 * * *" # Runs daily at 8 AM UTC
 
@@ -18,7 +23,6 @@ jobs:
           mkdir -p processed
 
       - name: Find Previous Day's File
-        id: find_file
         run: |
           PST_DATE=$(date -d '-1 day -8 hours' '+%Y-%m-%d')
           INPUT_FILE=$(find daily-summaries/ -type f -name "$PST_DATE.txt" || true)
@@ -27,16 +31,13 @@ jobs:
             exit 1
           fi
           echo "INPUT_FILE=$INPUT_FILE" >> $GITHUB_ENV
-          echo "::set-output name=input_file::$INPUT_FILE"
 
       - name: Process File with OpenAI API
-        id: process_file
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          INPUT_FILE="${{ steps.find_file.outputs.input_file }}"
           OUTPUT_FILE="processed/$(basename $INPUT_FILE)"
-          CONTENT=$(cat $INPUT_FILE)
+          CONTENT=$(cat $INPUT_FILE | jq -Rs . | sed 's/\\n/\n/g') # Properly escape and replace newline artifacts
 
           ESCAPED_PROMPT=$(jq -n --arg text "$CONTENT" '{
             model: "gpt-3.5-turbo",
@@ -44,7 +45,21 @@ jobs:
               {
                 role: "user",
                 content: (
-                  "Translate the following text to JLPT N5 level Japanese and provide detailed annotations:\n" +
+                  "Translate the following text to JLPT N5 level Japanese and provide detailed annotations in a clean, structured format. The output should include:\n\n" +
+                  "1. **Translation**: Provide the text translated into Japanese with appropriate kanji, hiragana, and grammar, written as complete sentences with correct punctuation.\n\n" +
+                  "2. **Romaji**: Provide the romanized pronunciation of the translated Japanese text, corresponding to the Japanese sentences.\n\n" +
+                  "3. **Sentence Breakdown**:\n" +
+                  "   - Break down each Japanese sentence into key components, explaining:\n" +
+                  "     - Particles: Identify and explain their function.\n" +
+                  "     - Verbs: Specify the verb, its dictionary form, and its conjugation.\n" +
+                  "     - Adjectives: Identify their type (e.g., i-adjective, na-adjective).\n" +
+                  "   - Provide a brief explanation of the grammar used.\n\n" +
+                  "4. **Vocabulary List**: List the key words used in the translation, with:\n" +
+                  "   - Their meanings.\n" +
+                  "   - Part of speech (e.g., noun, verb, adjective).\n" +
+                  "   - Example sentences, if applicable.\n\n" +
+                  "5. **Original English Text**: Include the original English sentences as a footer, clearly marked as \"Original English Text.\"\n\n" +
+                  "Ensure the output is well-formatted and easy to read, without any unnecessary escape sequences or line breaks. Use the following text:\n" +
                   $text
                 )
               }
@@ -58,19 +73,19 @@ jobs:
             -d @-)
 
           echo "API Response: $RESPONSE"
-          TRANSLATION=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to get translation"')
-          echo "$TRANSLATION" > "$OUTPUT_FILE"
+          TRANSLATION=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to get translation due to API issues"')
+          echo "$TRANSLATION" > $OUTPUT_FILE
+          echo "TRANSLATION=$(cat $OUTPUT_FILE)" >> $GITHUB_ENV
+          echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
+          echo "Translation saved to $OUTPUT_FILE."
 
-          echo "TRANSLATION=$TRANSLATION" >> $GITHUB_ENV
-          echo "::set-output name=translation::$TRANSLATION"
-          echo "::set-output name=output_file::$OUTPUT_FILE"
-
-      - name: Debug Outputs
+      - name: Commit and Push Changes
         run: |
-          echo "Translation: ${{ steps.process_file.outputs.translation }}"
-          echo "Processed File: ${{ steps.process_file.outputs.output_file }}"
-          echo "File Content:"
-          cat "${{ steps.process_file.outputs.output_file }}"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add processed/
+          git commit -m "Processed summary for $(basename $INPUT_FILE)" || echo "No changes to commit"
+          git push || echo "No changes to push"
 
       - name: Send Processed File via Email
         uses: dawidd6/action-send-mail@v3
@@ -79,16 +94,16 @@ jobs:
           server_port: 587
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: "Processed File: ${{ steps.find_file.outputs.input_file }}"
+          subject: "nihongo-o-benkyou-shimasu/${{ env.OUTPUT_FILE }}"
           body: |
             Hello,
 
             The processed summary for the file is as follows:
 
-            ${{ steps.process_file.outputs.translation }}
+            ${{ env.TRANSLATION }}
 
             Best regards,
             GitHub Actions
           to: seanthomasward@gmail.com
           from: ${{ secrets.GMAIL_USERNAME }}
-          attachments: ${{ steps.process_file.outputs.output_file }}
+          attachments: ${{ env.OUTPUT_FILE }}
