@@ -104,5 +104,11 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add processed/
-          git commit -m "Processed summary for $(date -d '-8 hours' '+%Y-%m-%d')"
-          git push
+          
+          # Check if there are changes to commit
+          if ! git diff --cached --quiet; then
+            git commit -m "Processed summary for $(date -d '-8 hours' '+%Y-%m-%d')"
+            git push
+          else
+            echo "No changes to commit. Skipping push."
+          fi
