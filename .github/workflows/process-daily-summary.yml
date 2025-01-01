@@ -7,31 +7,25 @@ on:
 
 jobs:
   process-summary:
-    runs-on: ubuntu-22.04  # Explicit version to avoid deprecation warnings
+    runs-on: ubuntu-22.04
 
     steps:
       # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Debug - List files in the daily summaries folder
+      # Step 2: Debug - List files in daily summaries folder
       - name: Debug - List daily summaries folder
         run: |
-          echo "Listing files in the daily-summaries folder:"
+          echo "Listing files in daily-summaries folder:"
           ls -l daily-summaries || echo "No files found in daily-summaries"
 
       # Step 3: Get today's file based on the push event
       - name: Get today's file based on the push event
         id: find_file
         run: |
-          # Check if there's a previous commit
-          if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
-            echo "Previous commit found. Checking for modified files..."
-            INPUT_FILE=$(git diff --name-only HEAD~1 | grep '^daily-summaries/.*\.txt' || true)
-          else
-            echo "No previous commit. Checking for untracked files..."
-            INPUT_FILE=$(git ls-files --others --exclude-standard | grep '^daily-summaries/.*\.txt' || true)
-          fi
+          # Attempt to find the file from the push event or as untracked
+          INPUT_FILE=$(git diff --name-only HEAD | grep '^daily-summaries/.*\.txt' || git ls-files --others --exclude-standard | grep '^daily-summaries/.*\.txt' || true)
 
           # Print debug info
           echo "Found input file: $INPUT_FILE"
@@ -49,4 +43,30 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-       
+          INPUT_FILE="${{ steps.find_file.outputs.file }}"
+          OUTPUT_FILE="processed/$(basename $INPUT_FILE)"
+          CONTENT=$(cat $INPUT_FILE)
+
+          PROMPT="Translate the following text to JLPT N5 level Japanese, including hiragana, kanji, and a vocabulary breakdown:\n\n$CONTENT"
+
+          RESPONSE=$(curl https://api.openai.com/v1/chat/completions \
+            -H "Authorization: Bearer $OPENAI_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "model": "gpt-3.5-turbo",
+              "messages": [{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": "'"$PROMPT"'"}],
+              "max_tokens": 1000
+            }')
+
+          TRANSLATION=$(echo $RESPONSE | jq -r '.choices[0].message.content')
+
+          echo "$TRANSLATION" > $OUTPUT_FILE
+
+      # Step 5: Commit the processed file
+      - name: Commit processed output
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add processed/
+          git commit -m "Processed summary for $(date +'%Y-%m-%d')"
+          git push
