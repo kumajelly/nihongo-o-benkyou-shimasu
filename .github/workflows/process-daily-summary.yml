@@ -87,6 +87,8 @@ jobs:
 
       - name: Send Processed File via Email
         uses: dawidd6/action-send-mail@v3
+        env:
+          TRANSLATION_CONTENT: $(cat processed/$(basename $INPUT_FILE))
         with:
           server_address: smtp.gmail.com
           server_port: 587
@@ -96,9 +98,9 @@ jobs:
           body: |
             Hello,
 
-            The processed summary for $(date -d '-1 day -8 hours' '+%Y-%m-%d') is as follows:
+            The processed summary for the file is as follows:
 
-            $(cat processed/$(basename $INPUT_FILE))
+            $TRANSLATION_CONTENT
 
             Best regards,
             GitHub Actions
