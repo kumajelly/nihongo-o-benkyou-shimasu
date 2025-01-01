@@ -31,6 +31,7 @@ jobs:
             PST_DATE=${{ github.event.inputs.date }}
           fi
           echo "PST_DATE=$PST_DATE" >> $GITHUB_ENV
+          echo "::set-output name=date::$PST_DATE"
 
       - name: Find File
         id: find_file
@@ -41,6 +42,7 @@ jobs:
             exit 1
           fi
           echo "INPUT_FILE=$INPUT_FILE" >> $GITHUB_ENV
+          echo "::set-output name=input_file::$INPUT_FILE"
 
       - name: Process File with OpenAI API
         id: process_file
@@ -57,7 +59,21 @@ jobs:
               {
                 role: "user",
                 content: (
-                  "Translate the following text to JLPT N5 level Japanese and provide detailed annotations:\n" +
+                  "Translate the following text to JLPT N5 level Japanese and provide detailed annotations in a clean, structured format. The output should include:\n\n" +
+                  "1. **Translation**: Provide the text translated into Japanese with appropriate kanji, hiragana, and grammar, written as complete sentences with correct punctuation.\n\n" +
+                  "2. **Romaji**: Provide the romanized pronunciation of the translated Japanese text, corresponding to the Japanese sentences.\n\n" +
+                  "3. **Sentence Breakdown**:\n" +
+                  "   - Break down each Japanese sentence into key components, explaining:\n" +
+                  "     - Particles: Identify and explain their function.\n" +
+                  "     - Verbs: Specify the verb, its dictionary form, and its conjugation.\n" +
+                  "     - Adjectives: Identify their type (e.g., i-adjective, na-adjective).\n" +
+                  "   - Provide a brief explanation of the grammar used.\n\n" +
+                  "4. **Vocabulary List**: List the key words used in the translation, with:\n" +
+                  "   - Their meanings.\n" +
+                  "   - Part of speech (e.g., noun, verb, adjective).\n" +
+                  "   - Example sentences, if applicable.\n\n" +
+                  "5. **Original English Text**: Include the original English sentences as a footer, clearly marked as \"Original English Text.\"\n\n" +
+                  "Ensure the output is well-formatted and easy to read, without any unnecessary escape sequences or line breaks. Use the following text:\n" +
                   $text
                 )
               }
@@ -73,9 +89,9 @@ jobs:
           TRANSLATION=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to get translation"')
           echo "$TRANSLATION" > "$OUTPUT_FILE"
 
-          # Save file paths for later steps
-          echo "$OUTPUT_FILE" > processed/output_file_path.txt
-          echo "$TRANSLATION" > processed/translation_body.txt
+          # Save output for use in the email step
+          echo "::set-output name=translation::$TRANSLATION"
+          echo "::set-output name=output_file::$OUTPUT_FILE"
 
       - name: Send Processed File via Email
         uses: dawidd6/action-send-mail@v3
@@ -84,16 +100,16 @@ jobs:
           server_port: 587
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: "Processed File: $(cat processed/output_file_path.txt)"
+          subject: "Processed File: ${{ steps.find_file.outputs.input_file }}"
           body: |
             Hello,
 
             The processed summary for the file is as follows:
 
-            $(cat processed/translation_body.txt)
+            ${{ steps.process_file.outputs.translation }}
 
             Best regards,
             GitHub Actions
           to: seanthomasward@gmail.com
           from: ${{ secrets.GMAIL_USERNAME }}
-          attachments: $(cat processed/output_file_path.txt)
+          attachments: ${{ steps.process_file.outputs.output_file }}
