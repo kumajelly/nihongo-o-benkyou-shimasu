@@ -17,8 +17,6 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       # Step 2: Ensure required directories
       - name: Ensure required directories
@@ -59,20 +57,21 @@ jobs:
             exit 1
           fi
 
-          echo "::set-output name=file::$INPUT_FILE"
+          # Use environment files to pass the file path
+          echo "INPUT_FILE=$INPUT_FILE" >> $GITHUB_ENV
 
       # Step 5: Process with OpenAI GPT
       - name: Process with OpenAI GPT
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          INPUT_FILE: ${{ env.INPUT_FILE }}
         run: |
-          INPUT_FILE="${{ steps.find_file.outputs.file }}"
           OUTPUT_FILE="processed/$(basename $INPUT_FILE)"
           CONTENT=$(cat $INPUT_FILE)
 
           PROMPT="Translate the following text to JLPT N5 level Japanese, including hiragana, kanji, and a vocabulary breakdown:\n\n$CONTENT"
 
-          RESPONSE=$(curl https://api.openai.com/v1/chat/completions \
+          RESPONSE=$(curl -s https://api.openai.com/v1/chat/completions \
             -H "Authorization: Bearer $OPENAI_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
@@ -81,9 +80,14 @@ jobs:
               "max_tokens": 1000
             }')
 
-          TRANSLATION=$(echo $RESPONSE | jq -r '.choices[0].message.content')
+          # Debug API response
+          echo "API Response: $RESPONSE"
+
+          # Extract the translation
+          TRANSLATION=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to get translation"')
 
           echo "$TRANSLATION" > $OUTPUT_FILE
+          echo "Translation saved to $OUTPUT_FILE."
 
       # Step 6: Commit the processed file
       - name: Commit processed output
