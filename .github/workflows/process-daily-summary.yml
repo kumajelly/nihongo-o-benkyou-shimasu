@@ -21,46 +21,22 @@ jobs:
       # Step 2: Ensure required directories
       - name: Ensure required directories
         run: |
-          echo "Checking required directories..."
           mkdir -p daily-summaries
           mkdir -p processed
-          echo "Directories ensured."
 
-      # Step 3: Debug - List files in daily summaries folder
-      - name: Debug - List daily summaries folder
-        run: |
-          echo "Listing files in daily-summaries folder:"
-          ls -l daily-summaries || echo "No files found in daily-summaries"
-
-      # Step 4: Adjust for PST time zone and find today's summary file
+      # Step 3: Find today's file
       - name: Get today's summary file
         id: find_file
         run: |
-          # Adjust for PST (UTC-8)
           PST_DATE=$(date -d '-8 hours' '+%Y-%m-%d')
-
-          # Check for a pushed file first
-          INPUT_FILE=$(git diff --name-only HEAD | grep '^daily-summaries/.*\.txt' || true)
-
-          # If no pushed file, look for today's file in the committed files
+          INPUT_FILE=$(find daily-summaries/ -type f -name "$PST_DATE.txt" || true)
           if [ -z "$INPUT_FILE" ]; then
-            echo "No pushed file detected. Looking for today's file for PST date ($PST_DATE)..."
-            INPUT_FILE=$(find daily-summaries/ -type f -name "$PST_DATE.txt" || true)
-          fi
-
-          # Print debug info
-          echo "Detected input file: $INPUT_FILE"
-
-          # Exit if no file is found
-          if [ -z "$INPUT_FILE" ]; then
-            echo "Error: No input file found in the daily-summaries folder for today (PST date: $PST_DATE)."
+            echo "Error: No input file found for date $PST_DATE."
             exit 1
           fi
-
-          # Use environment files to pass the file path
           echo "INPUT_FILE=$INPUT_FILE" >> $GITHUB_ENV
 
-      # Step 5: Process with OpenAI GPT
+      # Step 4: Process with OpenAI GPT
       - name: Process with OpenAI GPT
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -69,46 +45,36 @@ jobs:
           OUTPUT_FILE="processed/$(basename $INPUT_FILE)"
           CONTENT=$(cat $INPUT_FILE)
 
-          # Escape the CONTENT to ensure it's safe for JSON
-          ESCAPED_CONTENT=$(echo "$CONTENT" | jq -Rs .)
+          ESCAPED_PROMPT=$(echo "Translate the following text to JLPT N5 level Japanese:\n\n$CONTENT" | jq -Rs .)
 
-          # Construct the prompt
-          PROMPT="Translate the following text to JLPT N5 level Japanese, including hiragana, kanji, and a vocabulary breakdown:\n\n$CONTENT"
-
-          # Escape the PROMPT for JSON
-          ESCAPED_PROMPT=$(echo "$PROMPT" | jq -Rs .)
-
-          # Make the API call
           RESPONSE=$(curl -s https://api.openai.com/v1/chat/completions \
             -H "Authorization: Bearer $OPENAI_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
               "model": "gpt-3.5-turbo",
-              "messages": [{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": '"$ESCAPED_PROMPT"'}],
+              "messages": [{"role": "user", "content": '"$ESCAPED_PROMPT"'}],
               "max_tokens": 1000
             }')
 
-          # Debug API response
-          echo "API Response: $RESPONSE"
-
-          # Extract the translation
-          TRANSLATION=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to get translation"')
-
-          # Save the translation or error to the output file
+          TRANSLATION=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to get translation due to API issues"')
           echo "$TRANSLATION" > $OUTPUT_FILE
-          echo "Translation saved to $OUTPUT_FILE."
+          echo "File updated: $OUTPUT_FILE"
 
-      # Step 6: Commit the processed file
+      # Step 5: Add a timestamp to ensure changes are detected
+      - name: Add timestamp to processed file
+        run: |
+          OUTPUT_FILE="processed/$(basename ${{ env.INPUT_FILE }})"
+          TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+          echo "\n\nProcessed on: $TIMESTAMP" >> $OUTPUT_FILE
+          echo "Added timestamp to $OUTPUT_FILE"
+
+      # Step 6: Commit processed file
       - name: Commit processed output
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add processed/
           
-          # Check if there are changes to commit
-          if ! git diff --cached --quiet; then
-            git commit -m "Processed summary for $(date -d '-8 hours' '+%Y-%m-%d')"
-            git push
-          else
-            echo "No changes to commit. Skipping push."
-          fi
+          # Force commit changes if they exist
+          git commit -m "Processed summary for $(date -d '-8 hours' '+%Y-%m-%d')" || echo "No changes to commit"
+          git push || echo "No changes to push"
