@@ -1,27 +1,38 @@
-1. 今日は大晦日です。天気は寒くて曇りました。\n明日は2025年の元日になります。
+1. **Translation**:
+今日は大晦日です。天気は寒くて曇っていました。
+明日は2025年の元日になります。
 
-2. Romaji:
-Kyou wa oh-misoka desu. Tenki wa samukute kumori-mashita.
-Ashita wa nisen-nijuu go-nen no ganjitsu ni narimasu.
+2. **Romaji**:
+Kyou wa oomisoka desu. Tenki wa samukute kumotte imashita.
+Ashita wa nisen nijuu go-nen no ganjitsu ni narimasu.
 
-3. Sentence Breakdown:
-- 今日は (Kyou wa) = Today (は indicates the topic of the sentence)
-- 大晦日です (Oh-misoka desu) = is New Year's Eve
-- 天気は (Tenki wa) = The weather (は indicates the topic of the sentence)
-- 寒くて (samukute) = cold and (て form of 寒い - i-adjective)
-- 曇りました (kumori-mashita) = was cloudy (past tense of 曇る - verb)
+3. **Sentence Breakdown**:
+   - 今日は大晦日です。
+     - 今日 (kyou) - today
+     - は (wa) - topic marking particle
+     - 大晦日 (oomisoka) - New Year's Eve
+     - です (desu) - copula (to be)
+   - 天気は寒くて曇っていました。
+     - 天気 (tenki) - weather
+     - は (wa) - topic marking particle
+     - 寒くて (samukute) - cold (conjugated form of 寒い - samui)
+     - 曇っていました (kumotte imashita) - was cloudy (conjugated form of 曇る - kumoru)
+   - 明日は2025年の元日になります。
+     - 明日 (ashita) - tomorrow
+     - は (wa) - topic marking particle
+     - 2025年 (nisen nijuu go-nen) - 2025
+     - の (no) - possessive particle
+     - 元日 (ganjitsu) - New Year’s Day
+     - になります (ni narimasu) - will be
 
-- 明日は (Ashita wa) = Tomorrow (は indicates the topic of the sentence)
-- 2025年の (Nisen-nijuu go-nen no) = 2025's
-- 元日になります (Ganjitsu ni narimasu) = will be New Year’s Day (なる - verb)
+4. **Vocabulary List**:
+   - 今日 (kyou) - today (noun)
+   - 大晦日 (oomisoka) - New Year's Eve (noun)
+   - 天気 (tenki) - weather (noun)
+   - 寒い (samui) - cold (i-adjective)
+   - 曇る (kumoru) - to be cloudy (verb)
+   - 明日 (ashita) - tomorrow (noun)
+   - 元日 (ganjitsu) - New Year’s Day (noun)
 
-4. Vocabulary List:
-- 今日 (Kyou) = today (noun)
-- 大晦日 (Oh-misoka) = New Year's Eve (noun)
-- 天気 (Tenki) = weather (noun)
-- 寒い (samui) = cold (i-adjective)
-- 曇る (kumoru) = to be cloudy (verb)
-- 明日 (Ashita) = tomorrow (noun)
-- 2025年 (Nisen-nijuu go-nen) = 2025 (noun)
-- 元日 (Ganjitsu) = New Year’s Day (noun)
-- なる (naru) = to become (verb)
+5. **Original English Text**:
+"Today, is New Year's Eve. The weather was cold and cloudy.\nTomorrow will be New Year’s Day 2025."
