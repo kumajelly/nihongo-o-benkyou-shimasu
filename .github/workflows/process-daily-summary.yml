@@ -75,7 +75,7 @@ jobs:
           echo "API Response: $RESPONSE"
           TRANSLATION=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to get translation due to API issues"')
           echo "$TRANSLATION" > $OUTPUT_FILE
-          echo "TRANSLATION=$TRANSLATION" >> $GITHUB_ENV
+          echo "$TRANSLATION" > processed/translation_body.txt
           echo "Translation saved to $OUTPUT_FILE."
 
       - name: Commit and Push Changes
@@ -92,17 +92,4 @@ jobs:
           server_address: smtp.gmail.com
           server_port: 587
           username: ${{ secrets.GMAIL_USERNAME }}
-          password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: "Processed Summary for $(basename $INPUT_FILE | sed 's/.txt$//')"
-          body: |
-            Hello,
-
-            The processed summary for the file is as follows:
-
-            ${{ env.TRANSLATION }}
-
-            Best regards,
-            GitHub Actions
-          to: seanthomasward@gmail.com
-          from: ${{ secrets.GMAIL_USERNAME }}
-          attachments: processed/$(basename $INPUT_FILE)
+    
