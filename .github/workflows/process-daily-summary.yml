@@ -15,13 +15,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Debug - List files in daily summaries folder
+      # Step 2: Ensure directories exist
+      - name: Ensure required directories
+        run: |
+          echo "Checking required directories..."
+          mkdir -p daily-summaries
+          mkdir -p processed
+          echo "Directories ensured."
+
+      # Step 3: Debug - List files in daily summaries folder
       - name: Debug - List daily summaries folder
         run: |
           echo "Listing files in daily-summaries folder:"
           ls -l daily-summaries || echo "No files found in daily-summaries"
 
-      # Step 3: Adjust for PST time zone and find today's summary file
+      # Step 4: Adjust for PST time zone and find today's summary file
       - name: Get today's summary file
         id: find_file
         run: |
@@ -48,7 +56,7 @@ jobs:
 
           echo "::set-output name=file::$INPUT_FILE"
 
-      # Step 4: Process with OpenAI GPT
+      # Step 5: Process with OpenAI GPT
       - name: Process with OpenAI GPT
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -72,7 +80,7 @@ jobs:
 
           echo "$TRANSLATION" > $OUTPUT_FILE
 
-      # Step 5: Commit the processed file
+      # Step 6: Commit the processed file
       - name: Commit processed output
         run: |
           git config user.name "GitHub Actions"
