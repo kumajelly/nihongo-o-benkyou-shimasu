@@ -96,7 +96,9 @@ jobs:
           body: |
             Hello,
 
-            The processed summary for $(date -d '-1 day -8 hours' '+%Y-%m-%d') is attached.
+            The processed summary for $(date -d '-1 day -8 hours' '+%Y-%m-%d') is as follows:
+
+            $(cat processed/$(basename $INPUT_FILE))
 
             Best regards,
             GitHub Actions
