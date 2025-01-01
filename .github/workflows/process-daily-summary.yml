@@ -94,13 +94,13 @@ jobs:
           server_port: 587
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: "Processed Summary for $(date -d '-1 day -8 hours' '+%Y-%m-%d')"
+          subject: "Processed Summary $(basename $INPUT_FILE)"
           body: |
             Hello,
 
             The processed summary for the file is as follows:
 
-            $TRANSLATION_CONTENT
+            ${{ env.TRANSLATION_CONTENT }}
 
             Best regards,
             GitHub Actions
