@@ -40,10 +40,11 @@ jobs:
           CONTENT=$(cat $INPUT_FILE | jq -Rs .)  # Properly escape newlines and special characters
 
           ESCAPED_PROMPT=$(jq -n --arg text "$CONTENT" '{
-            "model": "gpt-3.5-turbo",
-            "messages": [{
-              "role": "user",
-              "content": ("Translate the following text to JLPT N5 level Japanese. Please provide the following details:\n\n" +
+            model: "gpt-3.5-turbo",
+            messages: [
+              {
+                role: "user",
+                content: ("Translate the following text to JLPT N5 level Japanese. Please provide the following details:\n\n" +
                           "1. Translation: The text translated into Japanese with appropriate kanji, hiragana, and grammar.\n" +
                           "2. Romaji: The romanized pronunciation of the translated Japanese text.\n" +
                           "3. Sentence Breakdown:\n" +
@@ -53,8 +54,10 @@ jobs:
                           "     - Adjectives: Identify adjectives and their type (e.g., i-adjective, na-adjective).\n" +
                           "   - Provide a brief explanation of the grammar used in the sentence.\n" +
                           "4. Vocabulary List: List the key words used in the translation along with their meanings, part of speech (noun, verb, adjective, etc.), and usage examples.\n" +
-            }],
-            "max_tokens": 2000
+                          "Here is the text:\n" + $text)
+              }
+            ],
+            max_tokens: 2000
           }')
 
           RESPONSE=$(echo "$ESCAPED_PROMPT" | curl -s https://api.openai.com/v1/chat/completions \
