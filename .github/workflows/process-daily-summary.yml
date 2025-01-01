@@ -92,7 +92,7 @@ jobs:
           server_port: 587
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: "Processed Summary for $(basename $INPUT_FILE | sed 's/.txt$//')"
+          subject: "nihongo-o-benkyou-shimasu/processed/$(basename $INPUT_FILE)"
           body: |
             Hello,
 
