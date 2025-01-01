@@ -1,1 +1,20 @@
-Error: Unable to get translation due to API issues
+1. 今日は大晦日です。天気は寒くて曇りました。
+2. Kyou wa oomisoka desu. Tenki wa samukute kumorimashita.
+3. 
+   - 今日は (kyou wa) = "Today" (particle は is used to indicate the topic of the sentence)
+   - 大晦日です (oomisoka desu) = "is New Year's Eve" (です is the copula used to indicate the state or quality of something)
+   - 天気は (tenki wa) = "The weather" (particle は is used to indicate the topic of the sentence)
+   - 寒くて (samukute) = "cold and" (て form of adjective "cold" 寒い)
+   - 曇りました (kumorimashita) = "was cloudy" (past form of verb "to be cloudy" 曇る)
+   
+   The first sentence describes the current date as New Year's Eve and mentions that the weather was cold and cloudy.
+
+4. 
+   - 今日 (kyou) = today (noun)
+   - 大晦日 (oomisoka) = New Year's Eve (noun)
+   - 天気 (tenki) = weather (noun)
+   - 寒い (samui) = cold (i-adjective)
+   - 曇りました (kumorimashita) = was cloudy (verb)
+
+5. Original English Text:
+"Today, is New Year's Eve. The weather was cold and cloudy.\nTomorrow will be New Year’s Day 2025."
