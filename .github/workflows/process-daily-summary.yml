@@ -59,7 +59,7 @@ jobs:
                   "   - Part of speech (e.g., noun, verb, adjective).\n" +
                   "   - Example sentences, if applicable.\n\n" +
                   "5. **Original English Text**: Include the original English sentences as a footer, clearly marked as \"Original English Text.\"\n\n" +
-                  "Ensure the output is well-formatted and easy to read, without any unnecessary escape sequences or line breaks. Use the following text:\n" +
+                  "Ensure the output is formatted cleanly, without any visible `\n` or escape characters in the text. Preserve natural line breaks where appropriate for readability. Use the following text:\n" +
                   $text
                 )
               }
