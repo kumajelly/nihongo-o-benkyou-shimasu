@@ -22,9 +22,9 @@ jobs:
           mkdir -p daily-summaries
           mkdir -p processed
 
-      - name: Find Today's File
+      - name: Find Previous Day's File
         run: |
-          PST_DATE=$(date -d '-8 hours' '+%Y-%m-%d')
+          PST_DATE=$(date -d '-1 day -8 hours' '+%Y-%m-%d')
           INPUT_FILE=$(find daily-summaries/ -type f -name "$PST_DATE.txt" || true)
           if [ -z "$INPUT_FILE" ]; then
             echo "Error: No input file found for date $PST_DATE."
@@ -82,7 +82,7 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add processed/
-          git commit -m "Processed summary for $(date -d '-8 hours' '+%Y-%m-%d')" || echo "No changes to commit"
+          git commit -m "Processed summary for $(date -d '-1 day -8 hours' '+%Y-%m-%d')" || echo "No changes to commit"
           git push || echo "No changes to push"
 
       - name: Send Processed File via Email
@@ -92,11 +92,11 @@ jobs:
           server_port: 587
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: "Processed Summary for $(date -d '-8 hours' '+%Y-%m-%d')"
+          subject: "Processed Summary for $(date -d '-1 day -8 hours' '+%Y-%m-%d')"
           body: |
             Hello,
 
-            The processed summary for $(date -d '-8 hours' '+%Y-%m-%d') is attached.
+            The processed summary for $(date -d '-1 day -8 hours' '+%Y-%m-%d') is attached.
 
             Best regards,
             GitHub Actions
