@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'daily-summaries/**/*.txt'  # Trigger on changes to .txt files in daily-summaries
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
   process-summary:
@@ -20,19 +21,28 @@ jobs:
           echo "Listing files in daily-summaries folder:"
           ls -l daily-summaries || echo "No files found in daily-summaries"
 
-      # Step 3: Get today's file based on the push event
-      - name: Get today's file based on the push event
+      # Step 3: Find today's summary file
+      - name: Get today's summary file
         id: find_file
         run: |
-          # Attempt to find the file from the push event or as untracked
-          INPUT_FILE=$(git diff --name-only HEAD | grep '^daily-summaries/.*\.txt' || git ls-files --others --exclude-standard | grep '^daily-summaries/.*\.txt' || true)
+          # Get today's date
+          TODAY=$(date '+%Y-%m-%d')
+
+          # Check for a pushed file first
+          INPUT_FILE=$(git diff --name-only HEAD | grep '^daily-summaries/.*\.txt' || true)
+
+          # If no pushed file, look for today's file in the committed files
+          if [ -z "$INPUT_FILE" ]; then
+            echo "No pushed file detected. Looking for today's file..."
+            INPUT_FILE=$(find daily-summaries/ -type f -name "$TODAY.txt" || true)
+          fi
 
           # Print debug info
-          echo "Found input file: $INPUT_FILE"
+          echo "Detected input file: $INPUT_FILE"
 
           # Exit if no file is found
           if [ -z "$INPUT_FILE" ]; then
-            echo "Error: No input file found in the daily-summaries folder."
+            echo "Error: No input file found in the daily-summaries folder for today ($TODAY)."
             exit 1
           fi
 
