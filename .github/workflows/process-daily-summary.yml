@@ -85,20 +85,23 @@ jobs:
           git commit -m "Processed summary for $(basename $INPUT_FILE)" || echo "No changes to commit"
           git push || echo "No changes to push"
 
-      - name: Send Processed File via Email
+            - name: Send Processed File via Email
         uses: dawidd6/action-send-mail@v3
+        env:
+          TRANSLATION_CONTENT: $TRANSLATION
+          FILE_DATE: $(basename $INPUT_FILE | sed 's/.txt$//')
         with:
           server_address: smtp.gmail.com
           server_port: 587
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: "Processed Summary $(basename $INPUT_FILE)"
+          subject: "Processed Summary for ${{ env.FILE_DATE }}"
           body: |
             Hello,
 
             The processed summary for the file is as follows:
 
-            $(cat processed/$(basename $INPUT_FILE))
+            ${{ env.TRANSLATION_CONTENT }}
 
             Best regards,
             GitHub Actions
