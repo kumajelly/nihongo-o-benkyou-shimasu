@@ -1,39 +1,38 @@
 1. **Translation**:
-今日は大晦日です。天気は寒くて曇りました。
-明日は2025年の元日です。
+今日は大晦日です。天気は寒くて曇っていました。明日は2025年の元日になります。
 
 2. **Romaji**:
-Kyou wa oomisoka desu. Tenki wa samukute kumorimashita.
-Ashita wa nisen nijuu go-nen no ganjitsu desu.
+Kyou wa oomisoka desu. Tenki wa samukute kumotte imashita. Ashita wa nisen-nijuugo-nen no ganjitsu ni narimasu.
 
 3. **Sentence Breakdown**:
    - 今日は大晦日です。
      - 今日 (kyou) - today
-     - は (wa) - topic marker
+     - は (wa) - topic marking particle
      - 大晦日 (oomisoka) - New Year's Eve
-     - です (desu) - copula (to be)
-   - 天気は寒くて曇りました。
+     - です (desu) - copula, to be
+   
+   - 天気は寒くて曇っていました。
      - 天気 (tenki) - weather
-     - は (wa) - topic marker
-     - 寒くて (samukute) - cold and
-     - 曇りました (kumorimashita) - was cloudy
-   - 明日は2025年の元日です。
+     - は (wa) - topic marking particle
+     - 寒くて (samukute) - cold (i-adjective, connecting form) 
+     - 曇っていました (kumotte imashita) - was cloudy (verb: 曇る - kumoru, past tense)
+   
+   - 明日は2025年の元日になります。
      - 明日 (ashita) - tomorrow
-     - は (wa) - topic marker
-     - 2025年の (nisen nijuu go-nen no) - year 2025
-     - 元日 (ganjitsu) - New Year’s Day
-     - です (desu) - copula (to be)
+     - は (wa) - topic marking particle
+     - 2025年の元日 (nisen-nijuugo-nen no ganjitsu) - New Year’s Day 2025
+     - になります (ni narimasu) - will be (verb: なる - naru, polite form)
 
 4. **Vocabulary List**:
    - 今日 (kyou) - today (noun)
    - 大晦日 (oomisoka) - New Year's Eve (noun)
    - 天気 (tenki) - weather (noun)
    - 寒い (samui) - cold (i-adjective)
-   - 曇りました (kumorimashita) - was cloudy (verb)
+   - 曇る (kumoru) - to be cloudy (verb)
    - 明日 (ashita) - tomorrow (noun)
-   - 2025年 (nisen nijuu go-nen) - year 2025 (noun)
+   - 2025年 (nisen-nijuugo-nen) - 2025 (noun)
    - 元日 (ganjitsu) - New Year’s Day (noun)
+   - なる (naru) - to become (verb)
 
 5. **Original English Text**:
-Today, is New Year's Eve. The weather was cold and cloudy.
-Tomorrow will be New Year’s Day 2025.
+"Today, is New Year's Eve. The weather was cold and cloudy. Tomorrow will be New Year’s Day 2025."
