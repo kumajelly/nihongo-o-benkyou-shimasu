@@ -1,20 +1,27 @@
-1. 今日は大晦日です。天気は寒くて曇りました。
-2. Kyou wa oomisoka desu. Tenki wa samukute kumorimashita.
-3. 
-   - 今日は (kyou wa) = "Today" (particle は is used to indicate the topic of the sentence)
-   - 大晦日です (oomisoka desu) = "is New Year's Eve" (です is the copula used to indicate the state or quality of something)
-   - 天気は (tenki wa) = "The weather" (particle は is used to indicate the topic of the sentence)
-   - 寒くて (samukute) = "cold and" (て form of adjective "cold" 寒い)
-   - 曇りました (kumorimashita) = "was cloudy" (past form of verb "to be cloudy" 曇る)
-   
-   The first sentence describes the current date as New Year's Eve and mentions that the weather was cold and cloudy.
+1. 今日は大晦日です。天気は寒くて曇りました。\n明日は2025年の元日になります。
 
-4. 
-   - 今日 (kyou) = today (noun)
-   - 大晦日 (oomisoka) = New Year's Eve (noun)
-   - 天気 (tenki) = weather (noun)
-   - 寒い (samui) = cold (i-adjective)
-   - 曇りました (kumorimashita) = was cloudy (verb)
+2. Romaji:
+Kyou wa oh-misoka desu. Tenki wa samukute kumori-mashita.
+Ashita wa nisen-nijuu go-nen no ganjitsu ni narimasu.
 
-5. Original English Text:
-"Today, is New Year's Eve. The weather was cold and cloudy.\nTomorrow will be New Year’s Day 2025."
+3. Sentence Breakdown:
+- 今日は (Kyou wa) = Today (は indicates the topic of the sentence)
+- 大晦日です (Oh-misoka desu) = is New Year's Eve
+- 天気は (Tenki wa) = The weather (は indicates the topic of the sentence)
+- 寒くて (samukute) = cold and (て form of 寒い - i-adjective)
+- 曇りました (kumori-mashita) = was cloudy (past tense of 曇る - verb)
+
+- 明日は (Ashita wa) = Tomorrow (は indicates the topic of the sentence)
+- 2025年の (Nisen-nijuu go-nen no) = 2025's
+- 元日になります (Ganjitsu ni narimasu) = will be New Year’s Day (なる - verb)
+
+4. Vocabulary List:
+- 今日 (Kyou) = today (noun)
+- 大晦日 (Oh-misoka) = New Year's Eve (noun)
+- 天気 (Tenki) = weather (noun)
+- 寒い (samui) = cold (i-adjective)
+- 曇る (kumoru) = to be cloudy (verb)
+- 明日 (Ashita) = tomorrow (noun)
+- 2025年 (Nisen-nijuu go-nen) = 2025 (noun)
+- 元日 (Ganjitsu) = New Year’s Day (noun)
+- なる (naru) = to become (verb)
