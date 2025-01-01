@@ -6,6 +6,9 @@ on:
       - 'daily-summaries/**/*.txt'  # Trigger on changes to .txt files in daily-summaries
   workflow_dispatch:  # Allows manual triggering
 
+permissions:
+  contents: write  # Grants write access to push changes back to the repository
+
 jobs:
   process-summary:
     runs-on: ubuntu-22.04
@@ -14,8 +17,10 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Step 2: Ensure directories exist
+      # Step 2: Ensure required directories
       - name: Ensure required directories
         run: |
           echo "Checking required directories..."
