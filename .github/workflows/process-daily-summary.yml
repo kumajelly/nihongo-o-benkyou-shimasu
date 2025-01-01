@@ -37,7 +37,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           OUTPUT_FILE="processed/$(basename $INPUT_FILE)"
-          CONTENT=$(cat $INPUT_FILE | jq -Rs .)  # Properly escape newlines and special characters
+          CONTENT=$(cat $INPUT_FILE | jq -Rs . | sed 's/\\n/\n/g') # Properly escape and replace newline artifacts
 
           ESCAPED_PROMPT=$(jq -n --arg text "$CONTENT" '{
             model: "gpt-3.5-turbo",
@@ -82,13 +82,11 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add processed/
-          git commit -m "Processed summary for $(date -d '-1 day -8 hours' '+%Y-%m-%d')" || echo "No changes to commit"
+          git commit -m "Processed summary for $(basename $INPUT_FILE)" || echo "No changes to commit"
           git push || echo "No changes to push"
 
       - name: Send Processed File via Email
         uses: dawidd6/action-send-mail@v3
-        env:
-          TRANSLATION_CONTENT: $(cat processed/$(basename $INPUT_FILE))
         with:
           server_address: smtp.gmail.com
           server_port: 587
@@ -100,7 +98,7 @@ jobs:
 
             The processed summary for the file is as follows:
 
-            ${{ env.TRANSLATION_CONTENT }}
+            $(cat processed/$(basename $INPUT_FILE))
 
             Best regards,
             GitHub Actions
