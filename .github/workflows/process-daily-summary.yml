@@ -21,20 +21,20 @@ jobs:
           echo "Listing files in daily-summaries folder:"
           ls -l daily-summaries || echo "No files found in daily-summaries"
 
-      # Step 3: Find today's summary file
+      # Step 3: Adjust for PST time zone and find today's summary file
       - name: Get today's summary file
         id: find_file
         run: |
-          # Get today's date
-          TODAY=$(date '+%Y-%m-%d')
+          # Adjust for PST (UTC-8)
+          PST_DATE=$(date -d '-8 hours' '+%Y-%m-%d')
 
           # Check for a pushed file first
           INPUT_FILE=$(git diff --name-only HEAD | grep '^daily-summaries/.*\.txt' || true)
 
           # If no pushed file, look for today's file in the committed files
           if [ -z "$INPUT_FILE" ]; then
-            echo "No pushed file detected. Looking for today's file..."
-            INPUT_FILE=$(find daily-summaries/ -type f -name "$TODAY.txt" || true)
+            echo "No pushed file detected. Looking for today's file for PST date ($PST_DATE)..."
+            INPUT_FILE=$(find daily-summaries/ -type f -name "$PST_DATE.txt" || true)
           fi
 
           # Print debug info
@@ -42,7 +42,7 @@ jobs:
 
           # Exit if no file is found
           if [ -z "$INPUT_FILE" ]; then
-            echo "Error: No input file found in the daily-summaries folder for today ($TODAY)."
+            echo "Error: No input file found in the daily-summaries folder for today (PST date: $PST_DATE)."
             exit 1
           fi
 
@@ -78,5 +78,5 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add processed/
-          git commit -m "Processed summary for $(date +'%Y-%m-%d')"
+          git commit -m "Processed summary for $(date -d '-8 hours' '+%Y-%m-%d')"
           git push
