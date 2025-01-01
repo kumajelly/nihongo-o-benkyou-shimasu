@@ -69,13 +69,4 @@ jobs:
             }')
 
           echo "API Response: $RESPONSE"
-          TRANSLATION=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to get translation due to API issues"')
-          echo "$TRANSLATION" > $OUTPUT_FILE
-          echo "Translation saved to $OUTPUT_FILE"
-
-      - name: Commit processed output
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add processed/
-          git commit -m "Processed summary for $(date -d '-8 hours' '+%
+        
