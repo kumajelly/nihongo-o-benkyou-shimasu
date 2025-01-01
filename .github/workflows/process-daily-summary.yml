@@ -44,17 +44,24 @@ jobs:
             messages: [
               {
                 role: "user",
-                content: ("Translate the following text to JLPT N5 level Japanese. Please provide the following details:\n\n" +
-                          "1. Translation: The text translated into Japanese with appropriate kanji, hiragana, and grammar.\n" +
-                          "2. Romaji: The romanized pronunciation of the translated Japanese text.\n" +
-                          "3. Sentence Breakdown:\n" +
-                          "   - Break down each Japanese sentence and explain its key components:\n" +
-                          "     - Particles: Identify and explain the function of any particles used.\n" +
-                          "     - Verbs: Specify the verb, its dictionary form, and its conjugation.\n" +
-                          "     - Adjectives: Identify adjectives and their type (e.g., i-adjective, na-adjective).\n" +
-                          "   - Provide a brief explanation of the grammar used in the sentence.\n" +
-                          "4. Vocabulary List: List the key words used in the translation along with their meanings, part of speech (noun, verb, adjective, etc.), and usage examples.\n" +
-                          "Here is the text:\n" + $text)
+                content: (
+                  "Translate the following text to JLPT N5 level Japanese and provide detailed annotations in a clean, structured format. The output should include:\n\n" +
+                  "1. **Translation**: Provide the text translated into Japanese with appropriate kanji, hiragana, and grammar, written as complete sentences with correct punctuation.\n\n" +
+                  "2. **Romaji**: Provide the romanized pronunciation of the translated Japanese text, corresponding to the Japanese sentences.\n\n" +
+                  "3. **Sentence Breakdown**:\n" +
+                  "   - Break down each Japanese sentence into key components, explaining:\n" +
+                  "     - Particles: Identify and explain their function.\n" +
+                  "     - Verbs: Specify the verb, its dictionary form, and its conjugation.\n" +
+                  "     - Adjectives: Identify their type (e.g., i-adjective, na-adjective).\n" +
+                  "   - Provide a brief explanation of the grammar used.\n\n" +
+                  "4. **Vocabulary List**: List the key words used in the translation, with:\n" +
+                  "   - Their meanings.\n" +
+                  "   - Part of speech (e.g., noun, verb, adjective).\n" +
+                  "   - Example sentences, if applicable.\n\n" +
+                  "5. **Original English Text**: Include the original English sentences as a footer, clearly marked as \"Original English Text.\"\n\n" +
+                  "Ensure the output is well-formatted and easy to read, without any unnecessary escape sequences or line breaks. Use the following text:\n" +
+                  $text
+                )
               }
             ],
             max_tokens: 2000
