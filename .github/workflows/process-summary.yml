@@ -3,28 +3,25 @@ name: Process Daily Summary
 on:
   push:
     paths:
-      - 'daily-summaries/**/*.txt'  # Trigger on changes to .txt files in daily-summaries
-  workflow_dispatch:  # Allows manual triggering
+      - 'daily-summaries/**/*.txt'
+  workflow_dispatch:
 
 permissions:
-  contents: write  # Grants write access to push changes back to the repository
+  contents: write
 
 jobs:
   process-summary:
     runs-on: ubuntu-22.04
 
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Ensure required directories
       - name: Ensure required directories
         run: |
           mkdir -p daily-summaries
           mkdir -p processed
 
-      # Step 3: Find today's file
       - name: Get today's summary file
         id: find_file
         run: |
@@ -36,7 +33,6 @@ jobs:
           fi
           echo "INPUT_FILE=$INPUT_FILE" >> $GITHUB_ENV
 
-      # Step 4: Process with OpenAI GPT
       - name: Process with OpenAI GPT
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -45,61 +41,40 @@ jobs:
           OUTPUT_FILE="processed/$(basename $INPUT_FILE)"
           CONTENT=$(cat $INPUT_FILE)
 
-          ESCAPED_PROMPT=$(echo "Translate the following text to JLPT N5 level Japanese. Please provide the following details:
+          ESCAPED_PROMPT: |
+            Translate the following text to JLPT N5 level Japanese. Please provide the following details:
 
-1. Translation: The text translated into Japanese with appropriate kanji, hiragana, and grammar.
-2. Romaji: The romanized pronunciation of the translated Japanese text.
-3. Sentence Breakdown:
-   - Break down each sentence and explain its key components:
-     - Particles: Identify and explain the function of any particles used.
-     - Verbs: Specify the verb, its dictionary form, and its conjugation.
-     - Adjectives: Identify adjectives and their type (e.g., i-adjective, na-adjective).
-   - Provide a brief explanation of the grammar used in the sentence.
-4. Vocabulary List: List the key words used in the translation along with their meanings, part of speech (noun, verb, adjective, etc.), and usage examples.
+            1. Translation: The text translated into Japanese with appropriate kanji, hiragana, and grammar.
+            2. Romaji: The romanized pronunciation of the translated Japanese text.
+            3. Sentence Breakdown:
+               - Break down each sentence and explain its key components:
+                 - Particles: Identify and explain the function of any particles used.
+                 - Verbs: Specify the verb, its dictionary form, and its conjugation.
+                 - Adjectives: Identify adjectives and their type (e.g., i-adjective, na-adjective).
+               - Provide a brief explanation of the grammar used in the sentence.
+            4. Vocabulary List: List the key words used in the translation along with their meanings, part of speech (noun, verb, adjective, etc.), and usage examples.
 
-Here is the text:
-$CONTENT" | jq -Rs .)
+            Here is the text:
+            $CONTENT
 
-          # Make the API call
           RESPONSE=$(curl -s https://api.openai.com/v1/chat/completions \
             -H "Authorization: Bearer $OPENAI_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
               "model": "gpt-3.5-turbo",
-              "messages": [{"role": "user", "content": '"$ESCAPED_PROMPT"'}],
+              "messages": [{"role": "user", "content": "'"$ESCAPED_PROMPT"'"}],
               "max_tokens": 1000
             }')
 
-          # Debug API response
           echo "API Response: $RESPONSE"
-
-          # Extract translation
           TRANSLATION=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to get translation due to API issues"')
           echo "$TRANSLATION" > $OUTPUT_FILE
           echo "Translation saved to $OUTPUT_FILE"
 
-      # Step 5: Debug the processed file
-      - name: Debug Processed File
-        run: |
-          OUTPUT_FILE="processed/$(basename ${{ env.INPUT_FILE }})"
-          echo "Contents of $OUTPUT_FILE:"
-          cat $OUTPUT_FILE
-
-      # Step 6: Add timestamp to the processed file
-      - name: Add timestamp to processed file
-        run: |
-          OUTPUT_FILE="processed/$(basename ${{ env.INPUT_FILE }})"
-          TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
-          echo "\n\nProcessed on: $TIMESTAMP" >> $OUTPUT_FILE
-          echo "Added timestamp to $OUTPUT_FILE"
-
-      # Step 7: Commit processed file
       - name: Commit processed output
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add processed/
-          
-          # Force commit changes if they exist
           git commit -m "Processed summary for $(date -d '-8 hours' '+%Y-%m-%d')" || echo "No changes to commit"
           git push || echo "No changes to push"
