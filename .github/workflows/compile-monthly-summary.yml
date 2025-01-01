@@ -1,0 +1,43 @@
+name: Compile Monthly Summary
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # Runs at 00:00 UTC on the 1st of every month
+
+jobs:
+  compile-summary:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Compile monthly summary
+      - name: Compile monthly summary
+        run: |
+          # Determine the current month
+          TODAY=$(date '+%Y-%m-%d')
+          LAST_MONTH=$(date --date="$TODAY -1 month" '+%Y-%m')
+          OUTPUT_FILE="summaries/${LAST_MONTH}.txt"
+
+          # Initialize the summary content
+          echo "# Monthly Summary for $LAST_MONTH" > $OUTPUT_FILE
+
+          # Add all processed files for the last month
+          for FILE in processed/${LAST_MONTH}-*.txt; do
+            echo "## $(basename $FILE)" >> $OUTPUT_FILE
+            cat $FILE >> $OUTPUT_FILE
+            echo "\n" >> $OUTPUT_FILE
+          done
+
+          # Save the compiled summary
+          git add $OUTPUT_FILE
+
+      # Step 3: Commit the monthly summary
+      - name: Commit monthly summary
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git commit -m "Monthly summary for $LAST_MONTH"
+          git push
