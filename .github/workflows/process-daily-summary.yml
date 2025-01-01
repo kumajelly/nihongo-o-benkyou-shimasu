@@ -3,31 +3,42 @@ name: Process Daily Summary
 on:
   push:
     paths:
-      - 'daily-summaries/**/*.txt'
+      - 'daily-summaries/**/*.txt'  # Trigger on changes to .txt files in daily-summaries
 
 jobs:
   process-summary:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04  # Explicit version to avoid deprecation warnings
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Debug Step
+      # Step 2: Find today's file based on the push event
+      - name: Get today's file based on the push event
+        id: find_file
         run: |
-          ls -l daily-summaries
-          echo "Checking for today's file..."
+          # Check if there's a previous commit
+          if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+            INPUT_FILE=$(git diff --name-only HEAD~1 | grep '^daily-summaries/.*\.txt')
+          else
+            # No previous commit; fetch all added files
+            INPUT_FILE=$(git ls-files --others --exclude-standard | grep '^daily-summaries/.*\.txt')
+          fi
 
+          if [ -z "$INPUT_FILE" ]; then
+            echo "Error: No input file found in the daily-summaries folder."
+            exit 1
+          fi
+
+          echo "::set-output name=file::$INPUT_FILE"
+
+      # Step 3: Process with OpenAI GPT
       - name: Process with OpenAI GPT
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          INPUT_FILE=$(git diff --name-only HEAD~1 | grep '^daily-summaries/.*\.txt')
-          if [ -z "$INPUT_FILE" ]; then
-            echo "Error: No input file found for today."
-            exit 1
-          fi
-
+          INPUT_FILE="${{ steps.find_file.outputs.file }}"
           OUTPUT_FILE="processed/$(basename $INPUT_FILE)"
           CONTENT=$(cat $INPUT_FILE)
 
@@ -46,10 +57,10 @@ jobs:
 
           echo "$TRANSLATION" > $OUTPUT_FILE
 
+      # Step 4: Commit the processed file
       - name: Commit processed output
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add processed/
-          git commit -m "Processed summary for $(date +'%Y-%m-%d')"
-          git push
+          git commit -m "Pro
