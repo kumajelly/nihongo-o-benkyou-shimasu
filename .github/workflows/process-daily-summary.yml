@@ -71,4 +71,29 @@ jobs:
             -d @-)
 
           TRANSLATION=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to get translation"')
-          echo "
+          echo "$TRANSLATION" > "$OUTPUT_FILE"
+
+          # Save file paths for later steps
+          echo "$OUTPUT_FILE" > processed/output_file_path.txt
+          echo "$TRANSLATION" > processed/translation_body.txt
+
+      - name: Send Processed File via Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_PASSWORD }}
+          subject: "Processed File: $(cat processed/output_file_path.txt)"
+          body: |
+            Hello,
+
+            The processed summary for the file is as follows:
+
+            $(cat processed/translation_body.txt)
+
+            Best regards,
+            GitHub Actions
+          to: seanthomasward@gmail.com
+          from: ${{ secrets.GMAIL_USERNAME }}
+          attachments: $(cat processed/output_file_path.txt)
