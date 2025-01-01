@@ -31,7 +31,6 @@ jobs:
             PST_DATE=${{ github.event.inputs.date }}
           fi
           echo "PST_DATE=$PST_DATE" >> $GITHUB_ENV
-          echo "::set-output name=date::$PST_DATE"
 
       - name: Find File
         id: find_file
@@ -42,14 +41,13 @@ jobs:
             exit 1
           fi
           echo "INPUT_FILE=$INPUT_FILE" >> $GITHUB_ENV
-          echo "::set-output name=input_file::$INPUT_FILE"
 
       - name: Process File with OpenAI API
         id: process_file
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          INPUT_FILE=$(echo $INPUT_FILE)
+          INPUT_FILE=${{ env.INPUT_FILE }}
           OUTPUT_FILE="processed/$(basename $INPUT_FILE)"
           CONTENT=$(cat $INPUT_FILE)
 
@@ -89,9 +87,9 @@ jobs:
           TRANSLATION=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to get translation"')
           echo "$TRANSLATION" > "$OUTPUT_FILE"
 
-          # Save output for use in the email step
-          echo "::set-output name=translation::$TRANSLATION"
-          echo "::set-output name=output_file::$OUTPUT_FILE"
+          # Export variables to environment
+          echo "translation=$TRANSLATION" >> $GITHUB_ENV
+          echo "output_file=$OUTPUT_FILE" >> $GITHUB_ENV
 
       - name: Send Processed File via Email
         uses: dawidd6/action-send-mail@v3
@@ -100,16 +98,16 @@ jobs:
           server_port: 587
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: "Processed File: ${{ steps.find_file.outputs.input_file }}"
+          subject: "Processed File: ${{ env.INPUT_FILE }}"
           body: |
             Hello,
 
-            The processed summary for the file is as follows:
+            Here is the processed content of the file:
 
-            ${{ steps.process_file.outputs.translation }}
+            $(cat ${{ env.output_file }})
 
             Best regards,
             GitHub Actions
           to: seanthomasward@gmail.com
           from: ${{ secrets.GMAIL_USERNAME }}
-          attachments: ${{ steps.process_file.outputs.output_file }}
+          attachments: ${{ env.output_file }}
