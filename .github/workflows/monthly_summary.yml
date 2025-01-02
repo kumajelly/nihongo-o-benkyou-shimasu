@@ -68,9 +68,13 @@ jobs:
               {
                 role: "user",
                 content: (
-                  "Analyze the following text and extract a vocabulary frequency analysis. Format as:\n\n" +
-                  "Word | Frequency\n\n" +
-                  "Summaries:\n\n" +
+                  "Analyze the following text and extract a vocabulary frequency analysis. For each word, include:\n" +
+                  "- The word in its original script\n" +
+                  "- The romaji (phonetic transcription)\n" +
+                  "- A brief definition\n\n" +
+                  "Format as:\n\n" +
+                  "Word | Romaji | Definition | Frequency\n\n" +
+                  "Text to analyze:\n" +
                   $text
                 )
               }
@@ -95,12 +99,9 @@ jobs:
           for FILE in $PROCESSED_FILES; do
             echo -e "\n### ${FILE} ###\n" >> "$OUTPUT_FILE"
             cat "$FILE" >> "$OUTPUT_FILE"
-          done
 
-      - name: Save Monthly Summary to Repository
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "GitHub Actions Bot"
-          git add monthly-summaries/
-          git commit -m "Add monthly summary for ${{ env.YEAR }}-${{ env.MONTH }}"
-          git push
+      - name: Upload Monthly Summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: Monthly-Summary-${{ env.YEAR }}-${{ env.MONTH }}
+          path: ${{ env.OUTPUT_FILE }}
