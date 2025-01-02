@@ -103,8 +103,11 @@ jobs:
 
           echo "$TRANSLATION" > "$OUTPUT_FILE"
 
-          # Save translation content for later steps
-          echo "TRANSLATION=$TRANSLATION" >> $GITHUB_ENV
+          # Encode translation for safe usage in environment variables
+          ENCODED_TRANSLATION=$(echo "$TRANSLATION" | base64)
+
+          # Save encoded translation and output file path
+          echo "TRANSLATION=$ENCODED_TRANSLATION" >> $GITHUB_ENV
           echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
 
       - name: Send Processed File via Email
@@ -120,7 +123,7 @@ jobs:
 
             The processed summary for the file is as follows:
 
-            ${{ env.TRANSLATION }}
+            $(echo ${{ env.TRANSLATION }} | base64 --decode)
 
             Best regards,
             GitHub Actions
