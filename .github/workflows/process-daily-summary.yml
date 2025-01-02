@@ -102,9 +102,7 @@ jobs:
           fi
 
           echo "$TRANSLATION" > "$OUTPUT_FILE"
-
-          # Save translation content in a temporary file
-          echo "$TRANSLATION" | base64 > translation_base64.txt
+          echo "$TRANSLATION" >> translation_body.txt
           echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
 
       - name: Send Processed File via Email
@@ -120,7 +118,7 @@ jobs:
 
             The processed summary for the file is as follows:
 
-            $(base64 --decode translation_base64.txt)
+            $(cat translation_body.txt)
 
             Best regards,
             GitHub Actions
