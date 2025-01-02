@@ -26,7 +26,6 @@ jobs:
           else
             DATE="${{ github.event.inputs.date }}"
           fi
-          echo "DATE=$DATE" >> $GITHUB_ENV
           echo "Using date: $DATE"
 
       - name: Verify Processed File
@@ -38,13 +37,23 @@ jobs:
             exit 1
           fi
 
-          TRANSLATION_CONTENT=$(cat "$PROCESSED_FILE")
-          ENCODED_TRANSLATION=$(echo "$TRANSLATION_CONTENT" | base64)
-          
-          # Save encoded content and file path to the environment
-          echo "TRANSLATION_CONTENT=$ENCODED_TRANSLATION" >> $GITHUB_ENV
           echo "PROCESSED_FILE=$PROCESSED_FILE" >> $GITHUB_ENV
           echo "Processed file found: $PROCESSED_FILE"
+
+      - name: Read and Encode File Content
+        id: encode_file
+        run: |
+          PROCESSED_FILE="processed/${DATE}.txt"
+          TRANSLATION_CONTENT=$(cat "$PROCESSED_FILE" | base64)
+          echo "TRANSLATION_CONTENT=$TRANSLATION_CONTENT" >> $GITHUB_ENV
+
+      - name: Decode and Prepare Email Body
+        id: prepare_email
+        run: |
+          EMAIL_BODY=$(echo "${TRANSLATION_CONTENT}" | base64 --decode)
+          echo "EMAIL_BODY<<EOF" >> $GITHUB_ENV
+          echo "$EMAIL_BODY" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Send Processed File via Email
         uses: dawidd6/action-send-mail@v3
@@ -59,7 +68,7 @@ jobs:
 
             The processed summary for {{ env.DATE }} is as follows:
 
-            $(echo ${{ env.TRANSLATION_CONTENT }} | base64 --decode)
+            ${{ env.EMAIL_BODY }}
 
             Best regards,
             GitHub Actions
