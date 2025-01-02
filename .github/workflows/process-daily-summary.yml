@@ -56,7 +56,6 @@ jobs:
             exit 1
           fi
 
-          # Build the prompt
           ESCAPED_PROMPT=$(jq -n --arg text "$CONTENT" '{
             model: "gpt-3.5-turbo",
             messages: [
@@ -85,7 +84,6 @@ jobs:
             max_tokens: 2000
           }')
 
-          # Call the OpenAI API
           RESPONSE=$(echo "$ESCAPED_PROMPT" | curl -s https://api.openai.com/v1/chat/completions \
             -H "Authorization: Bearer $OPENAI_API_KEY" \
             -H "Content-Type: application/json" \
@@ -105,7 +103,8 @@ jobs:
 
           echo "$TRANSLATION" > "$OUTPUT_FILE"
 
-          # Save output file path for later steps
+          # Save translation content for later steps
+          echo "TRANSLATION=$TRANSLATION" >> $GITHUB_ENV
           echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
 
       - name: Send Processed File via Email
@@ -119,9 +118,9 @@ jobs:
           body: |
             Hello,
 
-            The processed summary for the file is attached. See the content below:
+            The processed summary for the file is as follows:
 
-            $(cat ${{ env.OUTPUT_FILE }})
+            ${{ env.TRANSLATION }}
 
             Best regards,
             GitHub Actions
