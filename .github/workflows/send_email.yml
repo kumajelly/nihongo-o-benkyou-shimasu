@@ -26,6 +26,7 @@ jobs:
           else
             DATE="${{ github.event.inputs.date }}"
           fi
+          echo "DATE=$DATE" >> $GITHUB_ENV
           echo "Using date: $DATE"
 
       - name: Verify Processed File
@@ -66,7 +67,7 @@ jobs:
           body: |
             Hello,
 
-            The processed summary for {{ env.DATE }} is as follows:
+            The processed summary for ${{ env.DATE }} is as follows:
 
             ${{ env.EMAIL_BODY }}
 
