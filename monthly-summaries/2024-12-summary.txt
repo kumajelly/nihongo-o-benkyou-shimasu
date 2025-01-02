@@ -1,0 +1,54 @@
+Vocabulary Analysis:
+- 今日 | 1
+- 大晦日 | 1
+- 天気 | 1
+- 寒い | 1
+- 曇る | 1
+- 明日 | 2
+- 2025年 | 1
+- 元日 | 2
+
+Summaries:
+
+
+### processed/2024-12-31.txt ###
+
+1. **Translation**:
+今日は大晦日です。天気は寒く曇っていました。
+明日は2025年の元日です。
+
+2. **Romaji**:
+Kyou wa Oomisoka desu. Tenki wa samuku kumotte imashita.
+Ashita wa nisen-nijuu go nen no Ganjitsu desu.
+
+3. **Sentence Breakdown**:
+   - 今日は大晦日です。
+     - 今日 (kyou) - today
+     - は (wa) - topic marking particle
+     - 大晦日 (oomisoka) - New Year's Eve
+     - です (desu) - copula
+   - 天気は寒く曇っていました。
+     - 天気 (tenki) - weather
+     - は (wa) - topic marking particle
+     - 寒く (samuku) - cold (adverb form)
+     - 曇っていました (kumotte imashita) - was cloudy (past tense)
+   - 明日は2025年の元日です。
+     - 明日 (ashita) - tomorrow
+     - は (wa) - topic marking particle
+     - 2025年 (nisen-nijuu go nen) - year 2025
+     - の (no) - possessive particle
+     - 元日 (Ganjitsu) - New Year’s Day
+     - です (desu) - copula
+
+4. **Vocabulary List**:
+   - 今日 (kyou) - today (noun)
+   - 大晦日 (oomisoka) - New Year's Eve (noun)
+   - 天気 (tenki) - weather (noun)
+   - 寒い (samui) - cold (i-adjective)
+   - 曇る (kumoru) - to be cloudy (verb)
+   - 明日 (ashita) - tomorrow (noun)
+   - 2025年 (nisen-nijuu go nen) - year 2025 (noun)
+   - 元日 (Ganjitsu) - New Year’s Day (noun)
+
+5. **Original English Text**:
+"Today, is New Year's Eve. The weather was cold and cloudy. Tomorrow will be New Year’s Day 2025."
