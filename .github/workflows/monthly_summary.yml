@@ -58,6 +58,7 @@ jobs:
           # Aggregate all text for OpenAI API analysis
           ALL_TEXT=""
           for FILE in $PROCESSED_FILES; do
+            echo "Processing file: $FILE"
             ALL_TEXT="$ALL_TEXT\n\n$(cat "$FILE")"
           done
 
@@ -99,6 +100,7 @@ jobs:
           for FILE in $PROCESSED_FILES; do
             echo -e "\n### ${FILE} ###\n" >> "$OUTPUT_FILE"
             cat "$FILE" >> "$OUTPUT_FILE"
+          done
 
       - name: Upload Monthly Summary
         uses: actions/upload-artifact@v4
