@@ -4,51 +4,60 @@ on:
   workflow_dispatch:
     inputs:
       year:
-        description: 'Year (YYYY, optional)'
+        description: "Year for the monthly summary (optional, format YYYY)"
         required: false
-        default: ''
+        default: ""
       month:
-        description: 'Month (MM, optional)'
+        description: "Month for the monthly summary (optional, format MM)"
         required: false
-        default: ''
+        default: ""
   schedule:
-    - cron: "0 1 1 * *" # Runs at 1 AM UTC on the 1st of each month
+    - cron: "0 10 2 * *" # Runs monthly on the 2nd at 10 AM UTC
 
 jobs:
-  send-email:
+  send-monthly-email:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Determine Month
-        id: determine_month
+      - name: Determine Year and Month
+        id: determine_date
         run: |
-          if [ -z "${{ github.event.inputs.year }}" ] || [ -z "${{ github.event.inputs.month }}" ]; then
-            YEAR=$(date -d 'last month' '+%Y')
-            MONTH=$(date -d 'last month' '+%m')
-          else
-            YEAR=${{ github.event.inputs.year }}
-            MONTH=${{ github.event.inputs.month }}
+          YEAR=${{ github.event.inputs.year }}
+          MONTH=${{ github.event.inputs.month }}
+
+          if [ -z "$YEAR" ] || [ -z "$MONTH" ]; then
+            LAST_MONTH_DATE=$(date -d "last month" "+%Y-%m")
+            YEAR=${YEAR:-${LAST_MONTH_DATE%-*}}
+            MONTH=${MONTH:-${LAST_MONTH_DATE#*-}}
           fi
+
           echo "YEAR=$YEAR" >> $GITHUB_ENV
           echo "MONTH=$MONTH" >> $GITHUB_ENV
-          echo "Processing email for $YEAR-$MONTH"
+          echo "Using year and month: $YEAR-$MONTH"
 
-      - name: Read Monthly Summary
-        id: read_summary
+      - name: Verify Monthly Summary File
+        id: verify_file
         run: |
           SUMMARY_FILE="monthly-summaries/${YEAR}-${MONTH}-summary.txt"
-
           if [ ! -f "$SUMMARY_FILE" ]; then
-            echo "Error: Monthly summary file $SUMMARY_FILE not found."
+            echo "Error: Monthly summary file $SUMMARY_FILE does not exist."
             exit 1
           fi
 
-          TRANSLATION_CONTENT=$(cat "$SUMMARY_FILE")
-          echo "TRANSLATION_CONTENT<<EOF" >> $GITHUB_ENV
-          echo "$TRANSLATION_CONTENT" >> $GITHUB_ENV
+          echo "SUMMARY_FILE=$SUMMARY_FILE" >> $GITHUB_ENV
+          echo "Monthly summary file found: $SUMMARY_FILE"
+
+      - name: Read Monthly Summary File Content
+        id: read_file
+        run: |
+          SUMMARY_FILE="monthly-summaries/${YEAR}-${MONTH}-summary.txt"
+          SUMMARY_CONTENT=$(cat "$SUMMARY_FILE")
+          echo "$SUMMARY_CONTENT"
+          echo "SUMMARY_CONTENT<<EOF" >> $GITHUB_ENV
+          echo "$SUMMARY_CONTENT" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Send Monthly Summary Email
@@ -58,13 +67,16 @@ jobs:
           server_port: 587
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: "Monthly Summary for ${{ env.YEAR }}-${{ env.MONTH }}"
+          subject: "Monthly Summary for ${{ env.YEAR }}-{{ env.MONTH }}"
           body: |
             Hello,
 
-            Please find the monthly summary for ${{ env.YEAR }}-${{ env.MONTH }} below:
+            The monthly summary for ${{ env.YEAR }}-{{ env.MONTH }} is as follows:
 
-            ${{ env.TRANSLATION_CONTENT }}
+            ${{ env.SUMMARY_CONTENT }}
 
             Best regards,
             GitHub Actions
+          to: seanthomasward@gmail.com
+          from: ${{ secrets.GMAIL_USERNAME }}
+          attachments: monthly-summaries/${{ env.YEAR }}-${{ env.MONTH }}-summary.txt
