@@ -1,0 +1,62 @@
+1. **Translation**:
+今日は2025年1月1日です。
+天気は寒いですが、晴れています。
+昼食には、お雑煮と伊達巻を食べました。
+近所を散歩しました。
+
+2. **Romaji**:
+Kyou wa 2025-nen 1-gatsu tsuitachi desu.
+Tenki wa samui desu ga, hareteimasu.
+Chuushoku ni wa, o-zouni to datemaki o tabemashita.
+Kinjo o sanpo shimashita.
+
+3. **Sentence Breakdown**:
+   - 今日は2025年1月1日です。
+     - 今日 (kyou) - today 
+     - は (wa) - topic marking particle
+     - 2025年1月1日 (2025-nen 1-gatsu tsuitachi) - January 1st, 2025
+     - です (desu) - to be (copula)
+     - This sentence structure is used to state the date of New Year's Day in 2025.
+     
+   - 天気は寒いですが、晴れています。
+     - 天気 (tenki) - weather
+     - は (wa) - topic marking particle
+     - 寒い (samui) - chilly, cold (i-adjective)
+     - ですが (desu ga) - but, however 
+     - 晴れています (hareteimasu) - sunny, clear (verb: 晴れる - hare + て form + います polite form)
+     - This sentence describes the weather being cold but sunny. 
+
+   - 昼食には、お雑煮と伊達巻を食べました。
+     - 昼食 (chuushoku) - lunch
+     - には (ni wa) - for, regarding
+     - お雑煮 (o-zouni) - a Japanese New Year's soup with rice cakes and vegetables
+     - と (to) - and
+     - 伊達巻 (datemaki) - a type of rolled omelette 
+     - を (o) - object marking particle
+     - 食べました (tabemashita) - ate (taberu - dictionary form + ました past polite form)
+     - This sentence explains the lunch menu which consisted of o-zouni and datemaki.
+
+   - 近所を散歩しました。
+     - 近所 (kinjo) - neighborhood
+     - を (o) - object marking particle
+     - 散歩しました (sanpo shimashita) - took a walk (散歩する - sanpo suru + ました past polite form)
+     - This sentence states that the speaker took a walk around the neighborhood.
+
+4. **Vocabulary List**:
+   - 今日 (kyou) - today (noun)
+   - 2025年1月1日 (2025-nen 1-gatsu tsuitachi) - January 1st, 2025 (noun)
+   - 天気 (tenki) - weather (noun)
+   - 寒い (samui) - chilly, cold (i-adjective)
+   - 晴れる (hareru) - to be sunny, to clear up (verb)
+   - 昼食 (chuushoku) - lunch (noun)
+   - お雑煮 (o-zouni) - Japanese New Year's soup with rice cakes and vegetables (noun)
+   - 伊達巻 (datemaki) - rolled omelette (noun)
+   - 食べる (taberu) - to eat (verb)
+   - 近所 (kinjo) - neighborhood (noun)
+   - 散歩する (sanpo suru) - to take a walk (verb)
+
+5. **Original English Text**:
+Today is New Year’s Day. January 1st, 2025. 
+The weather is chilly but sunny. 
+For lunch, we ate orzoni soup with datemaki. 
+We took a walk around the neighborhood.
