@@ -1,0 +1,78 @@
+name: Generate Monthly Summary
+
+on:
+  workflow_dispatch:
+    inputs:
+      year:
+        description: 'Year (YYYY, optional)'
+        required: false
+        default: ''
+      month:
+        description: 'Month (MM, optional)'
+        required: false
+        default: ''
+  schedule:
+    - cron: "0 0 1 * *" # Runs at midnight UTC on the 1st of each month
+
+jobs:
+  generate-summary:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Determine Month
+        id: determine_month
+        run: |
+          if [ -z "${{ github.event.inputs.year }}" ] || [ -z "${{ github.event.inputs.month }}" ]; then
+            YEAR=$(date -d 'last month' '+%Y')
+            MONTH=$(date -d 'last month' '+%m')
+          else
+            YEAR=${{ github.event.inputs.year }}
+            MONTH=${{ github.event.inputs.month }}
+          fi
+          echo "YEAR=$YEAR" >> $GITHUB_ENV
+          echo "MONTH=$MONTH" >> $GITHUB_ENV
+          echo "Processing for $YEAR-$MONTH"
+
+      - name: Combine Monthly Summaries
+        id: combine_summaries
+        run: |
+          mkdir -p monthly-summaries
+          OUTPUT_FILE="monthly-summaries/${YEAR}-${MONTH}-summary.txt"
+
+          # Collect all txt files from the given month
+          FILES=$(find processed -type f -name "${YEAR}-${MONTH}-*.txt" | sort -r)
+
+          if [ -z "$FILES" ]; then
+            echo "No files found for $YEAR-$MONTH."
+            exit 1
+          fi
+
+          # Initialize top section for vocabulary frequency
+          echo "Vocabulary Frequency for $YEAR-$MONTH" > "$OUTPUT_FILE"
+          echo "--------------------------------------" >> "$OUTPUT_FILE"
+
+          # Aggregate vocabulary and calculate frequency
+          cat $FILES | grep "Vocabulary List" -A 100 | grep -v "^--" | sort | uniq -c | sort -nr >> "$OUTPUT_FILE"
+          echo "" >> "$OUTPUT_FILE"
+
+          # Append all files in reverse chronological order
+          echo "Combined Summaries for $YEAR-$MONTH" >> "$OUTPUT_FILE"
+          echo "-----------------------------------" >> "$OUTPUT_FILE"
+
+          for FILE in $FILES; do
+            echo "" >> "$OUTPUT_FILE"
+            echo "Date: $(basename "$FILE" .txt)" >> "$OUTPUT_FILE"
+            cat "$FILE" >> "$OUTPUT_FILE"
+          done
+
+          echo "Created monthly summary: $OUTPUT_FILE"
+          echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
+
+      - name: Upload Monthly Summary Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Monthly-Summary-${{ env.YEAR }}-${{ env.MONTH }}
+          path: ${{ steps.combine_summaries.outputs.OUTPUT_FILE }}
