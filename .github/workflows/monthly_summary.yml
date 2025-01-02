@@ -1,81 +1,88 @@
-name: Monthly Summary Compilation
+name: Monthly Summary
 
 on:
   workflow_dispatch:
     inputs:
       year:
-        description: 'Year for the summary (YYYY)'
+        description: "Year of the summary (YYYY, optional)"
         required: false
-        default: ''
+        default: ""
       month:
-        description: 'Month for the summary (MM)'
+        description: "Month of the summary (MM, optional)"
         required: false
-        default: ''
+        default: ""
   schedule:
-    - cron: "0 2 1 * *" # Runs monthly on the 1st at 2:00 AM UTC
+    - cron: "0 0 1 * *" # Runs at midnight on the 1st of each month
 
 jobs:
   compile-summary:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Determine Year and Month
-        id: determine_date
+        id: determine_year_month
         run: |
           YEAR=${{ github.event.inputs.year }}
           MONTH=${{ github.event.inputs.month }}
 
-          if [ -z "$YEAR" ] || [ -z "$MONTH" ]; then
-            LAST_MONTH_DATE=$(date -d "last month" "+%Y-%m")
-            YEAR=${YEAR:-${LAST_MONTH_DATE%-*}}
-            MONTH=${MONTH:-${LAST_MONTH_DATE#*-}}
+          if [ -z "$YEAR" ]; then
+            YEAR=$(date -d 'last month' +'%Y')
+          fi
+
+          if [ -z "$MONTH" ]; then
+            MONTH=$(date -d 'last month' +'%m')
           fi
 
           echo "YEAR=$YEAR" >> $GITHUB_ENV
           echo "MONTH=$MONTH" >> $GITHUB_ENV
-          echo "Determined year and month: $YEAR-$MONTH"
+          echo "Determined Year: $YEAR, Month: $MONTH"
 
-      - name: Set Output File Path
+      - name: Gather Processed Files
+        id: gather_files
         run: |
-          mkdir -p monthly-summaries
-          OUTPUT_FILE="monthly-summaries/${YEAR}-${MONTH}-summary.txt"
-          echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
-
-      - name: Gather Vocabulary and Summaries
-        id: gather_data
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: |
-          PROCESSED_FILES=$(find processed/ -type f -name "${YEAR}-${MONTH}-*.txt")
-
-          if [ -z "$PROCESSED_FILES" ]; then
+          FILE_LIST=$(find processed/ -type f -name "${YEAR}-${MONTH}-*.txt")
+          if [ -z "$FILE_LIST" ]; then
             echo "Error: No processed files found for ${YEAR}-${MONTH}."
             exit 1
           fi
+          echo "Found files:"
+          echo "$FILE_LIST"
 
-          # Aggregate all text for OpenAI API analysis
-          ALL_TEXT=""
-          for FILE in $PROCESSED_FILES; do
-            ALL_TEXT="$ALL_TEXT\n\n$(cat "$FILE")"
+      - name: Use OpenAI to Generate Vocabulary Summary
+        id: generate_vocab_summary
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          VOCAB_LIST=""
+          for FILE in $FILE_LIST; do
+            VOCAB=$(sed -n '/Vocabulary List:/,/^$/p' "$FILE" | grep -v "Vocabulary List:")
+            if [ -n "$VOCAB" ]; then
+              VOCAB_LIST+="$VOCAB\n"
+            fi
           done
 
-          # Use OpenAI API for vocabulary analysis
-          PAYLOAD=$(jq -n --arg text "$ALL_TEXT" '{
+          if [ -z "$VOCAB_LIST" ]; then
+            echo "Error: No vocabulary found for ${YEAR}-${MONTH}."
+            exit 1
+          fi
+
+          PAYLOAD=$(jq -n --arg vocab "$VOCAB_LIST" '{
             model: "gpt-3.5-turbo",
             messages: [
               {
                 role: "user",
                 content: (
-                  "Analyze the following text and extract a vocabulary frequency analysis. Format as:\n\n" +
+                  "Analyze the following vocabulary list and count the frequency of each unique word. Format the output as:\n\n" +
                   "Word | Frequency\n\n" +
-                  "Summaries:\n\n" +
-                  $text
+                  "Vocabulary:\n" +
+                  $vocab
                 )
               }
             ],
-            max_tokens: 2000
+            max_tokens: 1000
           }')
 
           RESPONSE=$(echo "$PAYLOAD" | curl -s https://api.openai.com/v1/chat/completions \
@@ -83,22 +90,38 @@ jobs:
             -H "Content-Type: application/json" \
             -d @-)
 
-          VOCABULARY=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to process vocabulary."')
+          VOCAB_SUMMARY=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to process vocabulary."')
 
-          if [[ "$VOCABULARY" == Error* ]]; then
-            echo "Error during vocabulary analysis: $VOCABULARY"
+          if [[ "$VOCAB_SUMMARY" == Error* ]]; then
+            echo "Error during vocabulary analysis: $VOCAB_SUMMARY"
             exit 1
           fi
 
-          # Write vocabulary and summaries to the output file
-          echo -e "Vocabulary Analysis:\n$VOCABULARY\n\nSummaries:\n" > "$OUTPUT_FILE"
-          for FILE in $PROCESSED_FILES; do
-            echo -e "\n### ${FILE} ###\n" >> "$OUTPUT_FILE"
+          echo "$VOCAB_SUMMARY" > vocab_summary.txt
+          echo "Vocabulary summary created."
+
+      - name: Compile Monthly Summary
+        id: compile_summary
+        run: |
+          mkdir -p monthly-summaries
+
+          OUTPUT_FILE="monthly-summaries/${YEAR}-${MONTH}-summary.txt"
+
+          # Start with vocabulary summary
+          echo "Vocabulary Summary:" > "$OUTPUT_FILE"
+          cat vocab_summary.txt >> "$OUTPUT_FILE"
+          echo -e "\n\nCompiled Daily Summaries:" >> "$OUTPUT_FILE"
+
+          # Add daily summaries in reverse chronological order
+          for FILE in $(ls -r processed/${YEAR}-${MONTH}-*.txt); do
+            echo -e "\n\n--- Summary for $(basename "$FILE") ---\n" >> "$OUTPUT_FILE"
             cat "$FILE" >> "$OUTPUT_FILE"
           done
 
-      - name: Upload Monthly Summary
+          echo "Monthly summary saved to $OUTPUT_FILE"
+
+      - name: Upload Monthly Summary Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Monthly-Summary-${{ env.YEAR }}-${{ env.MONTH }}
-          path: ${{ env.OUTPUT_FILE }}
+          path: monthly-summaries/${{ env.YEAR }}-${{ env.MONTH }}-summary.txt
