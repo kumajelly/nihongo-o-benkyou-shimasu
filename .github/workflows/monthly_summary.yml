@@ -41,41 +41,84 @@ jobs:
           echo "MONTH=$MONTH" >> $GITHUB_ENV
           echo "Using year: $YEAR and month: $MONTH"
 
-      - name: Collect Summaries
+      - name: Collect Processed Summaries
+        id: collect_summaries
         run: |
           mkdir -p temp_summaries
           mkdir -p monthly-summaries
 
-          # Find processed files for the specified month and combine them
-          find processed/ -type f -name "${{ env.YEAR }}-${{ env.MONTH }}-*.txt" \
-            | sort -r \
-            | xargs cat > temp_combined_summaries.txt
-
-          if [ ! -s temp_combined_summaries.txt ]; then
+          # Collect processed files for the month
+          FILE_LIST=$(find processed/ -type f -name "${{ env.YEAR }}-${{ env.MONTH }}-*.txt" | sort -r)
+          if [ -z "$FILE_LIST" ]; then
             echo "Error: No processed summaries found for ${{ env.YEAR }}-${{ env.MONTH }}."
             exit 1
           fi
 
-      - name: Generate Vocabulary Summary
-        run: |
-          # Extract vocabulary from the processed files
-          VOCAB_SUMMARY=$(grep -h "Vocabulary List:" processed/${{ env.YEAR }}-${{ env.MONTH }}-*.txt \
-            | sed -n '/Vocabulary List:/,/^$/p' \
-            | sort \
-            | uniq -c \
-            | sort -rn)
-          echo "$VOCAB_SUMMARY" > vocab_summary.txt
+          # Add filenames as section headers and combine files
+          for FILE in $FILE_LIST; do
+            BASENAME=$(basename "$FILE")
+            echo "=== $BASENAME ===" >> temp_combined_summaries.txt
+            cat "$FILE" >> temp_combined_summaries.txt
+            echo "" >> temp_combined_summaries.txt
+          done
 
-      - name: Create Monthly Summaries Directory
-        run: mkdir -p monthly-summaries
+      - name: Generate Vocabulary Frequency
+        id: vocabulary_frequency
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          # Combine vocabulary from processed files
+          VOCABULARY=$(grep -h "Vocabulary List:" processed/${{ env.YEAR }}-${{ env.MONTH }}-*.txt \
+            | sed -n '/Vocabulary List:/,/^$/p')
+
+          if [ -z "$VOCABULARY" ]; then
+            echo "No vocabulary found for ${{ env.YEAR }}-${{ env.MONTH }}."
+            exit 1
+          fi
+
+          # Use OpenAI API for frequency calculation
+          PAYLOAD=$(jq -n --arg vocab "$VOCABULARY" '{
+            model: "gpt-3.5-turbo",
+            messages: [
+              {
+                role: "user",
+                content: (
+                  "Analyze the following vocabulary list and count the frequency of each unique word. Format the output as:\n\n" +
+                  "Word | Frequency\n\n" +
+                  "Vocabulary:\n" +
+                  $vocab
+                )
+              }
+            ],
+            max_tokens: 1000
+          }')
+
+          RESPONSE=$(echo "$PAYLOAD" | curl -s https://api.openai.com/v1/chat/completions \
+            -H "Authorization: Bearer $OPENAI_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d @-)
+
+          VOCAB_SUMMARY=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to process vocabulary."')
+
+          if [[ "$VOCAB_SUMMARY" == Error* ]]; then
+            echo "Error during vocabulary analysis: $VOCAB_SUMMARY"
+            exit 1
+          fi
+
+          echo "$VOCAB_SUMMARY" > vocab_summary.txt
+          echo "Vocabulary analysis complete."
 
       - name: Generate Monthly Summary
         run: |
           OUTPUT_FILE="monthly-summaries/${{ env.YEAR }}-${{ env.MONTH }}-summary.txt"
-          echo "$VOCAB_SUMMARY" > "$OUTPUT_FILE"
+          echo "=== Vocabulary Frequency ===" > "$OUTPUT_FILE"
+          cat vocab_summary.txt >> "$OUTPUT_FILE"
           echo "" >> "$OUTPUT_FILE"
+          echo "=== Combined Daily Summaries ===" >> "$OUTPUT_FILE"
           cat temp_combined_summaries.txt >> "$OUTPUT_FILE"
+
           echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
+          echo "Monthly summary saved to $OUTPUT_FILE."
 
       - name: Upload Monthly Summary as Artifact
         uses: actions/upload-artifact@v4
