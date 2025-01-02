@@ -5,11 +5,11 @@ on:
     inputs:
       year:
         description: 'Year for the summary (YYYY)'
-        required: true
+        required: false
         default: ''
       month:
         description: 'Month for the summary (MM)'
-        required: true
+        required: false
         default: ''
   schedule:
     - cron: "0 2 1 * *" # Runs monthly on the 1st at 2:00 AM UTC
@@ -21,15 +21,26 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set Variables
-        id: set_vars
+      - name: Determine Year and Month
+        id: determine_date
         run: |
-          YEAR=${{ github.event.inputs.year || $(date -d 'last month' +'%Y') }}
-          MONTH=${{ github.event.inputs.month || $(date -d 'last month' +'%m') }}
-          OUTPUT_FILE="monthly-summaries/${YEAR}-${MONTH}-summary.txt"
-          mkdir -p monthly-summaries
+          YEAR=${{ github.event.inputs.year }}
+          MONTH=${{ github.event.inputs.month }}
+
+          if [ -z "$YEAR" ] || [ -z "$MONTH" ]; then
+            LAST_MONTH_DATE=$(date -d "last month" "+%Y-%m")
+            YEAR=${YEAR:-${LAST_MONTH_DATE%-*}}
+            MONTH=${MONTH:-${LAST_MONTH_DATE#*-}}
+          fi
+
           echo "YEAR=$YEAR" >> $GITHUB_ENV
           echo "MONTH=$MONTH" >> $GITHUB_ENV
+          echo "Determined year and month: $YEAR-$MONTH"
+
+      - name: Set Output File Path
+        run: |
+          mkdir -p monthly-summaries
+          OUTPUT_FILE="monthly-summaries/${YEAR}-${MONTH}-summary.txt"
           echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
 
       - name: Gather Vocabulary and Summaries
