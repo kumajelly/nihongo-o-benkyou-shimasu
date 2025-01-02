@@ -41,15 +41,6 @@ jobs:
           echo "PROCESSED_FILE=$PROCESSED_FILE" >> $GITHUB_ENV
           echo "Processed file found: $PROCESSED_FILE"
 
-      - name: Read File Content Safely
-        id: read_file
-        run: |
-          PROCESSED_FILE="processed/${DATE}.txt"
-          TRANSLATION_CONTENT=$(cat "$PROCESSED_FILE")
-          # Save to a temporary file for multiline-safe usage
-          echo "$TRANSLATION_CONTENT" > translation_content.txt
-          echo "Saved translation content to translation_content.txt"
-
       - name: Send Processed File via Email
         uses: dawidd6/action-send-mail@v3
         with:
@@ -63,10 +54,10 @@ jobs:
 
             The processed summary for ${{ env.DATE }} is as follows:
 
-            $(cat translation_content.txt)
+            $(cat processed/${DATE}.txt)
 
             Best regards,
             GitHub Actions
           to: seanthomasward@gmail.com
           from: ${{ secrets.GMAIL_USERNAME }}
-          attachments: ${{ env.PROCESSED_FILE }}
+          attachments: processed/${DATE}.txt
