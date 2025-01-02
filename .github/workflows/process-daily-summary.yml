@@ -112,11 +112,10 @@ jobs:
           echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
           echo "Processing complete. Translation saved to $OUTPUT_FILE"
 
-      - name: Confirm Output
+      - name: Commit Processed File
         run: |
-          if [ -f "${{ env.OUTPUT_FILE }}" ]; then
-            echo "Translation file successfully created at ${{ env.OUTPUT_FILE }}"
-          else
-            echo "Error: Translation file was not created."
-            exit 1
-          fi
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add processed/*
+          git commit -m "Add processed file for ${{ env.PST_DATE }}"
+          git push
