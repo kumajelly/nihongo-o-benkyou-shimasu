@@ -47,7 +47,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          INPUT_FILE=${{ env.INPUT_FILE }}
+          INPUT_FILE="${{ env.INPUT_FILE }}"
           OUTPUT_FILE="processed/$(basename "$INPUT_FILE")"
           CONTENT=$(cat "$INPUT_FILE" || true)
 
@@ -102,26 +102,4 @@ jobs:
           fi
 
           echo "$TRANSLATION" > "$OUTPUT_FILE"
-          echo "$TRANSLATION" >> translation_body.txt
           echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
-
-      - name: Send Processed File via Email
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          username: ${{ secrets.GMAIL_USERNAME }}
-          password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: "Processed File: ${{ env.INPUT_FILE }}"
-          body: |
-            Hello,
-
-            The processed summary for the file is as follows:
-
-            $(cat translation_body.txt)
-
-            Best regards,
-            GitHub Actions
-          to: seanthomasward@gmail.com
-          from: ${{ secrets.GMAIL_USERNAME }}
-          attachments: ${{ env.OUTPUT_FILE }}
