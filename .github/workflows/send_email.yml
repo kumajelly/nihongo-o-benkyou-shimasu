@@ -1,13 +1,19 @@
-name: Send Email with Translation
+name: Send Email Summary
+
 on:
+  # Manual Trigger
   workflow_dispatch:
     inputs:
-      subject:
-        description: 'Email Subject'
-        required: true
-      body_file:
-        description: 'Path to the file with email body content'
-        required: true
+      date:
+        description: 'Date of the summary to send (YYYY-MM-DD)'
+        required: false
+        default: ''
+  
+  # Automatic Trigger from "Daily Process Summary"
+  workflow_run:
+    workflows: ["Daily Process Summary"] # Ensure this matches the name of your translation workflow
+    types:
+      - completed
 
 jobs:
   send-email:
@@ -17,37 +23,48 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Install Python and Send Email
+      - name: Determine Date
+        id: determine_date
         run: |
-          sudo apt-get install -y python3 python3-pip
-          pip3 install yagmail
-          python3 <<EOF
-import yagmail
-import os
+          if [ -z "${{ github.event.inputs.date }}" ]; then
+            DATE=$(date -d '-1 day -8 hours' '+%Y-%m-%d')
+          else
+            DATE=${{ github.event.inputs.date }}
+          fi
+          echo "DATE=$DATE" >> $GITHUB_ENV
+          echo "Using date: $DATE"
 
-# Credentials
-email_user = os.getenv("GMAIL_USERNAME")
-email_password = os.getenv("GMAIL_PASSWORD")
-recipient = "seanthomasward@gmail.com"
+      - name: Check Processed File
+        id: check_file
+        run: |
+          PROCESSED_FILE="processed/${DATE}.txt"
 
-# Read email content
-body_file = "${{ github.event.inputs.body_file }}"
-with open(body_file, "r") as file:
-    email_body = file.read()
+          if [ ! -f "$PROCESSED_FILE" ]; then
+            echo "Error: Processed file $PROCESSED_FILE does not exist."
+            exit 1
+          fi
 
-subject = "${{ github.event.inputs.subject }}"
+          TRANSLATION_CONTENT=$(cat "$PROCESSED_FILE")
+          echo "TRANSLATION_CONTENT=$TRANSLATION_CONTENT" >> $GITHUB_ENV
+          echo "Processed file found: $PROCESSED_FILE"
 
-# Initialize email client
-yag = yagmail.SMTP(email_user, email_password)
+      - name: Send Processed File via Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_PASSWORD }}
+          subject: "Processed Summary for ${{ env.DATE }}"
+          body: |
+            Hello,
 
-# Send email
-yag.send(
-    to=recipient,
-    subject=subject,
-    contents=email_body
-)
-print("Email sent successfully!")
-EOF
-        env:
-          GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
-          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+            The processed summary for {{ env.DATE }} is as follows:
+
+            ${{ env.TRANSLATION_CONTENT }}
+
+            Best regards,
+            GitHub Actions
+          to: seanthomasward@gmail.com
+          from: ${{ secrets.GMAIL_USERNAME }}
+          attachments: processed/${{ env.DATE }}.txt
