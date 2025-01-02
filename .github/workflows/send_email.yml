@@ -1,19 +1,14 @@
-name: Send Email Summary
+name: Send Processed Email
 
 on:
-  # Manual Trigger
   workflow_dispatch:
     inputs:
       date:
-        description: 'Date of the summary to send (YYYY-MM-DD)'
+        description: "Date for which the email will be sent (optional, format YYYY-MM-DD)"
         required: false
-        default: ''
-  
-  # Automatic Trigger from "Daily Process Summary"
-  workflow_run:
-    workflows: ["Daily Process Summary"] # Ensure this matches the name of your translation workflow
-    types:
-      - completed
+        default: ""
+  schedule:
+    - cron: "0 10 * * *" # Runs daily at 10 AM UTC
 
 jobs:
   send-email:
@@ -29,23 +24,26 @@ jobs:
           if [ -z "${{ github.event.inputs.date }}" ]; then
             DATE=$(date -d '-1 day -8 hours' '+%Y-%m-%d')
           else
-            DATE=${{ github.event.inputs.date }}
+            DATE="${{ github.event.inputs.date }}"
           fi
           echo "DATE=$DATE" >> $GITHUB_ENV
           echo "Using date: $DATE"
 
-      - name: Check Processed File
-        id: check_file
+      - name: Verify Processed File
+        id: verify_file
         run: |
           PROCESSED_FILE="processed/${DATE}.txt"
-
           if [ ! -f "$PROCESSED_FILE" ]; then
             echo "Error: Processed file $PROCESSED_FILE does not exist."
             exit 1
           fi
 
           TRANSLATION_CONTENT=$(cat "$PROCESSED_FILE")
-          echo "TRANSLATION_CONTENT=$TRANSLATION_CONTENT" >> $GITHUB_ENV
+          ENCODED_TRANSLATION=$(echo "$TRANSLATION_CONTENT" | base64)
+          
+          # Save encoded content and file path to the environment
+          echo "TRANSLATION_CONTENT=$ENCODED_TRANSLATION" >> $GITHUB_ENV
+          echo "PROCESSED_FILE=$PROCESSED_FILE" >> $GITHUB_ENV
           echo "Processed file found: $PROCESSED_FILE"
 
       - name: Send Processed File via Email
@@ -61,10 +59,10 @@ jobs:
 
             The processed summary for {{ env.DATE }} is as follows:
 
-            ${{ env.TRANSLATION_CONTENT }}
+            $(echo ${{ env.TRANSLATION_CONTENT }} | base64 --decode)
 
             Best regards,
             GitHub Actions
           to: seanthomasward@gmail.com
           from: ${{ secrets.GMAIL_USERNAME }}
-          attachments: processed/${{ env.DATE }}.txt
+          attachments: ${{ env.PROCESSED_FILE }}
