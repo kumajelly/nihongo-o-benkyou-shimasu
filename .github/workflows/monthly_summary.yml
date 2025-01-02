@@ -1,23 +1,22 @@
-name: Send Monthly Summary Email
+name: Monthly Summary Compilation
 
 on:
   workflow_dispatch:
     inputs:
       year:
-        description: "Year for the monthly summary (optional, format YYYY)"
+        description: 'Year for the summary (YYYY)'
         required: false
-        default: ""
+        default: ''
       month:
-        description: "Month for the monthly summary (optional, format MM)"
+        description: 'Month for the summary (MM)'
         required: false
-        default: ""
+        default: ''
   schedule:
-    - cron: "0 10 2 * *" # Runs monthly on the 2nd at 10 AM UTC
+    - cron: "0 2 1 * *" # Runs monthly on the 1st at 2:00 AM UTC
 
 jobs:
-  send-monthly-email:
+  compile-summary:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -36,47 +35,86 @@ jobs:
 
           echo "YEAR=$YEAR" >> $GITHUB_ENV
           echo "MONTH=$MONTH" >> $GITHUB_ENV
-          echo "Using year and month: $YEAR-$MONTH"
+          echo "Determined year and month: $YEAR-$MONTH"
 
-      - name: Verify Monthly Summary File
-        id: verify_file
+      - name: Set Output File Path
         run: |
-          SUMMARY_FILE="monthly-summaries/${YEAR}-${MONTH}-summary.txt"
-          if [ ! -f "$SUMMARY_FILE" ]; then
-            echo "Error: Monthly summary file $SUMMARY_FILE does not exist."
+          mkdir -p monthly-summaries
+          OUTPUT_FILE="monthly-summaries/${YEAR}-${MONTH}-summary.txt"
+          echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
+
+      - name: Gather Vocabulary and Summaries
+        id: gather_data
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          PROCESSED_FILES=$(find processed/ -type f -name "${YEAR}-${MONTH}-*.txt")
+
+          if [ -z "$PROCESSED_FILES" ]; then
+            echo "Error: No processed files found for ${YEAR}-${MONTH}."
             exit 1
           fi
 
-          echo "SUMMARY_FILE=$SUMMARY_FILE" >> $GITHUB_ENV
-          echo "Monthly summary file found: $SUMMARY_FILE"
+          # Aggregate all text for OpenAI API analysis
+          ALL_TEXT=""
+          for FILE in $PROCESSED_FILES; do
+            echo "Processing file: $FILE"
+            ALL_TEXT="$ALL_TEXT\n\n$(cat "$FILE")"
+          done
 
-      - name: Read Monthly Summary File Content
-        id: read_file
+          # Use OpenAI API for vocabulary analysis
+          PAYLOAD=$(jq -n --arg text "$ALL_TEXT" '{
+            model: "gpt-3.5-turbo",
+            messages: [
+              {
+                role: "user",
+                content: (
+                  "Analyze the following text and extract a vocabulary frequency analysis. For each word, include:\n" +
+                  "- The word in its original script\n" +
+                  "- The romaji (phonetic transcription)\n" +
+                  "- A brief definition\n\n" +
+                  "Format as:\n\n" +
+                  "Word | Romaji | Definition | Frequency\n\n" +
+                  "Text to analyze:\n" +
+                  $text
+                )
+              }
+            ],
+            max_tokens: 2000
+          }')
+
+          RESPONSE=$(echo "$PAYLOAD" | curl -s https://api.openai.com/v1/chat/completions \
+            -H "Authorization: Bearer $OPENAI_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d @-)
+
+          VOCABULARY=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to process vocabulary."')
+
+          if [[ "$VOCABULARY" == Error* ]]; then
+            echo "Error during vocabulary analysis: $VOCABULARY"
+            exit 1
+          fi
+
+          # Write vocabulary and summaries to the output file
+          echo -e "Vocabulary Analysis:\n$VOCABULARY\n\nSummaries:\n" > "$OUTPUT_FILE"
+          for FILE in $PROCESSED_FILES; do
+            echo -e "\n### ${FILE} ###\n" >> "$OUTPUT_FILE"
+            cat "$FILE" >> "$OUTPUT_FILE"
+          done
+
+      - name: Commit and Push Monthly Summary to Repo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          SUMMARY_FILE="monthly-summaries/${YEAR}-${MONTH}-summary.txt"
-          SUMMARY_CONTENT=$(cat "$SUMMARY_FILE")
-          echo "$SUMMARY_CONTENT"
-          echo "SUMMARY_CONTENT<<EOF" >> $GITHUB_ENV
-          echo "$SUMMARY_CONTENT" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
 
-      - name: Send Monthly Summary Email
-        uses: dawidd6/action-send-mail@v3
+          git add monthly-summaries/${{ env.YEAR }}-${{ env.MONTH }}-summary.txt
+          git commit -m "Add monthly summary for ${{ env.YEAR }}-${{ env.MONTH }}"
+          git push
+
+      - name: Upload Monthly Summary as Artifact
+        uses: actions/upload-artifact@v4
         with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          username: ${{ secrets.GMAIL_USERNAME }}
-          password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: "Monthly Summary for ${{ env.YEAR }}-{{ env.MONTH }}"
-          body: |
-            Hello,
-
-            The monthly summary for ${{ env.YEAR }}-{{ env.MONTH }} is as follows:
-
-            ${{ env.SUMMARY_CONTENT }}
-
-            Best regards,
-            GitHub Actions
-          to: seanthomasward@gmail.com
-          from: ${{ secrets.GMAIL_USERNAME }}
-          attachments: monthly-summaries/${{ env.YEAR }}-${{ env.MONTH }}-summary.txt
+          name: Monthly-Summary-${{ env.YEAR }}-${{ env.MONTH }}
+          path: ${{ env.OUTPUT_FILE }}
