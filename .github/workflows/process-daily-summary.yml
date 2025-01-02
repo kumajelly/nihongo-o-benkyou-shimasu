@@ -31,6 +31,7 @@ jobs:
             PST_DATE=${{ github.event.inputs.date }}
           fi
           echo "PST_DATE=$PST_DATE" >> $GITHUB_ENV
+          echo "Processing date: $PST_DATE"
 
       - name: Find File
         id: find_file
@@ -41,6 +42,7 @@ jobs:
             exit 1
           fi
           echo "INPUT_FILE=$INPUT_FILE" >> $GITHUB_ENV
+          echo "Input file found: $INPUT_FILE"
 
       - name: Process File with OpenAI API
         id: process_file
@@ -55,6 +57,8 @@ jobs:
             echo "Error: Input file is empty or unreadable."
             exit 1
           fi
+
+          echo "Preparing to send content to OpenAI API."
 
           ESCAPED_PROMPT=$(jq -n --arg text "$CONTENT" '{
             model: "gpt-3.5-turbo",
@@ -101,5 +105,8 @@ jobs:
             exit 1
           fi
 
+          echo "Writing translated content to: $OUTPUT_FILE"
           echo "$TRANSLATION" > "$OUTPUT_FILE"
+
           echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
+          echo "Processing complete. Translation saved to $OUTPUT_FILE"
