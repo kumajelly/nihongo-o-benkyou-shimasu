@@ -1,12 +1,14 @@
 Vocabulary Analysis:
-- 今日 | 1
-- 大晦日 | 1
-- 天気 | 1
-- 寒い | 1
-- 曇る | 1
-- 明日 | 2
-- 2025年 | 1
-- 元日 | 2
+Word | Romaji | Definition | Frequency
+---|---|---|---
+今日 | kyou | today | 2
+大晦日 | oomisoka | New Year's Eve | 1
+天気 | tenki | weather | 1
+寒く | samuku | cold (adverb form) | 1
+曇って | kumotte | was cloudy | 1
+明日 | ashita | tomorrow | 2
+2025年 | nisen-nijuu go nen | year 2025 | 1
+元日 | Ganjitsu | New Year’s Day | 2
 
 Summaries:
 
