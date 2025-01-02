@@ -1,78 +1,82 @@
-name: Generate Monthly Summary
+name: Monthly Summary Generator
 
 on:
   workflow_dispatch:
     inputs:
       year:
-        description: 'Year (YYYY, optional)'
+        description: "Year to process (e.g., 2024)"
         required: false
-        default: ''
+        default: ""
       month:
-        description: 'Month (MM, optional)'
+        description: "Month to process (1-12)"
         required: false
-        default: ''
+        default: ""
   schedule:
-    - cron: "0 0 1 * *" # Runs at midnight UTC on the 1st of each month
+    - cron: "0 8 1 * *" # Runs on the 1st of every month at 8 AM UTC
 
 jobs:
-  generate-summary:
+  generate-monthly-summary:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Determine Month
-        id: determine_month
+      - name: Determine Year and Month
+        id: set-date
         run: |
-          if [ -z "${{ github.event.inputs.year }}" ] || [ -z "${{ github.event.inputs.month }}" ]; then
+          if [ -z "${{ github.event.inputs.year }}" ]; then
             YEAR=$(date -d 'last month' '+%Y')
+          else
+            YEAR="${{ github.event.inputs.year }}"
+          fi
+
+          if [ -z "${{ github.event.inputs.month }}" ]; then
             MONTH=$(date -d 'last month' '+%m')
           else
-            YEAR=${{ github.event.inputs.year }}
-            MONTH=${{ github.event.inputs.month }}
+            MONTH=$(printf "%02d" "${{ github.event.inputs.month }}")
           fi
+
           echo "YEAR=$YEAR" >> $GITHUB_ENV
           echo "MONTH=$MONTH" >> $GITHUB_ENV
-          echo "Processing for $YEAR-$MONTH"
+          echo "Using year: $YEAR and month: $MONTH"
 
-      - name: Combine Monthly Summaries
-        id: combine_summaries
+      - name: Collect Summaries
         run: |
+          mkdir -p temp_summaries
           mkdir -p monthly-summaries
-          OUTPUT_FILE="monthly-summaries/${YEAR}-${MONTH}-summary.txt"
 
-          # Collect all txt files from the given month
-          FILES=$(find processed -type f -name "${YEAR}-${MONTH}-*.txt" | sort -r)
+          find processed/ -type f -name "${{ env.YEAR }}-${{ env.MONTH }}-*.txt" \
+            | sort -r \
+            | xargs cat > temp_combined_summaries.txt
 
-          if [ -z "$FILES" ]; then
-            echo "No files found for $YEAR-$MONTH."
+          if [ ! -s temp_combined_summaries.txt ]; then
+            echo "Error: No daily summaries found for ${{ env.YEAR }}-${{ env.MONTH }}."
             exit 1
           fi
 
-          # Initialize top section for vocabulary frequency
-          echo "Vocabulary Frequency for $YEAR-$MONTH" > "$OUTPUT_FILE"
-          echo "--------------------------------------" >> "$OUTPUT_FILE"
+      - name: Generate Vocabulary Summary
+        run: |
+          VOCAB_SUMMARY=$(grep -h "Vocabulary List:" processed/${{ env.YEAR }}-${{ env.MONTH }}-*.txt \
+            | sed -n '/Vocabulary List:/,/^$/p' \
+            | sort \
+            | uniq -c \
+            | sort -rn)
+          echo "$VOCAB_SUMMARY" > vocab_summary.txt
 
-          # Aggregate vocabulary and calculate frequency
-          cat $FILES | grep "Vocabulary List" -A 100 | grep -v "^--" | sort | uniq -c | sort -nr >> "$OUTPUT_FILE"
+      - name: Create Monthly Summaries Directory
+        run: mkdir -p monthly-summaries
+
+      - name: Generate Monthly Summary
+        run: |
+          OUTPUT_FILE="monthly-summaries/${{ env.YEAR }}-${{ env.MONTH }}-summary.txt"
+          echo "$VOCAB_SUMMARY" > "$OUTPUT_FILE"
           echo "" >> "$OUTPUT_FILE"
-
-          # Append all files in reverse chronological order
-          echo "Combined Summaries for $YEAR-$MONTH" >> "$OUTPUT_FILE"
-          echo "-----------------------------------" >> "$OUTPUT_FILE"
-
-          for FILE in $FILES; do
-            echo "" >> "$OUTPUT_FILE"
-            echo "Date: $(basename "$FILE" .txt)" >> "$OUTPUT_FILE"
-            cat "$FILE" >> "$OUTPUT_FILE"
-          done
-
-          echo "Created monthly summary: $OUTPUT_FILE"
+          cat temp_combined_summaries.txt >> "$OUTPUT_FILE"
           echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
 
-      - name: Upload Monthly Summary Artifact
+      - name: Upload Monthly Summary as Artifact
         uses: actions/upload-artifact@v3
         with:
           name: Monthly-Summary-${{ env.YEAR }}-${{ env.MONTH }}
-          path: ${{ steps.combine_summaries.outputs.OUTPUT_FILE }}
+          path: ${{ env.OUTPUT_FILE }}
