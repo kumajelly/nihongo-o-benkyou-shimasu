@@ -1,3 +1,25 @@
+name: Monthly Summary Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      year:
+        description: "Year to process (e.g., 2024)"
+        required: true
+      month:
+        description: "Month to process (e.g., 12)"
+        required: true
+  schedule:
+    - cron: "0 0 1 * *" # Runs at midnight on the 1st of each month
+
+jobs:
+  generate-summary:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Generate Vocabulary Frequency
         id: vocabulary_frequency
         env:
@@ -9,15 +31,16 @@
           > "$VOCAB_FILE"
 
           # Collect vocabulary from processed files
-          FILE_LIST=$(find processed/ -type f -name "${{ env.YEAR }}-${{ env.MONTH }}-*.txt")
+          YEAR=${{ github.event.inputs.year }}
+          MONTH=${{ github.event.inputs.month }}
+          FILE_LIST=$(find processed/ -type f -name "${YEAR}-${MONTH}-*.txt")
           if [ -z "$FILE_LIST" ]; then
-            echo "Error: No processed files found for ${{ env.YEAR }}-${{ env.MONTH }}."
+            echo "Error: No processed files found for ${YEAR}-${MONTH}."
             exit 1
           fi
 
           for FILE in $FILE_LIST; do
             echo "Processing file: $FILE"
-            # Extract vocabulary section
             VOCAB=$(sed -n '/Vocabulary List:/,/^$/p' "$FILE" | grep -v "Vocabulary List:")
             if [ -n "$VOCAB" ]; then
               echo "$VOCAB" >> "$VOCAB_FILE"
@@ -27,12 +50,12 @@
           done
 
           if [ ! -s "$VOCAB_FILE" ]; then
-            echo "No vocabulary found across all files for ${{ env.YEAR }}-${{ env.MONTH }}."
+            echo "No vocabulary found across all files for ${YEAR}-${MONTH}."
             exit 1
           fi
 
           echo "Combined vocabulary file created: $VOCAB_FILE"
-          
+
           # Use OpenAI API for frequency calculation
           VOCABULARY=$(cat "$VOCAB_FILE")
           PAYLOAD=$(jq -n --arg vocab "$VOCABULARY" '{
@@ -63,5 +86,29 @@
             exit 1
           fi
 
-          echo "$VOCAB_SUMMARY" > vocab_summary.txt
+          echo "$VOCAB_SUMMARY" > monthly-summaries/vocab_summary_${YEAR}-${MONTH}.txt
           echo "Vocabulary analysis complete."
+
+      - name: Combine Processed Files
+        id: combine_processed_files
+        run: |
+          # Combine all processed files into a single monthly summary
+          mkdir -p monthly-summaries
+          OUTPUT_FILE="monthly-summaries/${{ github.event.inputs.year }}-${{ github.event.inputs.month }}-summary.txt"
+          echo "Monthly Summary for ${{ github.event.inputs.year }}-${{ github.event.inputs.month }}" > "$OUTPUT_FILE"
+          echo "Vocabulary Frequency Summary:" >> "$OUTPUT_FILE"
+          cat monthly-summaries/vocab_summary_${{ github.event.inputs.year }}-${{ github.event.inputs.month }}.txt >> "$OUTPUT_FILE"
+          echo -e "\n\nCombined Daily Summaries:" >> "$OUTPUT_FILE"
+
+          for FILE in $FILE_LIST; do
+            echo -e "\n--- ${FILE} ---\n" >> "$OUTPUT_FILE"
+            cat "$FILE" >> "$OUTPUT_FILE"
+          done
+
+          echo "Monthly summary created: $OUTPUT_FILE"
+
+      - name: Upload Monthly Summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: Monthly-Summary-${{ github.event.inputs.year }}-${{ github.event.inputs.month }}
+          path: monthly-summaries/${{ github.event.inputs.year }}-${{ github.event.inputs.month }}-summary.txt
