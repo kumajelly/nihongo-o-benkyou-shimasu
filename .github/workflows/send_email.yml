@@ -1,0 +1,53 @@
+name: Send Email with Translation
+on:
+  workflow_dispatch:
+    inputs:
+      subject:
+        description: 'Email Subject'
+        required: true
+      body_file:
+        description: 'Path to the file with email body content'
+        required: true
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Python and Send Email
+        run: |
+          sudo apt-get install -y python3 python3-pip
+          pip3 install yagmail
+          python3 <<EOF
+import yagmail
+import os
+
+# Credentials
+email_user = os.getenv("GMAIL_USERNAME")
+email_password = os.getenv("GMAIL_PASSWORD")
+recipient = "seanthomasward@gmail.com"
+
+# Read email content
+body_file = "${{ github.event.inputs.body_file }}"
+with open(body_file, "r") as file:
+    email_body = file.read()
+
+subject = "${{ github.event.inputs.subject }}"
+
+# Initialize email client
+yag = yagmail.SMTP(email_user, email_password)
+
+# Send email
+yag.send(
+    to=recipient,
+    subject=subject,
+    contents=email_body
+)
+print("Email sent successfully!")
+EOF
+        env:
+          GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
+          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
