@@ -51,13 +51,27 @@ jobs:
           echo "Found files:"
           echo "$FILE_LIST"
 
+      - name: Debug Vocabulary Extraction
+        id: debug_vocab
+        run: |
+          for FILE in $(find processed/ -type f -name "${YEAR}-${MONTH}-*.txt"); do
+            echo "Processing file: $FILE"
+            VOCAB=$(sed -n '/Vocabulary List:/,/^$/p' "$FILE" | grep -v "Vocabulary List:")
+            if [ -n "$VOCAB" ]; then
+              echo "Vocabulary found in $FILE:"
+              echo "$VOCAB"
+            else
+              echo "No vocabulary found in $FILE."
+            fi
+          done
+
       - name: Use OpenAI to Generate Vocabulary Summary
         id: generate_vocab_summary
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           VOCAB_LIST=""
-          for FILE in $FILE_LIST; do
+          for FILE in $(find processed/ -type f -name "${YEAR}-${MONTH}-*.txt"); do
             VOCAB=$(sed -n '/Vocabulary List:/,/^$/p' "$FILE" | grep -v "Vocabulary List:")
             if [ -n "$VOCAB" ]; then
               VOCAB_LIST+="$VOCAB\n"
