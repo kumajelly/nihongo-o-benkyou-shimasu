@@ -102,7 +102,18 @@ jobs:
             cat "$FILE" >> "$OUTPUT_FILE"
           done
 
-      - name: Upload Monthly Summary
+      - name: Commit and Push Monthly Summary to Repo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          git add monthly-summaries/${{ env.YEAR }}-${{ env.MONTH }}-summary.txt
+          git commit -m "Add monthly summary for ${{ env.YEAR }}-${{ env.MONTH }}"
+          git push
+
+      - name: Upload Monthly Summary as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Monthly-Summary-${{ env.YEAR }}-${{ env.MONTH }}
