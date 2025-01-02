@@ -102,42 +102,26 @@ jobs:
           fi
 
           echo "$TRANSLATION" > "$OUTPUT_FILE"
-          echo "$TRANSLATION" > translation_body.txt
-
-          echo "TRANSLATION=$TRANSLATION" >> $GITHUB_ENV
+          echo "$TRANSLATION" >> translation_body.txt
           echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
 
-      - name: Send Email with Python
-        run: |
-          sudo apt-get install -y python3 python3-pip
-          echo "Installing email library..."
-          pip3 install yagmail
-          python3 <<EOF
-import yagmail
-import os
+      - name: Send Processed File via Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_PASSWORD }}
+          subject: "Processed File: ${{ env.INPUT_FILE }}"
+          body: |
+            Hello,
 
-# Credentials
-email_user = os.getenv("GMAIL_USERNAME")
-email_password = os.getenv("GMAIL_PASSWORD")
-recipient = "seanthomasward@gmail.com"
+            The processed summary for the file is as follows:
 
-# Read content
-with open("translation_body.txt", "r") as file:
-    email_body = file.read()
+            $(cat translation_body.txt)
 
-subject = f"Processed File: {os.getenv('INPUT_FILE')}"
-
-# Initialize email client
-yag = yagmail.SMTP(email_user, email_password)
-
-# Send email
-yag.send(
-    to=recipient,
-    subject=subject,
-    contents=email_body
-)
-print("Email sent successfully!")
-EOF
-        env:
-          GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
-          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+            Best regards,
+            GitHub Actions
+          to: seanthomasward@gmail.com
+          from: ${{ secrets.GMAIL_USERNAME }}
+          attachments: ${{ env.OUTPUT_FILE }}
