@@ -46,17 +46,19 @@ jobs:
           mkdir -p temp_summaries
           mkdir -p monthly-summaries
 
+          # Find processed files for the specified month and combine them
           find processed/ -type f -name "${{ env.YEAR }}-${{ env.MONTH }}-*.txt" \
             | sort -r \
             | xargs cat > temp_combined_summaries.txt
 
           if [ ! -s temp_combined_summaries.txt ]; then
-            echo "Error: No daily summaries found for ${{ env.YEAR }}-${{ env.MONTH }}."
+            echo "Error: No processed summaries found for ${{ env.YEAR }}-${{ env.MONTH }}."
             exit 1
           fi
 
       - name: Generate Vocabulary Summary
         run: |
+          # Extract vocabulary from the processed files
           VOCAB_SUMMARY=$(grep -h "Vocabulary List:" processed/${{ env.YEAR }}-${{ env.MONTH }}-*.txt \
             | sed -n '/Vocabulary List:/,/^$/p' \
             | sort \
@@ -76,7 +78,7 @@ jobs:
           echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
 
       - name: Upload Monthly Summary as Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Monthly-Summary-${{ env.YEAR }}-${{ env.MONTH }}
           path: ${{ env.OUTPUT_FILE }}
