@@ -1,0 +1,70 @@
+name: Send Monthly Summary Email
+
+on:
+  workflow_dispatch:
+    inputs:
+      year:
+        description: 'Year (YYYY, optional)'
+        required: false
+        default: ''
+      month:
+        description: 'Month (MM, optional)'
+        required: false
+        default: ''
+  schedule:
+    - cron: "0 1 1 * *" # Runs at 1 AM UTC on the 1st of each month
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Determine Month
+        id: determine_month
+        run: |
+          if [ -z "${{ github.event.inputs.year }}" ] || [ -z "${{ github.event.inputs.month }}" ]; then
+            YEAR=$(date -d 'last month' '+%Y')
+            MONTH=$(date -d 'last month' '+%m')
+          else
+            YEAR=${{ github.event.inputs.year }}
+            MONTH=${{ github.event.inputs.month }}
+          fi
+          echo "YEAR=$YEAR" >> $GITHUB_ENV
+          echo "MONTH=$MONTH" >> $GITHUB_ENV
+          echo "Processing email for $YEAR-$MONTH"
+
+      - name: Read Monthly Summary
+        id: read_summary
+        run: |
+          SUMMARY_FILE="monthly-summaries/${YEAR}-${MONTH}-summary.txt"
+
+          if [ ! -f "$SUMMARY_FILE" ]; then
+            echo "Error: Monthly summary file $SUMMARY_FILE not found."
+            exit 1
+          fi
+
+          TRANSLATION_CONTENT=$(cat "$SUMMARY_FILE")
+          echo "TRANSLATION_CONTENT<<EOF" >> $GITHUB_ENV
+          echo "$TRANSLATION_CONTENT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Send Monthly Summary Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_PASSWORD }}
+          subject: "Monthly Summary for ${{ env.YEAR }}-${{ env.MONTH }}"
+          body: |
+            Hello,
+
+            Please find the monthly summary for ${{ env.YEAR }}-${{ env.MONTH }} below:
+
+            ${{ env.TRANSLATION_CONTENT }}
+
+            Best regards,
+            GitHub Actions
