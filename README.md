@@ -3,7 +3,6 @@
 
 This repository automates the process of improving Japanese language skills through the power of structured, daily learning and spaced repetition. It was created as a way to make learning relevant and engaging while helping to tackle the challenges of language acquisition.
 
-*Daily Summary Email* 
 ![](/images/nihongo-o-benkyou-shimasu-1.png)
 ---
 
