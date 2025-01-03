@@ -1,59 +1,62 @@
 1. **Translation**:
 今日は2025年1月2日の木曜日です。
-
-朝食にヨーグルトとグラノーラを食べました。
-
-昼食にはピザトーストを食べました。
-
-夕食には焼きそばを食べました。
-
+朝ご飯にヨーグルトとグラノーラを食べました。
+昼ご飯にピザトーストを食べました。
+夕飯に焼きそばを食べました。
 明日は2025年1月3日の金曜日です。
 
 2. **Romaji**:
-Kyou wa 2025-nen 1-gatsu 2-nichi no mokuyoubi desu.
-
-Choushoku ni youguruto to guranora wo tabemashita.
-
-Chuushoku ni wa piza toosuto wo tabemashita.
-
-Yuushoku ni wa yakisoba wo tabemashita.
-
-Ashita wa 2025-nen 1-ga2 3-nichi no kinyoubi desu.
+Kyou wa 2025nen ichi gatsu futsuka no mokuyoubi desu.
+Asagohan ni yooguruto to guranoura o tabemashita.
+Hirugohan ni piza toosuto o tabemashita.
+Yuugohan ni yakisoba o tabemashita.
+Ashita wa 2025nen ichi gatsu mikka no kinyoubi desu.
 
 3. **Sentence Breakdown**:
-   - 今日は (Kyou wa): "Today," topic particle.
-   - 2025年1月2日 (2025-nen 1-gatsu 2-nichi): "January 2nd, 2025."
-   - の (no): Possessive particle.
-   - 木曜日です (mokuyoubi desu): "Thursday is," which is the predicate of the sentence.
-
-   - 朝食に (Choushoku ni): "For breakfast," directional particle.
-   - ヨーグルトとグラノーラを (Youguruto to guranora wo): "Yogurt and granola," object particle.
-   - 食べました (tabemashita): Ate, past affirmative form.
-
-   - 昼食には (Chuushoku ni wa): "For lunch," topic and contrastive particle.
-   - ピザトーストを (Piza toosuto wo): "Pizza toast," object particle.
-   - 食べました (tabemashita): Ate, past affirmative form.
-
-   - 夕食には (Yuushoku ni wa): "For dinner," topic and contrastive particle.
-   - 焼きそばを (Yakisoba wo): "Yakisoba," object particle.
-   - 食べました (tabemashita): Ate, past affirmative form.
-
-   - 明日は (Ashita wa): "Tomorrow," topic particle.
-   - 2025年1月3日 (2025-nen 1-ga2 3-nichi): "January 3rd, 2025."
-   - の (no): Possessive particle.
-   - 金曜日です (kinyoubi desu): "Friday is," predicate of the sentence.
+   - 今日は2025年1月2日の木曜日です。(Kyou wa 2025nen ichi gatsu futsuka no mokuyoubi desu.)
+     - 今日 (kyou): "today"
+     - は (wa): topic marking particle
+     - 2025年1月2日 (2025nen ichi gatsu futsuka): "January 2nd, 2025"
+     - の (no): possessive particle
+     - 木曜日 (mokuyoubi): "Thursday"
+     - です (desu): copula (to be)
+   - 朝ご飯にヨーグルトとグラノーラを食べました。(Asagohan ni yooguruto to guranoura o tabemashita.)
+     - 朝ご飯 (asagohan): "breakfast"
+     - に (ni): indicates the time at which an action takes place (for breakfast)
+     - ヨーグルトと (yooguruto to): "yogurt and"
+     - グラノーラを (guranoura o): "granola"
+     - 食べました (tabemashita): past tense of the verb "to eat"
+   - 昼ご飯にピザトーストを食べました。(Hirugohan ni piza toosuto o tabemashita.)
+     - 昼ご飯 (hirugohan): "lunch"
+     - に (ni): indicates the time at which an action takes place (for lunch)
+     - ピザトーストを (piza toosuto o): "pizza toast"
+     - 食べました (tabemashita): past tense of the verb "to eat"
+   - 夕飯に焼きそばを食べました。(Yuugohan ni yakisoba o tabemashita.)
+     - 夕飯 (yuugohan): "dinner"
+     - に (ni): indicates the time at which an action takes place (for dinner)
+     - 焼きそばを (yakisoba o): "yakisoba"
+     - 食べました (tabemashita): past tense of the verb "to eat"
+   - 明日は2025年1月3日の金曜日です。(Ashita wa 2025nen ichi gatsu mikka no kinyoubi desu.)
+     - 明日 (ashita): "tomorrow"
+     - は (wa): topic marking particle
+     - 2025年1月3日 (2025nen ichi gatsu mikka): "January 3rd, 2025"
+     - の (no): possessive particle
+     - 金曜日 (kinyoubi): "Friday"
+     - です (desu): copula (to be)
 
 4. **Vocabulary List**:
-   - 今日 (Kyou): Today (noun).
-   - 朝食 (Choushoku): Breakfast (noun).
-   - ヨーグルト (Youguruto): Yogurt (noun).
-   - グラノーラ (Guranora): Granola (noun).
-   - 昼食 (Chuushoku): Lunch (noun).
-   - ピザトースト (Piza toosuto): Pizza toast (noun).
-   - 夕食 (Yuushoku): Dinner (noun).
-   - 焼きそば (Yakisoba): Yakisoba (noun).
-   - 明日 (Ashita): Tomorrow (noun).
-   - 金曜日 (Kinyoubi): Friday (noun).
+   - 今日 (kyou): today (noun)
+   - 木曜日 (mokuyoubi): Thursday (noun)
+   - 朝ご飯 (asagohan): breakfast (noun)
+   - ヨーグルト (yooguruto): yogurt (noun)
+   - グラノーラ (guranoura): granola (noun)
+   - 食べる (taberu): to eat (verb)
+   - 昼ご飯 (hirugohan): lunch (noun)
+   - ピザトースト (piza toosuto): pizza toast (noun)
+   - 夕飯 (yuugohan): dinner (noun)
+   - 焼きそば (yakisoba): yakisoba (noun)
+   - 明日 (ashita): tomorrow (noun)
+   - 金曜日 (kinyoubi): Friday (noun)
 
 5. **Original English Text**:
 Today is Thursday, January 2nd, 2025.
