@@ -125,6 +125,7 @@ The email-based system ensures:
 
 ## **Future Enhancements**
 
+- AI Text to Speech for translations for (input) listening practice.
 - Expanding vocabulary insights with advanced grammar analysis.
 - Adding support for higher JLPT levels as proficiency improves.
 - Incorporating writing feedback into the summaries to refine grammar and style.
