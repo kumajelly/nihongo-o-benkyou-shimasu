@@ -1,0 +1,67 @@
+1. **Translation**:
+今日は2025年1月2日(木曜日)です。
+朝ごはんに、ヨーグルトとグラノーラを食べました。
+昼ごはんに、ピザトーストを食べました。
+夕食に、焼きそばを食べました。
+明日は2025年1月3日(金曜日)です。
+
+2. **Romaji**:
+Kyō wa 2025-nen 1-gatsu 2-nichi (mokuyōbi) desu.
+Asa gohan ni, yōguruto to guranōra o tabemashita.
+Hiru gohan ni, pizatōsuto o tabemashita.
+Yūshoku ni, yakisoba o tabemashita.
+Ashita wa 2025-nen 1-gatsu 3-nichi (kin'yōbi) desu.
+
+3. **Sentence Breakdown**:
+   - 「今日は2025年1月2日(木曜日)です。」
+     - 「は」: Topic marking particle.
+     - 「今日」: Noun meaning "today."
+     - 「2025年1月2日」: Noun phrase meaning "January 2nd, 2025."
+     - 「(木曜日)」: Additional information in parentheses, indicating the day "Thursday."
+     - 「です」: Copula verb indicating a state of being.
+   
+   - 「朝ごはんに、ヨーグルトとグラノーラを食べました。」
+     - 「に」: Particle indicating time or location.
+     - 「朝ごはん」: Noun meaning "breakfast."
+     - 「ヨーグルト」: Noun meaning "yogurt."
+     - 「と」: Particle indicating a list of items.
+     - 「グラノーラ」: Noun meaning "granola."
+     - 「を」: Direct object particle.
+     - 「食べました」: Verb 食べる (taberu), past tense 食べました (tabemashita), meaning "ate."
+   
+   - 「昼ごはんに、ピザトーストを食べました。」
+     - 「昼ごはん」: Noun meaning "lunch."
+     - 「ピザトースト」: Noun meaning "pizza toast."
+     - 「を」: Direct object particle.
+     - 「食べました」: Verb 食べる (taberu), past tense 食べました (tabemashita), meaning "ate."
+   
+   - 「夕食に、焼きそばを食べました。」
+     - 「夕食」: Noun meaning "dinner."
+     - 「焼きそば」: Noun meaning "yakisoba."
+     - 「を」: Direct object particle.
+     - 「食べました」: Verb 食べる (taberu), past tense 食べました (tabemashita), meaning "ate."
+
+   - 「明日は2025年1月3日(金曜日)です。」
+     - 「明日」: Noun meaning "tomorrow."
+     - 「(金曜日)」: Additional information in parentheses, indicating the day "Friday."
+     - 「です」: Copula verb indicating a state of being.
+   
+4. **Vocabulary List**:
+   - 今日 (きょう) - today (noun)
+   - 朝ごはん (あさごはん) - breakfast (noun)
+   - ヨーグルト - yogurt (noun)
+   - グラノーラ - granola (noun)
+   - 食べる (たべる) - to eat (verb)
+   - 昼ごはん (ひるごはん) - lunch (noun)
+   - ピザトースト - pizza toast (noun)
+   - 夕食 (ゆうしょく) - dinner (noun)
+   - 焼きそば (やきそば) - yakisoba (noun)
+   - 明日 (あした) - tomorrow (noun)
+   - 金曜日 (きんようび) - Friday (noun)
+
+5. **Original English Text**:
+Today is Thursday, January 2nd, 2025.
+For breakfast, I ate yogurt and granola.
+For lunch, I ate pizza toast.
+For dinner, I ate yakisoba.
+Tomorrow is Friday, January 3rd, 2025.
