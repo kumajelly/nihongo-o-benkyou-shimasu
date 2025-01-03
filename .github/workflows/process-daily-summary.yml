@@ -75,7 +75,8 @@ jobs:
                   "     - Particles: Identify and explain their function.\n" +
                   "     - Verbs: Specify the verb, its dictionary form, and its conjugation.\n" +
                   "     - Adjectives: Identify their type (e.g., i-adjective, na-adjective).\n" +
-                  "   - Provide a brief explanation of the grammar used.\n\n" +
+                  "     - Include romaji inline using paratheses (e.g., 今日 (kyou)).\n" +
+                  "     - Provide a brief explanation of the grammar used.\n\n" +
                   "4. **Vocabulary List**: List the key words used in the translation, with:\n" +
                   "   - Their meanings.\n" +
                   "   - Part of speech (e.g., noun, verb, adjective).\n" +
