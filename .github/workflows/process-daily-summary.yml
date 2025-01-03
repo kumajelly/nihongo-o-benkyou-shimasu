@@ -1,4 +1,5 @@
 name: Daily Process Summary
+
 on:
   workflow_dispatch:
     inputs:
@@ -31,16 +32,18 @@ jobs:
             PST_DATE=${{ github.event.inputs.date }}
           fi
           echo "PST_DATE=$PST_DATE" >> $GITHUB_ENV
+          echo "Processing date: $PST_DATE"
 
-      - name: Find File
+      - name: Find Input File
         id: find_file
         run: |
-          INPUT_FILE=$(find daily-summaries/ -type f -name "${PST_DATE}.txt" || true)
-          if [ -z "$INPUT_FILE" ]; then
+          INPUT_FILE="daily-summaries/${PST_DATE}.txt"
+          if [ ! -f "$INPUT_FILE" ]; then
             echo "Error: No input file found for date $PST_DATE."
             exit 1
           fi
           echo "INPUT_FILE=$INPUT_FILE" >> $GITHUB_ENV
+          echo "Input file found: $INPUT_FILE"
 
       - name: Process File with OpenAI API
         id: process_file
@@ -49,12 +52,14 @@ jobs:
         run: |
           INPUT_FILE="${{ env.INPUT_FILE }}"
           OUTPUT_FILE="processed/$(basename "$INPUT_FILE")"
-          CONTENT=$(cat "$INPUT_FILE" || true)
+          CONTENT=$(cat "$INPUT_FILE")
 
           if [ -z "$CONTENT" ]; then
             echo "Error: Input file is empty or unreadable."
             exit 1
           fi
+
+          echo "Sending content to OpenAI API for processing..."
 
           ESCAPED_PROMPT=$(jq -n --arg text "$CONTENT" '{
             model: "gpt-3.5-turbo",
@@ -101,5 +106,16 @@ jobs:
             exit 1
           fi
 
+          echo "Writing translation to: $OUTPUT_FILE"
           echo "$TRANSLATION" > "$OUTPUT_FILE"
+
           echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
+          echo "Processing complete. Translation saved to $OUTPUT_FILE"
+
+      - name: Commit Processed File
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add processed/*
+          git commit -m "Add processed file for ${{ env.PST_DATE }}"
+          git push
