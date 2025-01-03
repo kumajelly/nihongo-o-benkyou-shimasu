@@ -1,0 +1,66 @@
+1. **Translation**:
+今日は2025年1月2日の木曜日です。
+朝ご飯にヨーグルトとグラノーラを食べました。
+昼ご飯にピザトーストを食べました。
+夕飯に焼きそばを食べました。
+明日は2025年1月3日の金曜日です。
+
+2. **Romaji**:
+Kyou wa 2025nen ichi gatsu futsuka no mokuyoubi desu.
+Asagohan ni yooguruto to guranoura o tabemashita.
+Hirugohan ni piza toosuto o tabemashita.
+Yuugohan ni yakisoba o tabemashita.
+Ashita wa 2025nen ichi gatsu mikka no kinyoubi desu.
+
+3. **Sentence Breakdown**:
+   - 今日は2025年1月2日の木曜日です。(Kyou wa 2025nen ichi gatsu futsuka no mokuyoubi desu.)
+     - 今日 (kyou): "today"
+     - は (wa): topic marking particle
+     - 2025年1月2日 (2025nen ichi gatsu futsuka): "January 2nd, 2025"
+     - の (no): possessive particle
+     - 木曜日 (mokuyoubi): "Thursday"
+     - です (desu): copula (to be)
+   - 朝ご飯にヨーグルトとグラノーラを食べました。(Asagohan ni yooguruto to guranoura o tabemashita.)
+     - 朝ご飯 (asagohan): "breakfast"
+     - に (ni): indicates the time at which an action takes place (for breakfast)
+     - ヨーグルトと (yooguruto to): "yogurt and"
+     - グラノーラを (guranoura o): "granola"
+     - 食べました (tabemashita): past tense of the verb "to eat"
+   - 昼ご飯にピザトーストを食べました。(Hirugohan ni piza toosuto o tabemashita.)
+     - 昼ご飯 (hirugohan): "lunch"
+     - に (ni): indicates the time at which an action takes place (for lunch)
+     - ピザトーストを (piza toosuto o): "pizza toast"
+     - 食べました (tabemashita): past tense of the verb "to eat"
+   - 夕飯に焼きそばを食べました。(Yuugohan ni yakisoba o tabemashita.)
+     - 夕飯 (yuugohan): "dinner"
+     - に (ni): indicates the time at which an action takes place (for dinner)
+     - 焼きそばを (yakisoba o): "yakisoba"
+     - 食べました (tabemashita): past tense of the verb "to eat"
+   - 明日は2025年1月3日の金曜日です。(Ashita wa 2025nen ichi gatsu mikka no kinyoubi desu.)
+     - 明日 (ashita): "tomorrow"
+     - は (wa): topic marking particle
+     - 2025年1月3日 (2025nen ichi gatsu mikka): "January 3rd, 2025"
+     - の (no): possessive particle
+     - 金曜日 (kinyoubi): "Friday"
+     - です (desu): copula (to be)
+
+4. **Vocabulary List**:
+   - 今日 (kyou): today (noun)
+   - 木曜日 (mokuyoubi): Thursday (noun)
+   - 朝ご飯 (asagohan): breakfast (noun)
+   - ヨーグルト (yooguruto): yogurt (noun)
+   - グラノーラ (guranoura): granola (noun)
+   - 食べる (taberu): to eat (verb)
+   - 昼ご飯 (hirugohan): lunch (noun)
+   - ピザトースト (piza toosuto): pizza toast (noun)
+   - 夕飯 (yuugohan): dinner (noun)
+   - 焼きそば (yakisoba): yakisoba (noun)
+   - 明日 (ashita): tomorrow (noun)
+   - 金曜日 (kinyoubi): Friday (noun)
+
+5. **Original English Text**:
+Today is Thursday, January 2nd, 2025.
+For breakfast, I ate yogurt and granola.
+For lunch, I ate pizza toast.
+For dinner, I ate yakisoba.
+Tomorrow is Friday, January 3rd, 2025.

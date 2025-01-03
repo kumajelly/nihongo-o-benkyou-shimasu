@@ -67,11 +67,11 @@ jobs:
           server_port: 587
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: "Monthly Summary for ${{ env.YEAR }}-{{ env.MONTH }}"
+          subject: "Monthly Summary for ${{ env.YEAR }}-${{ env.MONTH }}"
           body: |
             Hello,
 
-            The monthly summary for ${{ env.YEAR }}-{{ env.MONTH }} is as follows:
+            The monthly summary for ${{ env.YEAR }}-${{ env.MONTH }} is as follows:
 
             ${{ env.SUMMARY_CONTENT }}
 
