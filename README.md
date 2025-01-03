@@ -84,10 +84,11 @@ To make the system as accessible and efficient as possible, it integrates seamle
      - **iA Writer** (Markdown editor available on all devices).
      - My email inbox for quick and convenient access across work and home computers, or on the go.
 
+*Daily Summary in iA Writer Preview*
 ![*Daily Summary in iA Writer Preview*](/images/nihongo-o-benkyou-shimasu-6.png)
 
+*Monthly Summary in iA Writer Preview*
 ![*Monthly Summary in iA Writer Preview*](/images/nihongo-o-benkyou-shimasu-5.png)
-
 
 ### **Why Email?**
 The email-based system ensures:
