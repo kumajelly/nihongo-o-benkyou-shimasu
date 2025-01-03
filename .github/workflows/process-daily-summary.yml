@@ -73,10 +73,10 @@ jobs:
                   "3. **Sentence Breakdown**:\n" +
                   " - Example breakdown format:\n" +
                   "     今日は2025年1月2日の木曜日です。\n" +
-                  "        - 今日は (Kyou wa): "Today," topic particle.\n" +
-                  "        - 2025年1月2日 (2025-nen 1-gatsu 2-nichi): "January 2nd, 2025."\n" +
-                  "        - の (no): Possessive particle.\n" +
-                  "        - 木曜日です (mokuyoubi desu): "Thursday is," which is the predicate of the sentence.\n" +
+                  "     - 今日は (Kyou wa): "Today," topic particle.\n" +
+                  "     - 2025年1月2日 (2025-nen 1-gatsu 2-nichi): "January 2nd, 2025."\n" +
+                  "     - の (no): Possessive particle.\n" +
+                  "     - 木曜日です (mokuyoubi desu): "Thursday is," which is the predicate of the sentence.\n" +
                   "   - Break down each Japanese sentence into key components, explaining:\n" +
                   "     - Particles: Identify and explain their function.\n" +
                   "     - Verbs: Specify the verb, its dictionary form, and its conjugation.\n" +
