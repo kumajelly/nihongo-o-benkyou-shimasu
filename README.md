@@ -16,7 +16,7 @@ The project was born out of my desire to improve my Japanese, especially to bett
 
 This system combines automation and personalization to streamline the study process and make the journey more effective.
 
-—
+---
 
 ## **How It Was Implemented**
 
