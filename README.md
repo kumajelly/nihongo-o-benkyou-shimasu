@@ -3,6 +3,7 @@
 
 This repository automates the process of improving Japanese language skills through the power of structured, daily learning and spaced repetition. It was created as a way to make learning relevant and engaging while helping to tackle the challenges of language acquisition.
 
+*Daily Summary Email* 
 ![](/images/nihongo-o-benkyou-shimasu-1.png)
 ---
 
@@ -51,6 +52,7 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
      - Vocabulary list with meanings, parts of speech, and example sentences.
      - The original English text for reference.
 
+*Daily Summary Email*
 ![](/images/nihongo-o-benkyou-shimasu-1.png)
 
 2. **Monthly Summaries**:
@@ -59,6 +61,7 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
      - A vocabulary frequency analysis at the top, which highlights the words encountered, their meanings, and their usage frequency.
      - All daily summaries in reverse chronological order.
 
+*Monthly Summary Email*
 ![](/images/nihongo-o-benkyou-shimasu-2.png)
 
 3. **Email Notifications**:
@@ -84,10 +87,10 @@ To make the system as accessible and efficient as possible, it integrates seamle
      - **iA Writer** (Markdown editor available on all devices).
      - My email inbox for quick and convenient access across work and home computers, or on the go.
 
-*Daily Summary in iA Writer Preview*
+*Daily Summary txt in iA Writer Preview*
 ![*Daily Summary in iA Writer Preview*](/images/nihongo-o-benkyou-shimasu-6.png)
 
-*Monthly Summary in iA Writer Preview*
+*Monthly Summary txt in iA Writer Preview*
 ![*Monthly Summary in iA Writer Preview*](/images/nihongo-o-benkyou-shimasu-5.png)
 
 ### **Why Email?**
