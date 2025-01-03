@@ -15,6 +15,28 @@ The project was born out of my desire to improve my Japanese, especially to bett
 
 This system combines automation and personalization to streamline the study process and make the journey more effective.
 
+—
+
+## **How It Was Implemented**
+
+Since I don’t have a coding background beyond HTML and some JavaScript, I used ChatGPT as my coding assistant. I described my goals, limitations, and the technology I could use. ChatGPT helped write the necessary code while I designed the workflow, reviewed outputs, and iterated based on issues or improvements.
+
+This collaboration allowed me to:
+	1.	Understand how the workflows operate.
+	2.	Learn how to read and improve the code.
+	3.	Bring together tools I already use into a cohesive system.
+
+This project serves as a bridge between my Japanese learning goals, meaningful family communication, and technical curiosity.
+
+**Tools and Technologies**
+- **Language:** YAML (GitHub Actions workflows), Bash scripting, JSON (API requests and responses).
+- **APIs:** OpenAI API for translation and study sheet generation.
+- **Automation:** GitHub Actions to manage workflows.
+- **Applications:**
+   - Drafts for quickly writing and saving daily summaries.
+   - Working Copy for pushing files to the GitHub repository.
+   - iA Writer for reviewing study sheets.
+
 ---
 
 ## **How It Works**
