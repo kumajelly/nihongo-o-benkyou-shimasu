@@ -51,11 +51,15 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
      - Vocabulary list with meanings, parts of speech, and example sentences.
      - The original English text for reference.
 
+![](/images/nihongo-o-benkyou-shimasu-1.png)
+
 2. **Monthly Summaries**:
    - At the end of each month, a workflow aggregates all processed daily summaries into a single file stored in the `monthly-summaries` directory.
    - The monthly summary includes:
      - A vocabulary frequency analysis at the top, which highlights the words encountered, their meanings, and their usage frequency.
      - All daily summaries in reverse chronological order.
+
+![](/images/nihongo-o-benkyou-shimasu-2.png)
 
 3. **Email Notifications**:
    - Both daily and monthly summaries can be emailed directly, with the content of the summary included in the body of the email for easy reference and review.
@@ -79,6 +83,11 @@ To make the system as accessible and efficient as possible, it integrates seamle
    - Once the study sheet is created by the OpenAI API, I can read it in:
      - **iA Writer** (Markdown editor available on all devices).
      - My email inbox for quick and convenient access across work and home computers, or on the go.
+
+![*Daily Summary in iA Writer Preview*](/images/nihongo-o-benkyou-shimasu-6.png)
+
+![*Monthly Summary in iA Writer Preview*](/images/nihongo-o-benkyou-shimasu-5.png)
+
 
 ### **Why Email?**
 The email-based system ensures:
