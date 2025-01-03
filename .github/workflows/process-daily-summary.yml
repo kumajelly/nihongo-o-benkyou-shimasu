@@ -71,17 +71,11 @@ jobs:
                   "1. **Translation**: Provide the text translated into Japanese with appropriate kanji, hiragana, and grammar, written as complete sentences with correct punctuation.\n\n" +
                   "2. **Romaji**: Provide the romanized pronunciation of the translated Japanese text, corresponding to the Japanese sentences.\n\n" +
                   "3. **Sentence Breakdown**:\n" +
-                  " - Example breakdown format:\n" +
-                  "     今日は2025年1月2日の木曜日です。\n" +
-                  "     - 今日は (Kyou wa): "Today," topic particle.\n" +
-                  "     - 2025年1月2日 (2025-nen 1-gatsu 2-nichi): "January 2nd, 2025."\n" +
-                  "     - の (no): Possessive particle.\n" +
-                  "     - 木曜日です (mokuyoubi desu): "Thursday is," which is the predicate of the sentence.\n" +
                   "   - Break down each Japanese sentence into key components, explaining:\n" +
                   "     - Particles: Identify and explain their function.\n" +
                   "     - Verbs: Specify the verb, its dictionary form, and its conjugation.\n" +
                   "     - Adjectives: Identify their type (e.g., i-adjective, na-adjective).\n" +
-                  "     - Include romaji inline using paratheses (e.g., 今日 (kyou)).\n" +
+                  "     - Include original sentence in Japanese before breakdown and romaji inline with key components using paratheses (e.g., 今日 (kyou)).\n" +
                   "     - Provide a brief explanation of the grammar used.\n\n" +
                   "4. **Vocabulary List**: List the key words used in the translation, with:\n" +
                   "   - Their meanings.\n" +
