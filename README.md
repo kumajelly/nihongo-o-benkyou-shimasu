@@ -41,6 +41,29 @@ This system combines automation and personalization to streamline the study proc
 
 ---
 
+## **A Seamless Workflow**
+
+To make the system as accessible and efficient as possible, it integrates seamlessly into my daily routines:
+
+1. **Writing Summaries**:
+   - I use **Drafts for iOS** with an action that quickly saves my English daily summaries into the correct `daily-summaries` directory in the repository.
+
+2. **Pushing Summaries**:
+   - Using **Working Copy for iOS**, I push the updates to GitHub.
+
+3. **Receiving Study Sheets**:
+   - Once the study sheet is created by the OpenAI API, I can read it in:
+     - **iA Writer** (Markdown editor available on all devices).
+     - My email inbox for quick and convenient access across work and home computers, or on the go.
+
+### **Why Email?**
+The email-based system ensures:
+- **Accessibility**: I can view the study sheet anywhere, whether on my phone, work PC, or home laptop.
+- **Convenience**: Email is an always-available platform, removing the need to open additional apps or tools.
+- **Cross-Device Sync**: Study sheets are accessible and consistent across all my devices.
+
+---
+
 ## **Goals Achieved**
 
 - **Practical Learning**: By writing about daily life, the project ensures that language learning is tied to real-world scenarios, making it more practical and engaging.
