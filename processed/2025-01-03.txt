@@ -1,0 +1,69 @@
+1. **Translation**:
+   - 朝食に何が欲しいですか？
+   - お茶はもう飲み終えましたか？
+   - 妻を仕事に車で送りました。
+   - Orange Daysのテレビエピソードを見ました。
+
+2. **Romaji**:
+   - Choushoku ni nani ga hoshii desu ka?
+   - Ocha wa mou nomi oemashita ka?
+   - Tsuma o shigoto ni kuruma de okurimashita.
+   - Orange Days no terebi episoodo o mimashita.
+
+3. **Sentence Breakdown**:
+   - 朝食に何が欲しいですか？(Choushoku ni nani ga hoshii desu ka?)
+     - 朝食 (choushoku) - "breakfast"
+     - に (ni) - indicates a specific time or occasion, in this case, "for"
+     - 何 (nani) - "what"
+     - が (ga) - marks the subject of the sentence
+     - 欲しいです (hoshii desu) - desu is a polite way to end a sentence, 欲しい (hoshii) is an i-adjective meaning "wanted"
+     - か (ka) - question marker
+     - This sentence is a polite way of asking "What do you want for breakfast?"
+
+   - お茶はもう飲み終えましたか？(Ocha wa mou nomi oemashita ka?)
+     - お茶 (ocha) - "tea"
+     - は (wa) - topic marker
+     - もう (mou) - "already"
+     - 飲み (nomi) - stem of the verb 飲む (nomu) meaning "to drink"
+     - 終えました (oemashita) - past tense of the verb 終える (oeru) meaning "to finish"
+     - か (ka) - question marker
+     - This sentence asks "Are you done with your tea already?"
+
+   - 妻を仕事に車で送りました。(Tsuma o shigoto ni kuruma de okurimashita.)
+     - 妻 (tsuma) - "wife"
+     - を (o) - marks the direct object
+     - 仕事 (shigoto) - "work"
+     - に (ni) - direction of the action, "to"
+     - 車 (kuruma) - "car"
+     - で (de) - indicates the means by which the action is done, "by"
+     - 送りました (okurimashita) - past tense of the verb 送る (okuru) meaning "to send/bring"
+     - This sentence translates to "I drove my wife to work."
+
+   - Orange Daysのテレビエピソードを見ました。(Orange Days no terebi episoodo o mimashita.)
+     - Orange Days - "Orange Days"
+     - の (no) - shows possession
+     - テレビエピソード (terebi episoodo) - "television episode"
+     - を (o) - marks the direct object
+     - 見ました (mimashita) - past tense of the verb 見る (miru) meaning "to watch/see"
+     - This sentence means "We watched a television episode of Orange Days."
+
+4. **Vocabulary List**:
+   - 朝食 (choushoku) - breakfast (noun)
+   - 欲しい (hoshii) - wanted (i-adjective)
+   - お茶 (ocha) - tea (noun)
+   - 飲む (nomu) - to drink (verb)
+   - 終える (oeru) - to finish (verb)
+   - 妻 (tsuma) - wife (noun)
+   - 仕事 (shigoto) - work (noun)
+   - 車 (kuruma) - car (noun)
+   - 送る (okuru) - to send/bring (verb)
+   - テレビ (terebi) - television (noun)
+   - エピソード (episoodo) - episode (noun)
+   - 見る (miru) - to watch/see (verb)
+   - Orange Days - Orange Days (proper noun)
+
+5. **Original English Text**:
+   - What do you want for breakfast?
+   - Are you done with your tea?
+   - I drove my wife to work.
+   - We watched a television episode of Orange Days.
