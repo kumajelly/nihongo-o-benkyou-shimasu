@@ -1,0 +1,47 @@
+1. **Translation**:
+食べる量は十分だったんですか？
+大丈夫ですか？
+手伝えることは何ですか？
+
+2. **Romaji**:
+Taberu ryou wa juubun dattan desu ka?
+Daijoubu desu ka?
+Tasukaeru koto wa nan desu ka?
+
+3. **Sentence Breakdown**:
+- 食べる量は十分だったんですか？(Taberu ryou wa juubun dattan desu ka?)
+  - 食べる (taberu) - verb, plain positive form
+  - 量 (ryou) - noun meaning "amount"
+  - は (wa) - topic marking particle
+  - 十分だった (juubun datta) - i-adjective "enough" in past tense
+  - んですか (n desu ka) - casual form of explanatory sentence ending particle か
+  - This sentence is asking if the amount eaten was enough.
+
+- 大丈夫ですか？(Daijoubu desu ka?)
+  - 大丈夫 (daijoubu) - noun/adjective meaning "alright, okay"
+  - です (desu) - copula
+  - か (ka) - question marking particle
+  - This sentence is a simple question asking if the person is alright.
+
+- 手伝えることは何ですか？(Tasukaeru koto wa nan desu ka?)
+  - 手伝える (tasukaeru) - potential form of verb "to help"
+  - こと (koto) - nominalizer making the verb "help" into a noun
+  - は (wa) - topic marking particle
+  - 何 (nan) - interrogative pronoun "what"
+  - です (desu) - copula
+  - か (ka) - question marking particle
+  - This sentence inquires about what can be done to help.
+
+4. **Vocabulary List**:
+- 食べる (taberu) - verb, to eat
+- 量 (ryou) - noun, amount
+- 十分 (juubun) - i-adjective, enough
+- 大丈夫 (daijoubu) - noun/adjective, alright, okay
+- 手伝える (tasukaeru) - verb, to help
+- こと (koto) - noun, thing
+- 何 (nan) - pronoun, what
+
+5. **Original English Text**:
+Did you eat enough?
+Are you feeling alright?
+What can I do to help?
