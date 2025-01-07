@@ -1,0 +1,70 @@
+1. **Translation**:
+足をそんな風にかいてはいけません。
+仕事はどうだった？
+いくつかの会議がありました。
+赤ちゃんが生まれるのを待ちきれません。
+わくわくしています。
+
+2. **Romaji**:
+Ashi o sonna fuu ni kaite wa ikemasen.
+Shigoto wa dou datta?
+Ikutsu ka no kaigi ga arimashita.
+Aka-chan ga umareru no o machikiremasen.
+Wakuwaku shite imasu.
+
+3. **Sentence Breakdown**:
+   - 足をそんな風にかいてはいけません。 (Ashi o sonna fuu ni kaite wa ikemasen.)
+     - 足 (ashi) - noun, "leg"
+     - を (o) - particle indicating the direct object
+     - そんな (sonna) - demonstrative pronoun, "that kind of"
+     - 風に (fuu ni) - manner, way
+     - かいて (kaite) - verb: かく (kaku) - to scratch, in te-form
+     - はいけません (wa ikemasen) - negative form of modal verb 行く (iku), "must not"
+     - Translation: "Don’t scratch your leg like that."
+
+   - 仕事はどうだった？(Shigoto wa dou datta?)
+     - 仕事 (shigoto) - noun, "work"
+     - は (wa) - topic marker
+     - どう (dou) - how
+     - だった (datta) - past tense of the copula verb だ (da)
+     - Translation: "How was work?"
+
+   - いくつかの会議がありました。 (Ikutsu ka no kaigi ga arimashita.)
+     - いくつか (ikutsu ka) - a few, several
+     - の (no) - particle indicating possession
+     - 会議 (kaigi) - noun, "meetings"
+     - が (ga) - subject marker
+     - ありました (arimashita) - polite past tense of verb ある (aru), "there were"
+     - Translation: "I had a few meetings."
+
+   - 赤ちゃんが生まれるのを待ちきれません。 (Aka-chan ga umareru no o machikiremasen.)
+     - 赤ちゃん (aka-chan) - noun, "baby"
+     - が (ga) - subject marker
+     - 生まれる (umareru) - potential form of verb 生まれる (umareru), "to be born"
+     - の (no) - particle indicating the preceding phrase is the object of the verb
+     - を (o) - particle indicating the direct object
+     - 待ちきれません (machikiremasen) - negative form of verb 待つ (matsu), "cannot wait"
+     - Translation: "I can’t wait for the baby to be born."
+
+   - わくわくしています。 (Wakuwaku shite imasu.)
+     - わくわく (wakuwaku) - onomatopoeic word, "excited"
+     - しています (shite imasu) - continuous form of verb する (suru), "to do"
+     - Translation: "I am excited."
+
+4. **Vocabulary List**:
+   - 足 (ashi) - noun, "leg"
+   - かく (kaku) - verb, "to scratch"
+   - 仕事 (shigoto) - noun, "work"
+   - いくつか (ikutsu ka) - phrase, "a few/several"
+   - 会議 (kaigi) - noun, "meetings"
+   - 赤ちゃん (aka-chan) - noun, "baby"
+   - 生まれる (umareru) - verb, "to be born"
+   - 待つ (matsu) - verb, "to wait"
+   - わくわく (wakuwaku) - onomatopoeic word, "excited"
+
+5. **Original English Text**:
+Don’t scratch your leg like that.
+How was work?
+I had a few meetings.
+I can’t wait for the baby to be born.
+I am excited.
