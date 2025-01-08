@@ -1,0 +1,45 @@
+1. **Translation**:
+私はラザニアを作りました。
+私はラザニアを作ります。
+水を飲みますか？
+夕食に何がほしいですか？
+
+2. **Romaji**:
+Watashi wa razania o tsukurimashita.
+Watashi wa razania o tsukarimasu.
+Mizu o nomimasu ka?
+Yuushoku ni nani ga hoshii desu ka?
+
+3. **Sentence Breakdown**:
+   - 私はラザニアを作りました。 (Watashi wa razania o tsukurimashita.)
+     - 私は (Watashi wa) - subject marker "I"
+     - ラザニアを (razania o) - direct object marker for "lasagna"
+     - 作りました (tsukurimashita) - verb "to cook" in past tense
+   - 私はラザニアを作ります。 (Watashi wa razania o tsukarimasu.)
+     - 私は (Watashi wa) - subject marker "I"
+     - ラザニアを (razania o) - direct object marker for "lasagna"
+     - 作ります (tsukarimasu) - verb "to cook" in future tense
+   - 水を飲みますか？ (Mizu o nomimasu ka?)
+     - 水を (Mizu o) - direct object marker for "water"
+     - 飲みますか (nomimasu ka?) - verb "to drink" in polite form, with a question marker
+   - 夕食に何がほしいですか？ (Yuushoku ni nani ga hoshii desu ka?)
+     - 夕食に (Yuushoku ni) - in regards to dinner
+     - 何が (nani ga) - what
+     - ほしいですか (hoshii desu ka?) - polite form for "want," with a question marker
+
+4. **Vocabulary List**:
+   - 私 (watashi) - I, me (pronoun)
+   - ラザニア (razania) - lasagna (noun)
+   - 作りました (tsukurimashita) - cooked, past tense of "to cook" (verb)
+   - 作ります (tsukarimasu) - will cook, future tense of "to cook" (verb)
+   - 水 (mizu) - water (noun)
+   - 飲みます (nomimasu) - will drink, polite form of "to drink" (verb)
+   - 夕食 (yuushoku) - dinner (noun)
+   - 何 (nani) - what (pronoun)
+   - ほしい (hoshii) - want (i-adjective)
+
+5. **Original English Text**:
+I cooked lasagna.
+I will cook lasagna.
+Do you want some water?
+What do you want for dinner?
