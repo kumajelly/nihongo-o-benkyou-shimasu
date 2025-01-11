@@ -1,0 +1,54 @@
+Translation:
+1. 私と一緒に働いてくれてありがとう。
+2. Kore wa kire desu ka?
+3. 何時まで働いていますか？
+4. 何時に帰らなければなりませんか？
+
+Romaji:
+1. Watashi to issho ni hataraite kurete arigatou.
+2. Kore wa kire desu ka?
+3. Nanji made hataraite imasu ka?
+4. Nanji ni kaeranakereba narimasen ka?
+
+Sentence Breakdown:
+1. 私と一緒に働いてくれてありがとう。
+   - 私と (Watashi to) - 'with me'
+   - 一緒に (issho ni) - 'together'
+   - 働いている (hataraite iru) - 'working' (te-form of 働く (hataraku) - 'to work' with verb ending いる (iru) indicating continuous action)
+   - ありがとう (arigatou) - 'thank you'
+
+2. これはきれいですか？
+   - これ (kore) - 'this'
+   - は (wa) - topic marker
+   - きれい (kirei) - 'clean'
+   - です (desu) - copula indicating politeness
+   - か (ka) - question marker
+
+3. 何時まで働いていますか？
+   - 何時まで (nanji made) - 'until what time'
+   - 働いています (hataraite imasu) - 'are working' (te-form of 働く (hataraku) - 'to work' with polite form います (imasu) indicating present continuous action)
+   - か (ka) - question marker
+
+4. 何時に帰らなければなりませんか？
+   - 何時に (nanji ni) - 'at what time'
+   - 帰らなければなりません (kaeranakereba narimasen) - 'have to leave' (negative form of 帰る (kaeru) - 'to go back' with conditional form なければ (nakereba) and 'must' なりません (narimasen))
+   - か (ka) - question marker
+
+Vocabulary List:
+- 私と (watashi to) - with me (noun, particle)
+- 一緒に (issho ni) - together (particle)
+- 働いている (hataraite iru) - working (verb phrase)
+- ありがとう (arigatou) - thank you (interjection)
+- これ (kore) - this (pronoun)
+- きれい (kirei) - clean (i-adjective)
+- です (desu) - to be (copula)
+- 何時 (nanji) - what time (noun)
+- まで (made) - until (particle)
+- 働いています (hataraite imasu) - are working (verb phrase)
+- 帰らなければなりません (kaeranakereba narimasen) - have to leave (verb phrase)
+
+Original English Text:
+Thank you for working with me.
+Is this clean?
+How late are you working?
+What time do you have to leave?
