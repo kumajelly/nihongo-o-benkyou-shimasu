@@ -1,0 +1,34 @@
+1. **Translation**:
+スーパーに行きました。
+仕事から迎えに行きます。
+何時に？
+
+2. **Romaji**:
+Suupaa ni ikimashita.
+Shigoto kara mukae ni ikimasu.
+Nanji ni?
+
+3. **Sentence Breakdown**:
+   - **スーパーに行きました。**
+     - **スーパー (suupaa)**: noun - "grocery store"
+     - **に (ni)**: particle indicating direction or destination
+     - **行きました (ikimashita)**: verb - 行く (iku) in past polite form
+   - **仕事から迎えに行きます。**
+     - **仕事 (shigoto)**: noun - "work"
+     - **から (kara)**: particle indicating starting point
+     - **迎えに行きます (mukae ni ikimasu)**: verb - 迎える (mukae) in non-past polite form + 行く (iku) in non-past polite form
+   - **何時に？**
+     - **何時 (nanji)**: question word - "what time"
+     - **に (ni)**: particle indicating time
+
+4. **Vocabulary List**:
+   - スーパー (suupaa): noun - grocery store
+   - 行く (iku): verb - to go
+   - 仕事 (shigoto): noun - work
+   - 迎える (mukae): verb - to pick up
+   - 何時 (nanji): question word - what time
+
+5. **Original English Text**:
+I went to the grocery store.
+I will pick you up from work.
+At what time?
