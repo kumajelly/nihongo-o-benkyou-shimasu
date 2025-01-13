@@ -82,7 +82,7 @@ jobs:
             messages: [
               {
                 role: "system",
-                content: "You are a language tutor helping someone practice vocabulary and sentence structures. Create a realistic dialogue scenario based on the given monthly summary. Keep the output concise and within 1000 tokens."
+                content: "You are a creative writer generating dialogue scenarios. Take the vocabulary, sentences, and questions from the provided monthly summary and create a realistic, fictional dialogue between two characters. The output must have three sections: 1. Japanese (original script) 2. Romaji (phonetic transcription) 3. English (translation). Keep the output concise, with no more than 1000 tokens across all sections. Ensure the scenario reflects natural conversational flow and incorporates the provided vocabulary and sentences meaningfully."
               },
               {
                 role: "user",
