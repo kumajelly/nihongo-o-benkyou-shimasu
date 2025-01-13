@@ -1,26 +1,73 @@
-Japanese (original script):
+Japanese:
 
-A: 「おはようございます、紗倉さん。朝食に何が欲しいですか？」
-B: 「おはようございます、園田君。フルーツヨーグルトが食べたいです。」
-A: 「了解しました。あと、お茶はもう飲み終えましたか？」
-B: 「そうです、それともコーヒーかもしれません...あ、時間ですね。今日も妻を仕事に車で送ります。」
-A: 「ああ、理解しました。それにしても、昨晩のOrange Daysの新しいエピソードは見ましたか？」
-B: 「ええ、それは楽しかった！でも、今、仕事に集中しなければ。いい一日を。」
+美和：「さとる、朝食に何が欲しい？」
 
-Romaji (phonetic transcription):
+佐藤：「美和、ありがとう。グラノーラとヨーグルトがいいな。」
 
-A: "Ohayou gozaimasu, Sakurasan. Choushoku ni nani ga hoshii desu ka?"
-B: "Ohayou gozaimasu, Sonoda-kun. Furuutsu yooguruto ga tabetai desu."
-A: "Ryoukai shimashita. Ato, ocha wa mou nomi oemashita ka?"
-B: "Sou desu, soredemo koohii kamoshiremasen...a, jikan desu ne. Kyou mo tsuma o shigoto ni kuruma de okurimasu."
-A: "Aa, rikai shimashita. Soreni shitemo, sakuban no Orange Days no atarashii episoodo wa mimashita ka?"
-B: "Ee, sore wa tanoshikattam desu! Demo, ima, shigoto ni shuuchuu shinakereba. Ii ichinichi o."
+美和：「了解。それならキッチンにあるわよ。」
 
-English (translation):
+佐藤：「本当に助かるよ。それに、これはきれいだね。」
 
-A: "Good morning, Sakura-san. What would you like for breakfast?"
-B: "Good morning, Sonoda-kun. I would like to have fruit yogurt."
-A: "Understood. Also, have you already finished your tea?"
-B: "Yes, or I might have coffee as well... Ah, it's time. I have to drive my wife to work today as well."
-A: "Ah, I see. By the way, did you watch the new episode of Orange Days last night?"
-B: "Yes, it was fun! But now, I have to focus on work. Have a good day."
+美和：「ありがとう。さとる、仕事は何時まで？」
+
+佐藤：「今日は6時までたぶん。」
+
+美和：「なら、6時半にピザトーストを用意するね、夕飯はどう？」
+
+佐藤：「そうだね・・・焼きそばはどう？」
+
+美和：「いいよ。それじゃ、何時に帰らなければならないの？」
+
+佐藤：「夜遅くには帰るよ。」
+
+美和：「わかった。仕事が早く終わるといいね。」
+
+---
+Romaji:
+
+Miwa: "Satoru, choushoku ni nani ga hoshii?"
+
+Satoru: "Miwa, arigatou. Guranoura to yooguruto ga ii na."
+
+Miwa: "Ryoukai. Sore nara kitchen ni aru wa yo."
+
+Satoru: "Hontou ni tasukaru yo. Sore ni, kore wa kirei da ne."
+
+Miwa: "Arigatou. Satoru, shigoto wa nanji made?"
+
+Satoru: "Kyou wa roku-ji made tabun."
+
+Miwa: "Nara, roku-ji han ni piza toosuto o youi suru ne, yuushoku wa dou?"
+
+Satoru: "Sou da ne.... Yakisoba wa dou?"
+
+Miwa: "Ii yo. Sore ja, nanji ni kaeranakereba narimasen ka?"
+
+Satoru: "Yoru osoku ni wa kaeru yo."
+
+Miwa: "Wakatta. Shigoto ga hayaku owaru to ii ne."
+
+---
+English:
+
+Miwa: "Satoru, what do you want for breakfast?"
+
+Satoru: "Miwa, thank you. I'll have granola and yogurt."
+
+Miwa: "Alright, that's in the kitchen."
+
+Satoru: "Truly a lifesaver. Besides, this is really clean."
+
+Miwa: "Thank you. Satoru, what time do you work until?"
+
+Satoru: "Probably until six today."
+
+Miwa: "Then, I'll get the pizza toast ready by six-thirty, how about dinner?"
+
+Satoru: "Hmm... How about yakisoba?"
+
+Miwa: "Good. Now, what time do you need to come home?"
+
+Satoru: "I'll get back late at night."
+
+Miwa: "Got it. Hope your work finishes early."
