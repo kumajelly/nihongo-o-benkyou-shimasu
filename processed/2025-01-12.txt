@@ -1,0 +1,51 @@
+1. **Translation**:
+洗濯機を修理しなければなりません。
+息子に見せなければなりません。
+私の携帯電話はどこですか？
+晩ご飯は何がいいですか？
+
+2. **Romaji**:
+Sentakuki o shuuri shinakereba narimasen.
+Musuko ni misenakereba narimasen.
+Watashi no keitai denwa wa doko desu ka?
+Bangohan wa nani ga ii desu ka?
+
+3. **Sentence Breakdown**:
+   - 洗濯機を修理しなければなりません。(Sentakuki o shuuri shinakereba narimasen.)
+     - 洗濯機 (sentakuki) - noun meaning "washing machine."
+     - を (o) - indicates the object of the verb.
+     - 修理する (shuuri suru) - verb meaning "to repair," in its "must do" form しなければなりません (shinakereba narimasen), which expresses necessity.
+   - 息子に見せなければなりません。(Musuko ni misenakereba narimasen.)
+     - 息子 (musuko) - noun meaning "son."
+     - に (ni) - indicates the target of the action.
+     - 見せる (miseru) - verb meaning "to show," in its "must do" form 見せなければなりません (misenakereba narimasen), which expresses necessity.
+   - 私の携帯電話はどこですか？(Watashi no keitai denwa wa doko desu ka?)
+     - 私の (watashi no) - possessive pronoun "my."
+     - 携帯電話 (keitai denwa) - noun meaning "cell phone."
+     - は (wa) - topic marking particle.
+     - どこ (doko) - adverb meaning "where."
+     - ですか (desu ka) - question ending particle.
+   - 晩ご飯は何がいいですか？(Bangohan wa nani ga ii desu ka?)
+     - 晩ご飯 (bangohan) - noun meaning "dinner."
+     - は (wa) - topic marking particle.
+     - 何 (nani) - interrogative pronoun "what."
+     - が (ga) - subject marking particle.
+     - いい (ii) - i-adjective meaning "good."
+     - ですか (desu ka) - question ending particle.
+
+4. **Vocabulary List**:
+   - 洗濯機 (sentakuki) - washing machine (noun)
+   - 修理する (shuuri suru) - to repair (verb)
+   - 息子 (musuko) - son (noun)
+   - 見せる (miseru) - to show (verb)
+   - 携帯電話 (keitai denwa) - cell phone (noun)
+   - どこ (doko) - where (adverb)
+   - 晩ご飯 (bangohan) - dinner (noun)
+   - 何 (nani) - what (interrogative pronoun)
+   - いい (ii) - good (i-adjective)
+
+5. **Original English Text**:
+I have to repair the laundry machine. 
+I have to show my son. 
+Where is my cell phone?
+What would you like for dinner?
