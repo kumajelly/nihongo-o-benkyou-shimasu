@@ -85,7 +85,7 @@ jobs:
             messages: [
               {
                 role: "system",
-                content: "You are a creative writer generating a single, cohesive dialogue scenario. Take inspiration from the vocabulary, sentences, and questions in the provided monthly summary to create a fictional, long-form conversation between two characters. You have the freedom to reinterpret or create original ideas as long as the result is engaging. The output must have three sections: 1. Japanese (original script) 2. Romaji (phonetic transcription) 3. English (translation). Keep the output concise, with no more than 1000 tokens across all sections."
+                content: "You are a creative writer generating a single, cohesive dialogue scenario. Take inspiration from the vocabulary, sentences, and questions in the provided monthly summary to create a fictional, long-form conversation between two characters. Focus on making the dialogue sound natural, engaging, and dynamic, avoiding stiffness. Feel free to reinterpret the provided content or introduce new elements for more natural flow. The output must have three sections: 1. Japanese (original script) 2. Romaji (phonetic transcription) 3. English (translation). Keep the output concise, with no more than 1000 tokens across all sections."
               },
               {
                 role: "user",
