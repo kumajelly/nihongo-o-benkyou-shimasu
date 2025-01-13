@@ -61,9 +61,12 @@ jobs:
           # Estimate token count using character approximation
           TOKEN_COUNT=$(echo "$SUMMARY" | wc -m) # Character count
           TOKEN_ESTIMATE=$((TOKEN_COUNT / 4))    # Approximate tokens (1 token ≈ 4 characters)
-          MAX_INPUT_TOKENS=6192                 # Reserve 2000 tokens for the response
+          SYSTEM_MESSAGE_TOKENS=100             # Estimated token size for the system prompt
+          MAX_COMPLETION_TOKENS=1000            # Limit output to 1000 tokens
+          MAX_INPUT_TOKENS=$((8192 - SYSTEM_MESSAGE_TOKENS - MAX_COMPLETION_TOKENS))
 
           echo "Estimated Token Count: $TOKEN_ESTIMATE"
+          echo "Maximum Allowed Input Tokens: $MAX_INPUT_TOKENS"
 
           # Truncate if token estimate exceeds limit
           if [ "$TOKEN_ESTIMATE" -gt "$MAX_INPUT_TOKENS" ]; then
@@ -79,14 +82,14 @@ jobs:
             messages: [
               {
                 role: "system",
-                content: "You are a language tutor helping someone practice vocabulary and sentence structures. Create a realistic dialogue scenario based on the given monthly summary."
+                content: "You are a language tutor helping someone practice vocabulary and sentence structures. Create a realistic dialogue scenario based on the given monthly summary. Keep the output concise and within 1000 tokens."
               },
               {
                 role: "user",
                 content: $summary
               }
             ],
-            max_tokens: 2000
+            max_tokens: 1000
           }')
 
           # Debug: Log payload
