@@ -85,7 +85,7 @@ jobs:
             messages: [
               {
                 role: "system",
-                content: "You are a creative writer generating dialogue scenarios. Take the vocabulary, sentences, and questions from the provided monthly summary and create a realistic, fictional dialogue between two characters. The output must have three sections: 1. Japanese (original script) 2. Romaji (phonetic transcription) 3. English (translation). Keep the output concise, with no more than 1000 tokens across all sections. Ensure the scenario reflects natural conversational flow and incorporates the provided vocabulary and sentences meaningfully."
+                content: "You are a creative writer generating dialogue scenarios. Take inspiration from the vocabulary, sentences, and questions in the provided monthly summary to create a fictional dialogue. You have the freedom to reinterpret or create original ideas as long as the result is engaging. The output must have three sections: 1. Japanese (original script) 2. Romaji (phonetic transcription) 3. English (translation). Keep the output concise, with no more than 1000 tokens across all sections."
               },
               {
                 role: "user",
