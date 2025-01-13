@@ -58,6 +58,10 @@ jobs:
         run: |
           SUMMARY=$(cat "$INPUT_FILE")
 
+          # Debug: Log the summary
+          echo "Summary Content:"
+          echo "$SUMMARY"
+
           PAYLOAD=$(jq -n --arg summary "$SUMMARY" '{
             model: "gpt-4",
             messages: [
@@ -73,10 +77,18 @@ jobs:
             max_tokens: 2000
           }')
 
+          # Debug: Log the payload
+          echo "Payload to OpenAI API:"
+          echo "$PAYLOAD"
+
           RESPONSE=$(echo "$PAYLOAD" | curl -s https://api.openai.com/v1/chat/completions \
             -H "Authorization: Bearer $OPENAI_API_KEY" \
             -H "Content-Type: application/json" \
             -d @-)
+
+          # Debug: Log the raw response
+          echo "API Response:"
+          echo "$RESPONSE"
 
           SCENARIO=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to process scenario."')
 
