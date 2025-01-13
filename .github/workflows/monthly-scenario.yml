@@ -1,65 +1,136 @@
-- name: Generate Scenario Using OpenAI API
-  id: generate_scenario
-  env:
-    OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-  run: |
-    SUMMARY=$(cat "$INPUT_FILE")
+name: Monthly Scenario Creation
 
-    # Estimate token count using character approximation
-    TOKEN_COUNT=$(echo "$SUMMARY" | wc -m) # Character count
-    TOKEN_ESTIMATE=$((TOKEN_COUNT / 4))    # Approximate tokens (1 token ≈ 4 characters)
-    SYSTEM_MESSAGE_TOKENS=100             # Estimated token size for the system prompt
-    MAX_COMPLETION_TOKENS=1000            # Limit output to 1000 tokens
-    MAX_INPUT_TOKENS=$((8192 - SYSTEM_MESSAGE_TOKENS - MAX_COMPLETION_TOKENS))
+on:
+  workflow_dispatch:
+    inputs:
+      year:
+        description: 'Year for the scenario (YYYY)'
+        required: false
+        default: ''
+      month:
+        description: 'Month for the scenario (MM)'
+        required: false
+        default: ''
+  schedule:
+    - cron: "0 3 1 * *" # Runs monthly on the 1st at 3:00 AM UTC
 
-    echo "Estimated Token Count: $TOKEN_ESTIMATE"
-    echo "Maximum Allowed Input Tokens: $MAX_INPUT_TOKENS"
+jobs:
+  create-scenario:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-    # Truncate if token estimate exceeds limit
-    if [ "$TOKEN_ESTIMATE" -gt "$MAX_INPUT_TOKENS" ]; then
-      echo "Input exceeds token limit. Truncating..."
-      MAX_CHARACTERS=$((MAX_INPUT_TOKENS * 4))  # Approximate max characters
-      SUMMARY=$(echo "$SUMMARY" | head -c "$MAX_CHARACTERS")
-      echo "Input truncated to $MAX_CHARACTERS characters."
-    fi
+      - name: Determine Year and Month
+        id: determine_date
+        run: |
+          YEAR=${{ github.event.inputs.year }}
+          MONTH=${{ github.event.inputs.month }}
 
-    # Create output directory if it doesn't exist
-    mkdir -p $(dirname "$OUTPUT_FILE")
+          if [ -z "$YEAR" ] || [ -z "$MONTH" ]; then
+            LAST_MONTH_DATE=$(date -d "last month" "+%Y-%m")
+            YEAR=${YEAR:-${LAST_MONTH_DATE%-*}}
+            MONTH=${MONTH:-${LAST_MONTH_DATE#*-}}
+          fi
 
-    # Create API payload
-    PAYLOAD=$(jq -n --arg summary "$SUMMARY" '{
-      model: "gpt-4",
-      messages: [
-        {
-          role: "system",
-          content: "You are a creative writer generating dialogue scenarios. Take the vocabulary, sentences, and questions from the provided monthly summary and create a realistic, fictional dialogue between two characters. The output must have three sections: 1. Japanese (original script) 2. Romaji (phonetic transcription) 3. English (translation). Keep the output concise, with no more than 1000 tokens across all sections. Ensure the scenario reflects natural conversational flow and incorporates the provided vocabulary and sentences meaningfully."
-        },
-        {
-          role: "user",
-          content: $summary
-        }
-      ],
-      max_tokens: 1000
-    }')
+          echo "YEAR=$YEAR" >> $GITHUB_ENV
+          echo "MONTH=$MONTH" >> $GITHUB_ENV
+          echo "Determined year and month: $YEAR-$MONTH"
 
-    # Debug: Log payload
-    echo "Payload to OpenAI API:"
-    echo "$PAYLOAD"
+      - name: Set Input and Output Paths
+        run: |
+          INPUT_FILE="monthly-summaries/${{ env.YEAR }}-${{ env.MONTH }}-summary.txt"
+          OUTPUT_FILE="monthly-scenario/${{ env.YEAR }}-${{ env.MONTH }}-scenario.txt"
+          echo "INPUT_FILE=$INPUT_FILE" >> $GITHUB_ENV
+          echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
 
-    RESPONSE=$(echo "$PAYLOAD" | curl -s https://api.openai.com/v1/chat/completions \
-      -H "Authorization: Bearer $OPENAI_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d @-)
+      - name: Check for Monthly Summary
+        run: |
+          if [ ! -f "$INPUT_FILE" ]; then
+            echo "Error: Monthly summary file $INPUT_FILE does not exist."
+            exit 1
+          fi
 
-    # Debug: Log the API response
-    echo "API Response:"
-    echo "$RESPONSE"
+      - name: Generate Scenario Using OpenAI API
+        id: generate_scenario
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          SUMMARY=$(cat "$INPUT_FILE")
 
-    SCENARIO=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to process scenario."')
+          # Estimate token count using character approximation
+          TOKEN_COUNT=$(echo "$SUMMARY" | wc -m) # Character count
+          TOKEN_ESTIMATE=$((TOKEN_COUNT / 4))    # Approximate tokens (1 token ≈ 4 characters)
+          SYSTEM_MESSAGE_TOKENS=100             # Estimated token size for the system prompt
+          MAX_COMPLETION_TOKENS=1000            # Limit output to 1000 tokens
+          MAX_INPUT_TOKENS=$((8192 - SYSTEM_MESSAGE_TOKENS - MAX_COMPLETION_TOKENS))
 
-    if [[ "$SCENARIO" == Error* ]]; then
-      echo "Error during scenario generation: $SCENARIO"
-      exit 1
-    fi
+          echo "Estimated Token Count: $TOKEN_ESTIMATE"
+          echo "Maximum Allowed Input Tokens: $MAX_INPUT_TOKENS"
 
-    echo -e "$SCENARIO" > "$OUTPUT_FILE"
+          # Truncate if token estimate exceeds limit
+          if [ "$TOKEN_ESTIMATE" -gt "$MAX_INPUT_TOKENS" ]; then
+            echo "Input exceeds token limit. Truncating..."
+            MAX_CHARACTERS=$((MAX_INPUT_TOKENS * 4))  # Approximate max characters
+            SUMMARY=$(echo "$SUMMARY" | head -c "$MAX_CHARACTERS")
+            echo "Input truncated to $MAX_CHARACTERS characters."
+          fi
+
+          # Create output directory if it doesn't exist
+          mkdir -p $(dirname "$OUTPUT_FILE")
+
+          # Create API payload
+          PAYLOAD=$(jq -n --arg summary "$SUMMARY" '{
+            model: "gpt-4",
+            messages: [
+              {
+                role: "system",
+                content: "You are a creative writer generating dialogue scenarios. Take the vocabulary, sentences, and questions from the provided monthly summary and create a realistic, fictional dialogue between two characters. The output must have three sections: 1. Japanese (original script) 2. Romaji (phonetic transcription) 3. English (translation). Keep the output concise, with no more than 1000 tokens across all sections. Ensure the scenario reflects natural conversational flow and incorporates the provided vocabulary and sentences meaningfully."
+              },
+              {
+                role: "user",
+                content: $summary
+              }
+            ],
+            max_tokens: 1000
+          }')
+
+          # Debug: Log payload
+          echo "Payload to OpenAI API:"
+          echo "$PAYLOAD"
+
+          RESPONSE=$(echo "$PAYLOAD" | curl -s https://api.openai.com/v1/chat/completions \
+            -H "Authorization: Bearer $OPENAI_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d @-)
+
+          # Debug: Log the API response
+          echo "API Response:"
+          echo "$RESPONSE"
+
+          SCENARIO=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to process scenario."')
+
+          if [[ "$SCENARIO" == Error* ]]; then
+            echo "Error during scenario generation: $SCENARIO"
+            exit 1
+          fi
+
+          echo -e "$SCENARIO" > "$OUTPUT_FILE"
+
+      - name: Commit and Push Scenario to Repo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          mkdir -p $(dirname "$OUTPUT_FILE")
+          git add "$OUTPUT_FILE"
+          git commit -m "Add monthly scenario for ${{ env.YEAR }}-${{ env.MONTH }}"
+          git push
+
+      - name: Upload Scenario as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Monthly-Scenario-${{ env.YEAR }}-${{ env.MONTH }}
+          path: ${{ env.OUTPUT_FILE }}
