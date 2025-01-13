@@ -1,41 +1,63 @@
-Japanese (original script):
+### Dialogue 1: At the Office
 
-A: おはよう、元気ですか？
-B: おはよう、私は元気です。ちょっと寒いけど、天気は晴れています。
-A: 朝食に何が欲しいですか？
-B: ヨーグルトとグラノーラを食べます。お茶を飲みますか？
-A: はい、お茶が欲しいです。スーパーに行きます。何か欲しいものがありますか？
-B: ラザニアの材料を買ってきてもらえますか？今夜ラザニアを作ります。
-A: 分かりました。私も手伝えますか？
-B: ありがとう、一緒に料理を作るのが楽しみです。でもさっき足をかいてしまって、ちょっと痒いです。
-A: 足をそんな風にかいてはいけません。大丈夫ですか？
-B: はい、大丈夫です。でもさてはて、この皿はきれいですか？
-A: ああ、これはきれいです。実は、私が昨日洗いました。
+1. Japanese (original script):
 
-Romaji (phonetic transcription):
+   A: "私と一緒に働いてくれてありがとう。"
+   
+   B: "いえいえ、こちらこそ。"
+   
+   A: "何時まで働いていますか？"
+   
+   B: "７時頃までです。"
 
-A: Ohayou, genki desu ka?
-B: Ohayou, watashi wa genki desu. Chotto samui kedo, tenki wa hareteimasu.
-A: Choushoku ni nani ga hoshii desu ka?
-B: Yooguruto to guranoura o tabemasu. Ocha o nomimasu ka?
-A: Hai, ocha ga hoshii desu. Suupaa ni ikimasu. Nanika hoshii mono ga arimasu ka?
-B: Razania no zairyou o katte kite moraemasu ka? Konya razania o tsukurimasu.
-A: Wakarimashita. Watashi mo tasukaemasu ka?
-B: Arigatou, issho ni ryouri o tsukuru no ga tanoshimi desu. Demo sakki ashi o kaite shimatte, chotto kayui desu.
-A: Ashi o sonna fuu ni kaite wa ikemasen. Daijoubu desu ka?
-B: Hai, daijoubu desu. Demo sate wa te, kono sara wa kirei desu ka?
-A: Ah, kore wa kirei desu. Jitsu wa, watashi ga kinou araimashita.
+2. Romaji (phonetic transcription):
 
-English (translation):
+   A: "Watashi to issho ni hataraite kurete arigatou."
+   
+   B: "Ie ie, kochira koso."
+   
+   A: "Nanji made hataraite imasu ka?"
+   
+   B: "Shichi-ji goro made desu."
 
-A: Good morning, how are you?
-B: Good morning, I’m fine. It's a bit chilly but the weather is sunny.
-A: What would you like for breakfast?
-B: I will eat yogurt and granola. Will you have tea?
-A: Yes, I want tea. I will go to the grocery store. Is there anything you want?
-B: Could you buy ingredients for lasagna? I’m planning to cook lasagna tonight.
-A: Understood. Can I also help?
-B: Thank you, I’m looking forward to cooking together. But I just scratched my leg, and it's a bit itchy.
-A: You shouldn’t scratch your leg like that. Are you okay?
-B: Yes, I’m fine. But anyway, is this plate clean?
-A: Ah, this is clean. Actually, I washed it yesterday.
+3. English (translation):
+
+   A: "Thank you for working with me."
+   
+   B: "No, thank you."
+   
+   A: "Until what time do you work?"
+   
+   B: "Until around 7 o'clock."
+
+### Dialogue 2: Inside a House
+
+1. Japanese (original script):
+
+   A: "これはきれいですか？"
+   
+   B: "そうですね、キッチンカウンターはすっかりきれいになりました。"
+
+   A: "何時に帰らなければなりませんか？"
+   
+   B: "今夜はいつでも帰れますよ。遅くなる必要はありません。"
+
+2. Romaji (phonetic transcription):
+   
+   A: "Kore wa kirei desu ka?"
+   
+   B: "Sou desu ne, kitchen kauntaa wa sukkari kirei ni narimashita."
+   
+   A: "Nanji ni kaeranakereba narimasen ka?"
+   
+   B: "Konya wa itsu demo kaeremasu yo. Osoku naru hitsuyou wa arimasen."
+
+3. English (translation):
+
+   A: "Is this clean?"
+   
+   B: "Well, the kitchen counter is completely clean now."
+   
+   A: "What time do I have to leave?"
+   
+   B: "You can leave anytime you want tonight. There's no need to stay late."
