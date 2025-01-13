@@ -1,63 +1,41 @@
-### Dialogue 1: At the Office
+**Japanese Dialogue**:
 
-1. Japanese (original script):
+田中：おはようございます、山本さん。
+山本：田中さん、 おはようございます。朝は何を飲みますか？
+田中：一杯のお茶がいいです。あなたは？
+山本：私も一緒です。その後、足をそんな風にかいてはいけません。
+田中：ああ、分かりました。あの、今日はライニアを作る予定です。
+山本：それは素晴らしいですね！私はラザニアが大好きです。
+田中：それなら一緒に食べませんか？
+山本：ありがとう、田中さん。しかし何時まで働いていますか？
+田中：私は6時までに働きます。それから、ラザニアを作り始めます。
+山本：そうですか。では、何時に帰らなければなりませんか？
+田中：私の家は9時までオープンです！それ以降であれば、いつでも結構です。
 
-   A: "私と一緒に働いてくれてありがとう。"
-   
-   B: "いえいえ、こちらこそ。"
-   
-   A: "何時まで働いていますか？"
-   
-   B: "７時頃までです。"
+**Romaji Transliteration**:
 
-2. Romaji (phonetic transcription):
+Tanaka: Ohayou gozaimasu, Yamamoto-san.
+Yamamoto: Tanaka-san, ohayou gozaimasu. Asa wa nani o nomimasu ka?
+Tanaka: Ippai no ocha ga ii desu. Anata wa?
+Yamamoto: Watashi mo issho desu. Sonogo, ashi so sonna fuu ni kaite wa ikemasen.
+Tanaka: Aa, wakarimashita. Ano, kyou wa razania o tsukuru yotei desu.
+Yamamoto: Sore wa subarashii desu ne! Watashi wa razania ga daisuki desu.
+Tanaka: Sore nara issho ni tabemasen ka?
+Yamamoto: Arigatou, Tanaka-san. Shikashi nanji made hataraite imasu ka?
+Tanaka: Watashi wa rokuji made ni hatarakimasu. Sorekara, razania o tsukuri hajimemasu.
+Yamamoto: Sou desu ka. Dewa, nanji ni kaeranakereba narimasen ka?
+Tanaka: Watashi no ie wa kuji made oopun desu! Sore ikou de areba, itsu demo kekkon desu.
 
-   A: "Watashi to issho ni hataraite kurete arigatou."
-   
-   B: "Ie ie, kochira koso."
-   
-   A: "Nanji made hataraite imasu ka?"
-   
-   B: "Shichi-ji goro made desu."
+**English Translation**:
 
-3. English (translation):
-
-   A: "Thank you for working with me."
-   
-   B: "No, thank you."
-   
-   A: "Until what time do you work?"
-   
-   B: "Until around 7 o'clock."
-
-### Dialogue 2: Inside a House
-
-1. Japanese (original script):
-
-   A: "これはきれいですか？"
-   
-   B: "そうですね、キッチンカウンターはすっかりきれいになりました。"
-
-   A: "何時に帰らなければなりませんか？"
-   
-   B: "今夜はいつでも帰れますよ。遅くなる必要はありません。"
-
-2. Romaji (phonetic transcription):
-   
-   A: "Kore wa kirei desu ka?"
-   
-   B: "Sou desu ne, kitchen kauntaa wa sukkari kirei ni narimashita."
-   
-   A: "Nanji ni kaeranakereba narimasen ka?"
-   
-   B: "Konya wa itsu demo kaeremasu yo. Osoku naru hitsuyou wa arimasen."
-
-3. English (translation):
-
-   A: "Is this clean?"
-   
-   B: "Well, the kitchen counter is completely clean now."
-   
-   A: "What time do I have to leave?"
-   
-   B: "You can leave anytime you want tonight. There's no need to stay late."
+Tanaka: Good morning, Yamamoto.
+Yamamoto: Good morning, Tanaka. What do you drink in the morning?
+Tanaka: One cup of tea would be good. How about you?
+Yamamoto: I'm the same. Also, don't scratch your leg like that.
+Tanaka: Ah, understood. By the way, I plan to cook lasagna today.
+Yamamoto: That sounds great! I love lasagna.
+Tanaka: In that case, would you like to eat together?
+Yamamoto: Thank you, Tanaka. However, until what time are you working?
+Tanaka: I will work until 6 o'clock. After that, I'll start cooking the lasagna.
+Yamamoto: I see. Then, what time must I leave?
+Tanaka: My house is open until 9 o'clock! Afterwards, any time is fine.
