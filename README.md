@@ -42,7 +42,7 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
 
 ## **How It Works**
 
-**Daily Summaries**:
+1. **Daily Summaries**:
 - Each day, a summary of daily activities is written in English and stored in the `daily-summaries` directory.
 - A scheduled GitHub Action processes the summary, translating it into Japanese (JLPT N5 level) with detailed annotations, including:
 	 - Translation in Japanese (with kanji, hiragana, and grammar).
@@ -54,7 +54,7 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
 *Daily Summary Email*
 ![](/images/nihongo-o-benkyou-shimasu-1.png)
 
-**Monthly Summaries**:
+2. **Monthly Summaries**:
 - At the end of each month, a workflow aggregates all processed daily summaries into a single file stored in the `monthly-summaries` directory.
 - The monthly summary includes:
 	- A vocabulary frequency analysis at the top, which highlights the words encountered, their meanings, and their usage frequency.
@@ -63,7 +63,7 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
 *Monthly Summary Email*
 ![](/images/nihongo-o-benkyou-shimasu-2.png)
 
-**Monthly Scenario**
+3. **Monthly Scenario**
 - Each month the monthly summary is transformed into a scenario between two characters stored monthly-scenarios directory.
 - A GitHub Action analyzing the monthly summary and acts like a creative playwright taking inspiration from it.
 - The monthly includes:
@@ -73,7 +73,7 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
 ![](/images/nihongo-o-benkyou-shimasu-7.png)
 
 **Email Notifications**:
-  - Both daily and monthly summaries can be emailed directly, with the content of the summary included in the body of the email for easy reference and review.
+  - Daily summaries, monthly summaries and scenarios can be emailed directly, with the content of the summary included in the body of the email for easy reference and review.
 
 **OpenAI Integration**:
   - Leveraging the OpenAI API, the project generates translations and detailed annotations. This ensures high-quality language outputs while saving time on manual translations.
@@ -127,7 +127,11 @@ The email-based system ensures:
    - Run the monthly summary workflow (scheduled to run automatically on the 1st of each month).
    - The aggregated summary will appear in the `monthly-summaries` directory, complete with vocabulary analysis.
 
-3. **Email Delivery**:
+3. **Monthly Scenario**:
+   - Run the monthly scenario workflow (scheduled to run automatically on the 1st of each month).
+   - The scenario will appear in the `monthly-scenario` directory, complete with dialogue sections Jaoanese, Romaji, and English.
+
+4. **Email Delivery**:
    - The workflows can send both daily and monthly summaries via email for easy access and review.
 
 ---
