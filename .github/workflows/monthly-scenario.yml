@@ -39,7 +39,7 @@ jobs:
 
       - name: Set Input and Output Paths
         run: |
-          INPUT_FILE="monthly-summary/${{ env.YEAR }}-${{ env.MONTH }}-summary.txt"
+          INPUT_FILE="monthly-summaries/${{ env.YEAR }}-${{ env.MONTH }}-summary.txt"
           OUTPUT_FILE="monthly-scenario/${{ env.YEAR }}-${{ env.MONTH }}-scenario.txt"
           echo "INPUT_FILE=$INPUT_FILE" >> $GITHUB_ENV
           echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
