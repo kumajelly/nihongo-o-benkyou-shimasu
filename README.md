@@ -42,32 +42,41 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
 
 ## **How It Works**
 
-1. **Daily Summaries**:
-   - Each day, a summary of daily activities is written in English and stored in the `daily-summaries` directory.
-   - A scheduled GitHub Action processes the summary, translating it into Japanese (JLPT N5 level) with detailed annotations, including:
-     - Translation in Japanese (with kanji, hiragana, and grammar).
-     - Romanized pronunciation (romaji).
-     - Sentence breakdown (particles, verbs, adjectives, and grammar explanations).
-     - Vocabulary list with meanings, parts of speech, and example sentences.
-     - The original English text for reference.
+**Daily Summaries**:
+- Each day, a summary of daily activities is written in English and stored in the `daily-summaries` directory.
+- A scheduled GitHub Action processes the summary, translating it into Japanese (JLPT N5 level) with detailed annotations, including:
+	 - Translation in Japanese (with kanji, hiragana, and grammar).
+	 - Romanized pronunciation (romaji).
+	 - Sentence breakdown (particles, verbs, adjectives, and grammar explanations).
+	 - Vocabulary list with meanings, parts of speech, and example sentences.
+	 - The original English text for reference.
 
 *Daily Summary Email*
 ![](/images/nihongo-o-benkyou-shimasu-1.png)
 
-2. **Monthly Summaries**:
-   - At the end of each month, a workflow aggregates all processed daily summaries into a single file stored in the `monthly-summaries` directory.
-   - The monthly summary includes:
-     - A vocabulary frequency analysis at the top, which highlights the words encountered, their meanings, and their usage frequency.
-     - All daily summaries in reverse chronological order.
+**Monthly Summaries**:
+- At the end of each month, a workflow aggregates all processed daily summaries into a single file stored in the `monthly-summaries` directory.
+- The monthly summary includes:
+	- A vocabulary frequency analysis at the top, which highlights the words encountered, their meanings, and their usage frequency.
+	- All daily summaries in reverse chronological order.
 
 *Monthly Summary Email*
 ![](/images/nihongo-o-benkyou-shimasu-2.png)
 
-3. **Email Notifications**:
-   - Both daily and monthly summaries can be emailed directly, with the content of the summary included in the body of the email for easy reference and review.
+**Monthly Scenario**
+- Each month the monthly summary is transformed into a scenario between two characters stored monthly-scenarios directory.
+- A GitHub Action analyzing the monthly summary and acts like a creative playwright taking inspiration from it.
+- The monthly includes:
+	- A dialogue broken down into 3 sections Japanese, Romaji, and English.
 
-4. **OpenAI Integration**:
-   - Leveraging the OpenAI API, the project generates translations and detailed annotations. This ensures high-quality language outputs while saving time on manual translations.
+*Monthly Scenario Email*
+![](/images/nihongo-o-benkyou-shimasu-7.png)
+
+**Email Notifications**:
+  - Both daily and monthly summaries can be emailed directly, with the content of the summary included in the body of the email for easy reference and review.
+
+**OpenAI Integration**:
+  - Leveraging the OpenAI API, the project generates translations and detailed annotations. This ensures high-quality language outputs while saving time on manual translations.
 
 ---
 
