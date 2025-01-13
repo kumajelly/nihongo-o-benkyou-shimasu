@@ -1,0 +1,82 @@
+name: Send Monthly Scenario Email
+
+on:
+  workflow_dispatch:
+    inputs:
+      year:
+        description: "Year for the monthly scenario (optional, format YYYY)"
+        required: false
+        default: ""
+      month:
+        description: "Month for the monthly scenario (optional, format MM)"
+        required: false
+        default: ""
+  schedule:
+    - cron: "0 10 2 * *" # Runs monthly on the 2nd at 10 AM UTC
+
+jobs:
+  send-monthly-email:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Determine Year and Month
+        id: determine_date
+        run: |
+          YEAR=${{ github.event.inputs.year }}
+          MONTH=${{ github.event.inputs.month }}
+
+          if [ -z "$YEAR" ] || [ -z "$MONTH" ]; then
+            LAST_MONTH_DATE=$(date -d "last month" "+%Y-%m")
+            YEAR=${YEAR:-${LAST_MONTH_DATE%-*}}
+            MONTH=${MONTH:-${LAST_MONTH_DATE#*-}}
+          fi
+
+          echo "YEAR=$YEAR" >> $GITHUB_ENV
+          echo "MONTH=$MONTH" >> $GITHUB_ENV
+          echo "Using year and month: $YEAR-$MONTH"
+
+      - name: Verify Monthly Scenario File
+        id: verify_file
+        run: |
+          SCENARIO_FILE="monthly-scenario/${YEAR}-${MONTH}-scenario.txt"
+          if [ ! -f "$SCENARIO_FILE" ]; then
+            echo "Error: Monthly scenario file $SCENARIO_FILE does not exist."
+            exit 1
+          fi
+
+          echo "SCENARIO_FILE=$SCENARIO_FILE" >> $GITHUB_ENV
+          echo "Monthly scenario file found: $SCENARIO_FILE"
+
+      - name: Read Monthly Scenario File Content
+        id: read_file
+        run: |
+          SCENARIO_FILE="monthly-scenario/${YEAR}-${MONTH}-scenario.txt"
+          SCENARIO_CONTENT=$(cat "$SCENARIO_FILE")
+          echo "$SCENARIO_CONTENT"
+          echo "SCENARIO_CONTENT<<EOF" >> $GITHUB_ENV
+          echo "$SCENARIO_CONTENT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Send Monthly Scenario Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_PASSWORD }}
+          subject: "Monthly Scenario for ${{ env.YEAR }}-${{ env.MONTH }}"
+          body: |
+            Hello,
+
+            The monthly scenario for ${{ env.YEAR }}-${{ env.MONTH }} is as follows:
+
+            ${{ env.SCENARIO_CONTENT }}
+
+            Best regards,
+            GitHub Actions
+          to: seanthomasward@gmail.com
+          from: ${{ secrets.GMAIL_USERNAME }}
+          attachments: monthly-scenario/${{ env.YEAR }}-${{ env.MONTH }}-scenario.txt
