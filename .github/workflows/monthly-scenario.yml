@@ -58,18 +58,22 @@ jobs:
         run: |
           SUMMARY=$(cat "$INPUT_FILE")
 
-          # Tokenize the input to ensure it doesn't exceed the limit
-          TOKEN_COUNT=$(echo "$SUMMARY" | wc -w)
-          MAX_TOKENS=7000  # Keep some buffer for the response
+          # Estimate token count using character approximation
+          TOKEN_COUNT=$(echo "$SUMMARY" | wc -m) # Character count
+          TOKEN_ESTIMATE=$((TOKEN_COUNT / 4))    # Approximate tokens (1 token ≈ 4 characters)
+          MAX_INPUT_TOKENS=6192                 # Reserve 2000 tokens for the response
 
-          # Debug: Log token count
-          echo "Summary Token Count: $TOKEN_COUNT"
+          echo "Estimated Token Count: $TOKEN_ESTIMATE"
 
-          if [ "$TOKEN_COUNT" -gt "$MAX_TOKENS" ]; then
-            echo "Truncating summary to fit within token limit..."
-            SUMMARY=$(echo "$SUMMARY" | head -c 50000)  # Approximate truncation
+          # Truncate if token estimate exceeds limit
+          if [ "$TOKEN_ESTIMATE" -gt "$MAX_INPUT_TOKENS" ]; then
+            echo "Input exceeds token limit. Truncating..."
+            MAX_CHARACTERS=$((MAX_INPUT_TOKENS * 4))  # Approximate max characters
+            SUMMARY=$(echo "$SUMMARY" | head -c "$MAX_CHARACTERS")
+            echo "Input truncated to $MAX_CHARACTERS characters."
           fi
 
+          # Create API payload
           PAYLOAD=$(jq -n --arg summary "$SUMMARY" '{
             model: "gpt-4",
             messages: [
