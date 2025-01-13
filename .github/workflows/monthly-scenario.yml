@@ -58,9 +58,17 @@ jobs:
         run: |
           SUMMARY=$(cat "$INPUT_FILE")
 
-          # Debug: Log the summary
-          echo "Summary Content:"
-          echo "$SUMMARY"
+          # Tokenize the input to ensure it doesn't exceed the limit
+          TOKEN_COUNT=$(echo "$SUMMARY" | wc -w)
+          MAX_TOKENS=7000  # Keep some buffer for the response
+
+          # Debug: Log token count
+          echo "Summary Token Count: $TOKEN_COUNT"
+
+          if [ "$TOKEN_COUNT" -gt "$MAX_TOKENS" ]; then
+            echo "Truncating summary to fit within token limit..."
+            SUMMARY=$(echo "$SUMMARY" | head -c 50000)  # Approximate truncation
+          fi
 
           PAYLOAD=$(jq -n --arg summary "$SUMMARY" '{
             model: "gpt-4",
@@ -77,7 +85,7 @@ jobs:
             max_tokens: 2000
           }')
 
-          # Debug: Log the payload
+          # Debug: Log payload
           echo "Payload to OpenAI API:"
           echo "$PAYLOAD"
 
@@ -86,7 +94,7 @@ jobs:
             -H "Content-Type: application/json" \
             -d @-)
 
-          # Debug: Log the raw response
+          # Debug: Log the API response
           echo "API Response:"
           echo "$RESPONSE"
 
