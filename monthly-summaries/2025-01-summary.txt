@@ -1,0 +1,488 @@
+Vocabulary Analysis:
+Word | Romaji | Definition | Frequency
+---|---|---|---
+私 | watashi | I, me | 12
+一緒に | issho ni | together | 3
+働いて | hataraite | working | 8
+ありがとう | arigatou | thank you | 3
+これ | kore | this | 1
+きれい | kirei | clean | 1
+です | desu | to be (copula) | 2
+か | ka | question marker | 4
+何時 | nanji | what time | 3
+まで | made | until | 2
+帰らなければなりません | kaeranakereba narimasen | have to leave | 1
+
+Summaries:
+
+
+### processed/2025-01-03.txt ###
+
+1. **Translation**:
+   - 朝食に何が欲しいですか？
+   - お茶はもう飲み終えましたか？
+   - 妻を仕事に車で送りました。
+   - Orange Daysのテレビエピソードを見ました。
+
+2. **Romaji**:
+   - Choushoku ni nani ga hoshii desu ka?
+   - Ocha wa mou nomi oemashita ka?
+   - Tsuma o shigoto ni kuruma de okurimashita.
+   - Orange Days no terebi episoodo o mimashita.
+
+3. **Sentence Breakdown**:
+   - 朝食に何が欲しいですか？(Choushoku ni nani ga hoshii desu ka?)
+     - 朝食 (choushoku) - "breakfast"
+     - に (ni) - indicates a specific time or occasion, in this case, "for"
+     - 何 (nani) - "what"
+     - が (ga) - marks the subject of the sentence
+     - 欲しいです (hoshii desu) - desu is a polite way to end a sentence, 欲しい (hoshii) is an i-adjective meaning "wanted"
+     - か (ka) - question marker
+     - This sentence is a polite way of asking "What do you want for breakfast?"
+
+   - お茶はもう飲み終えましたか？(Ocha wa mou nomi oemashita ka?)
+     - お茶 (ocha) - "tea"
+     - は (wa) - topic marker
+     - もう (mou) - "already"
+     - 飲み (nomi) - stem of the verb 飲む (nomu) meaning "to drink"
+     - 終えました (oemashita) - past tense of the verb 終える (oeru) meaning "to finish"
+     - か (ka) - question marker
+     - This sentence asks "Are you done with your tea already?"
+
+   - 妻を仕事に車で送りました。(Tsuma o shigoto ni kuruma de okurimashita.)
+     - 妻 (tsuma) - "wife"
+     - を (o) - marks the direct object
+     - 仕事 (shigoto) - "work"
+     - に (ni) - direction of the action, "to"
+     - 車 (kuruma) - "car"
+     - で (de) - indicates the means by which the action is done, "by"
+     - 送りました (okurimashita) - past tense of the verb 送る (okuru) meaning "to send/bring"
+     - This sentence translates to "I drove my wife to work."
+
+   - Orange Daysのテレビエピソードを見ました。(Orange Days no terebi episoodo o mimashita.)
+     - Orange Days - "Orange Days"
+     - の (no) - shows possession
+     - テレビエピソード (terebi episoodo) - "television episode"
+     - を (o) - marks the direct object
+     - 見ました (mimashita) - past tense of the verb 見る (miru) meaning "to watch/see"
+     - This sentence means "We watched a television episode of Orange Days."
+
+4. **Vocabulary List**:
+   - 朝食 (choushoku) - breakfast (noun)
+   - 欲しい (hoshii) - wanted (i-adjective)
+   - お茶 (ocha) - tea (noun)
+   - 飲む (nomu) - to drink (verb)
+   - 終える (oeru) - to finish (verb)
+   - 妻 (tsuma) - wife (noun)
+   - 仕事 (shigoto) - work (noun)
+   - 車 (kuruma) - car (noun)
+   - 送る (okuru) - to send/bring (verb)
+   - テレビ (terebi) - television (noun)
+   - エピソード (episoodo) - episode (noun)
+   - 見る (miru) - to watch/see (verb)
+   - Orange Days - Orange Days (proper noun)
+
+5. **Original English Text**:
+   - What do you want for breakfast?
+   - Are you done with your tea?
+   - I drove my wife to work.
+   - We watched a television episode of Orange Days.
+
+### processed/2025-01-10.txt ###
+
+1. **Translation**:
+スーパーに行きました。
+仕事から迎えに行きます。
+何時に？
+
+2. **Romaji**:
+Suupaa ni ikimashita.
+Shigoto kara mukae ni ikimasu.
+Nanji ni?
+
+3. **Sentence Breakdown**:
+   - **スーパーに行きました。**
+     - **スーパー (suupaa)**: noun - "grocery store"
+     - **に (ni)**: particle indicating direction or destination
+     - **行きました (ikimashita)**: verb - 行く (iku) in past polite form
+   - **仕事から迎えに行きます。**
+     - **仕事 (shigoto)**: noun - "work"
+     - **から (kara)**: particle indicating starting point
+     - **迎えに行きます (mukae ni ikimasu)**: verb - 迎える (mukae) in non-past polite form + 行く (iku) in non-past polite form
+   - **何時に？**
+     - **何時 (nanji)**: question word - "what time"
+     - **に (ni)**: particle indicating time
+
+4. **Vocabulary List**:
+   - スーパー (suupaa): noun - grocery store
+   - 行く (iku): verb - to go
+   - 仕事 (shigoto): noun - work
+   - 迎える (mukae): verb - to pick up
+   - 何時 (nanji): question word - what time
+
+5. **Original English Text**:
+I went to the grocery store.
+I will pick you up from work.
+At what time?
+
+### processed/2025-01-04.txt ###
+
+1. **Translation**:
+食べる量は十分だったんですか？
+大丈夫ですか？
+手伝えることは何ですか？
+
+2. **Romaji**:
+Taberu ryou wa juubun dattan desu ka?
+Daijoubu desu ka?
+Tasukaeru koto wa nan desu ka?
+
+3. **Sentence Breakdown**:
+- 食べる量は十分だったんですか？(Taberu ryou wa juubun dattan desu ka?)
+  - 食べる (taberu) - verb, plain positive form
+  - 量 (ryou) - noun meaning "amount"
+  - は (wa) - topic marking particle
+  - 十分だった (juubun datta) - i-adjective "enough" in past tense
+  - んですか (n desu ka) - casual form of explanatory sentence ending particle か
+  - This sentence is asking if the amount eaten was enough.
+
+- 大丈夫ですか？(Daijoubu desu ka?)
+  - 大丈夫 (daijoubu) - noun/adjective meaning "alright, okay"
+  - です (desu) - copula
+  - か (ka) - question marking particle
+  - This sentence is a simple question asking if the person is alright.
+
+- 手伝えることは何ですか？(Tasukaeru koto wa nan desu ka?)
+  - 手伝える (tasukaeru) - potential form of verb "to help"
+  - こと (koto) - nominalizer making the verb "help" into a noun
+  - は (wa) - topic marking particle
+  - 何 (nan) - interrogative pronoun "what"
+  - です (desu) - copula
+  - か (ka) - question marking particle
+  - This sentence inquires about what can be done to help.
+
+4. **Vocabulary List**:
+- 食べる (taberu) - verb, to eat
+- 量 (ryou) - noun, amount
+- 十分 (juubun) - i-adjective, enough
+- 大丈夫 (daijoubu) - noun/adjective, alright, okay
+- 手伝える (tasukaeru) - verb, to help
+- こと (koto) - noun, thing
+- 何 (nan) - pronoun, what
+
+5. **Original English Text**:
+Did you eat enough?
+Are you feeling alright?
+What can I do to help?
+
+### processed/2025-01-01.txt ###
+
+1. **Translation**:
+今日は2025年1月1日です。
+天気は寒いですが、晴れています。
+昼食には、お雑煮と伊達巻を食べました。
+近所を散歩しました。
+
+2. **Romaji**:
+Kyou wa 2025-nen 1-gatsu tsuitachi desu.
+Tenki wa samui desu ga, hareteimasu.
+Chuushoku ni wa, o-zouni to datemaki o tabemashita.
+Kinjo o sanpo shimashita.
+
+3. **Sentence Breakdown**:
+   - 今日は2025年1月1日です。
+     - 今日 (kyou) - today 
+     - は (wa) - topic marking particle
+     - 2025年1月1日 (2025-nen 1-gatsu tsuitachi) - January 1st, 2025
+     - です (desu) - to be (copula)
+     - This sentence structure is used to state the date of New Year's Day in 2025.
+     
+   - 天気は寒いですが、晴れています。
+     - 天気 (tenki) - weather
+     - は (wa) - topic marking particle
+     - 寒い (samui) - chilly, cold (i-adjective)
+     - ですが (desu ga) - but, however 
+     - 晴れています (hareteimasu) - sunny, clear (verb: 晴れる - hare + て form + います polite form)
+     - This sentence describes the weather being cold but sunny. 
+
+   - 昼食には、お雑煮と伊達巻を食べました。
+     - 昼食 (chuushoku) - lunch
+     - には (ni wa) - for, regarding
+     - お雑煮 (o-zouni) - a Japanese New Year's soup with rice cakes and vegetables
+     - と (to) - and
+     - 伊達巻 (datemaki) - a type of rolled omelette 
+     - を (o) - object marking particle
+     - 食べました (tabemashita) - ate (taberu - dictionary form + ました past polite form)
+     - This sentence explains the lunch menu which consisted of o-zouni and datemaki.
+
+   - 近所を散歩しました。
+     - 近所 (kinjo) - neighborhood
+     - を (o) - object marking particle
+     - 散歩しました (sanpo shimashita) - took a walk (散歩する - sanpo suru + ました past polite form)
+     - This sentence states that the speaker took a walk around the neighborhood.
+
+4. **Vocabulary List**:
+   - 今日 (kyou) - today (noun)
+   - 2025年1月1日 (2025-nen 1-gatsu tsuitachi) - January 1st, 2025 (noun)
+   - 天気 (tenki) - weather (noun)
+   - 寒い (samui) - chilly, cold (i-adjective)
+   - 晴れる (hareru) - to be sunny, to clear up (verb)
+   - 昼食 (chuushoku) - lunch (noun)
+   - お雑煮 (o-zouni) - Japanese New Year's soup with rice cakes and vegetables (noun)
+   - 伊達巻 (datemaki) - rolled omelette (noun)
+   - 食べる (taberu) - to eat (verb)
+   - 近所 (kinjo) - neighborhood (noun)
+   - 散歩する (sanpo suru) - to take a walk (verb)
+
+5. **Original English Text**:
+Today is New Year’s Day. January 1st, 2025. 
+The weather is chilly but sunny. 
+For lunch, we ate orzoni soup with datemaki. 
+We took a walk around the neighborhood.
+
+### processed/2025-01-06.txt ###
+
+1. **Translation**:
+足をそんな風にかいてはいけません。
+仕事はどうだった？
+いくつかの会議がありました。
+赤ちゃんが生まれるのを待ちきれません。
+わくわくしています。
+
+2. **Romaji**:
+Ashi o sonna fuu ni kaite wa ikemasen.
+Shigoto wa dou datta?
+Ikutsu ka no kaigi ga arimashita.
+Aka-chan ga umareru no o machikiremasen.
+Wakuwaku shite imasu.
+
+3. **Sentence Breakdown**:
+   - 足をそんな風にかいてはいけません。 (Ashi o sonna fuu ni kaite wa ikemasen.)
+     - 足 (ashi) - noun, "leg"
+     - を (o) - particle indicating the direct object
+     - そんな (sonna) - demonstrative pronoun, "that kind of"
+     - 風に (fuu ni) - manner, way
+     - かいて (kaite) - verb: かく (kaku) - to scratch, in te-form
+     - はいけません (wa ikemasen) - negative form of modal verb 行く (iku), "must not"
+     - Translation: "Don’t scratch your leg like that."
+
+   - 仕事はどうだった？(Shigoto wa dou datta?)
+     - 仕事 (shigoto) - noun, "work"
+     - は (wa) - topic marker
+     - どう (dou) - how
+     - だった (datta) - past tense of the copula verb だ (da)
+     - Translation: "How was work?"
+
+   - いくつかの会議がありました。 (Ikutsu ka no kaigi ga arimashita.)
+     - いくつか (ikutsu ka) - a few, several
+     - の (no) - particle indicating possession
+     - 会議 (kaigi) - noun, "meetings"
+     - が (ga) - subject marker
+     - ありました (arimashita) - polite past tense of verb ある (aru), "there were"
+     - Translation: "I had a few meetings."
+
+   - 赤ちゃんが生まれるのを待ちきれません。 (Aka-chan ga umareru no o machikiremasen.)
+     - 赤ちゃん (aka-chan) - noun, "baby"
+     - が (ga) - subject marker
+     - 生まれる (umareru) - potential form of verb 生まれる (umareru), "to be born"
+     - の (no) - particle indicating the preceding phrase is the object of the verb
+     - を (o) - particle indicating the direct object
+     - 待ちきれません (machikiremasen) - negative form of verb 待つ (matsu), "cannot wait"
+     - Translation: "I can’t wait for the baby to be born."
+
+   - わくわくしています。 (Wakuwaku shite imasu.)
+     - わくわく (wakuwaku) - onomatopoeic word, "excited"
+     - しています (shite imasu) - continuous form of verb する (suru), "to do"
+     - Translation: "I am excited."
+
+4. **Vocabulary List**:
+   - 足 (ashi) - noun, "leg"
+   - かく (kaku) - verb, "to scratch"
+   - 仕事 (shigoto) - noun, "work"
+   - いくつか (ikutsu ka) - phrase, "a few/several"
+   - 会議 (kaigi) - noun, "meetings"
+   - 赤ちゃん (aka-chan) - noun, "baby"
+   - 生まれる (umareru) - verb, "to be born"
+   - 待つ (matsu) - verb, "to wait"
+   - わくわく (wakuwaku) - onomatopoeic word, "excited"
+
+5. **Original English Text**:
+Don’t scratch your leg like that.
+How was work?
+I had a few meetings.
+I can’t wait for the baby to be born.
+I am excited.
+
+### processed/2025-01-05.txt ###
+
+1. **Translation**:
+私はラザニアを作りました。
+私はラザニアを作ります。
+水を飲みますか？
+夕食に何がほしいですか？
+
+2. **Romaji**:
+Watashi wa razania o tsukurimashita.
+Watashi wa razania o tsukarimasu.
+Mizu o nomimasu ka?
+Yuushoku ni nani ga hoshii desu ka?
+
+3. **Sentence Breakdown**:
+   - 私はラザニアを作りました。 (Watashi wa razania o tsukurimashita.)
+     - 私は (Watashi wa) - subject marker "I"
+     - ラザニアを (razania o) - direct object marker for "lasagna"
+     - 作りました (tsukurimashita) - verb "to cook" in past tense
+   - 私はラザニアを作ります。 (Watashi wa razania o tsukarimasu.)
+     - 私は (Watashi wa) - subject marker "I"
+     - ラザニアを (razania o) - direct object marker for "lasagna"
+     - 作ります (tsukarimasu) - verb "to cook" in future tense
+   - 水を飲みますか？ (Mizu o nomimasu ka?)
+     - 水を (Mizu o) - direct object marker for "water"
+     - 飲みますか (nomimasu ka?) - verb "to drink" in polite form, with a question marker
+   - 夕食に何がほしいですか？ (Yuushoku ni nani ga hoshii desu ka?)
+     - 夕食に (Yuushoku ni) - in regards to dinner
+     - 何が (nani ga) - what
+     - ほしいですか (hoshii desu ka?) - polite form for "want," with a question marker
+
+4. **Vocabulary List**:
+   - 私 (watashi) - I, me (pronoun)
+   - ラザニア (razania) - lasagna (noun)
+   - 作りました (tsukurimashita) - cooked, past tense of "to cook" (verb)
+   - 作ります (tsukarimasu) - will cook, future tense of "to cook" (verb)
+   - 水 (mizu) - water (noun)
+   - 飲みます (nomimasu) - will drink, polite form of "to drink" (verb)
+   - 夕食 (yuushoku) - dinner (noun)
+   - 何 (nani) - what (pronoun)
+   - ほしい (hoshii) - want (i-adjective)
+
+5. **Original English Text**:
+I cooked lasagna.
+I will cook lasagna.
+Do you want some water?
+What do you want for dinner?
+
+### processed/2025-01-02.txt ###
+
+1. **Translation**:
+今日は2025年1月2日の木曜日です。
+朝ご飯にヨーグルトとグラノーラを食べました。
+昼ご飯にピザトーストを食べました。
+夕飯に焼きそばを食べました。
+明日は2025年1月3日の金曜日です。
+
+2. **Romaji**:
+Kyou wa 2025nen ichi gatsu futsuka no mokuyoubi desu.
+Asagohan ni yooguruto to guranoura o tabemashita.
+Hirugohan ni piza toosuto o tabemashita.
+Yuugohan ni yakisoba o tabemashita.
+Ashita wa 2025nen ichi gatsu mikka no kinyoubi desu.
+
+3. **Sentence Breakdown**:
+   - 今日は2025年1月2日の木曜日です。(Kyou wa 2025nen ichi gatsu futsuka no mokuyoubi desu.)
+     - 今日 (kyou): "today"
+     - は (wa): topic marking particle
+     - 2025年1月2日 (2025nen ichi gatsu futsuka): "January 2nd, 2025"
+     - の (no): possessive particle
+     - 木曜日 (mokuyoubi): "Thursday"
+     - です (desu): copula (to be)
+   - 朝ご飯にヨーグルトとグラノーラを食べました。(Asagohan ni yooguruto to guranoura o tabemashita.)
+     - 朝ご飯 (asagohan): "breakfast"
+     - に (ni): indicates the time at which an action takes place (for breakfast)
+     - ヨーグルトと (yooguruto to): "yogurt and"
+     - グラノーラを (guranoura o): "granola"
+     - 食べました (tabemashita): past tense of the verb "to eat"
+   - 昼ご飯にピザトーストを食べました。(Hirugohan ni piza toosuto o tabemashita.)
+     - 昼ご飯 (hirugohan): "lunch"
+     - に (ni): indicates the time at which an action takes place (for lunch)
+     - ピザトーストを (piza toosuto o): "pizza toast"
+     - 食べました (tabemashita): past tense of the verb "to eat"
+   - 夕飯に焼きそばを食べました。(Yuugohan ni yakisoba o tabemashita.)
+     - 夕飯 (yuugohan): "dinner"
+     - に (ni): indicates the time at which an action takes place (for dinner)
+     - 焼きそばを (yakisoba o): "yakisoba"
+     - 食べました (tabemashita): past tense of the verb "to eat"
+   - 明日は2025年1月3日の金曜日です。(Ashita wa 2025nen ichi gatsu mikka no kinyoubi desu.)
+     - 明日 (ashita): "tomorrow"
+     - は (wa): topic marking particle
+     - 2025年1月3日 (2025nen ichi gatsu mikka): "January 3rd, 2025"
+     - の (no): possessive particle
+     - 金曜日 (kinyoubi): "Friday"
+     - です (desu): copula (to be)
+
+4. **Vocabulary List**:
+   - 今日 (kyou): today (noun)
+   - 木曜日 (mokuyoubi): Thursday (noun)
+   - 朝ご飯 (asagohan): breakfast (noun)
+   - ヨーグルト (yooguruto): yogurt (noun)
+   - グラノーラ (guranoura): granola (noun)
+   - 食べる (taberu): to eat (verb)
+   - 昼ご飯 (hirugohan): lunch (noun)
+   - ピザトースト (piza toosuto): pizza toast (noun)
+   - 夕飯 (yuugohan): dinner (noun)
+   - 焼きそば (yakisoba): yakisoba (noun)
+   - 明日 (ashita): tomorrow (noun)
+   - 金曜日 (kinyoubi): Friday (noun)
+
+5. **Original English Text**:
+Today is Thursday, January 2nd, 2025.
+For breakfast, I ate yogurt and granola.
+For lunch, I ate pizza toast.
+For dinner, I ate yakisoba.
+Tomorrow is Friday, January 3rd, 2025.
+
+### processed/2025-01-07.txt ###
+
+Translation:
+1. 私と一緒に働いてくれてありがとう。
+2. Kore wa kire desu ka?
+3. 何時まで働いていますか？
+4. 何時に帰らなければなりませんか？
+
+Romaji:
+1. Watashi to issho ni hataraite kurete arigatou.
+2. Kore wa kire desu ka?
+3. Nanji made hataraite imasu ka?
+4. Nanji ni kaeranakereba narimasen ka?
+
+Sentence Breakdown:
+1. 私と一緒に働いてくれてありがとう。
+   - 私と (Watashi to) - 'with me'
+   - 一緒に (issho ni) - 'together'
+   - 働いている (hataraite iru) - 'working' (te-form of 働く (hataraku) - 'to work' with verb ending いる (iru) indicating continuous action)
+   - ありがとう (arigatou) - 'thank you'
+
+2. これはきれいですか？
+   - これ (kore) - 'this'
+   - は (wa) - topic marker
+   - きれい (kirei) - 'clean'
+   - です (desu) - copula indicating politeness
+   - か (ka) - question marker
+
+3. 何時まで働いていますか？
+   - 何時まで (nanji made) - 'until what time'
+   - 働いています (hataraite imasu) - 'are working' (te-form of 働く (hataraku) - 'to work' with polite form います (imasu) indicating present continuous action)
+   - か (ka) - question marker
+
+4. 何時に帰らなければなりませんか？
+   - 何時に (nanji ni) - 'at what time'
+   - 帰らなければなりません (kaeranakereba narimasen) - 'have to leave' (negative form of 帰る (kaeru) - 'to go back' with conditional form なければ (nakereba) and 'must' なりません (narimasen))
+   - か (ka) - question marker
+
+Vocabulary List:
+- 私と (watashi to) - with me (noun, particle)
+- 一緒に (issho ni) - together (particle)
+- 働いている (hataraite iru) - working (verb phrase)
+- ありがとう (arigatou) - thank you (interjection)
+- これ (kore) - this (pronoun)
+- きれい (kirei) - clean (i-adjective)
+- です (desu) - to be (copula)
+- 何時 (nanji) - what time (noun)
+- まで (made) - until (particle)
+- 働いています (hataraite imasu) - are working (verb phrase)
+- 帰らなければなりません (kaeranakereba narimasen) - have to leave (verb phrase)
+
+Original English Text:
+Thank you for working with me.
+Is this clean?
+How late are you working?
+What time do you have to leave?
