@@ -42,7 +42,7 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
 
 ## **How It Works**
 
-1. **Daily Summaries**:
+### 1. **Daily Summaries**:
 - Each day, a summary of daily activities is written in English and stored in the `daily-summaries` directory.
 - A scheduled GitHub Action processes the summary, translating it into Japanese (JLPT N5 level) with detailed annotations, including:
 	 - Translation in Japanese (with kanji, hiragana, and grammar).
@@ -54,7 +54,7 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
 *Daily Summary Email*
 ![](/images/nihongo-o-benkyou-shimasu-1.png)
 
-2. **Monthly Summaries**:
+### 2. **Monthly Summaries**:
 - At the end of each month, a workflow aggregates all processed daily summaries into a single file stored in the `monthly-summaries` directory.
 - The monthly summary includes:
 	- A vocabulary frequency analysis at the top, which highlights the words encountered, their meanings, and their usage frequency.
@@ -63,7 +63,7 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
 *Monthly Summary Email*
 ![](/images/nihongo-o-benkyou-shimasu-2.png)
 
-3. **Monthly Scenario**
+### 3. **Monthly Scenario**
 - Each month the monthly summary is transformed into a scenario between two characters stored monthly-scenarios directory.
 - A GitHub Action analyzing the monthly summary and acts like a creative playwright taking inspiration from it.
 - The monthly includes:
@@ -72,10 +72,10 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
 *Monthly Scenario Email*
 ![](/images/nihongo-o-benkyou-shimasu-7.png)
 
-**Email Notifications**:
+### **Email Notifications**:
   - Daily summaries, monthly summaries and scenarios can be emailed directly, with the content of the summary included in the body of the email for easy reference and review.
 
-**OpenAI Integration**:
+### **OpenAI Integration**:
   - Leveraging the OpenAI API, the project generates translations and detailed annotations. This ensures high-quality language outputs while saving time on manual translations.
 
 ---
