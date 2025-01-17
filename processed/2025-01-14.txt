@@ -1,0 +1,68 @@
+1. **Translation**:
+息子は成長しています。
+息子は止まりません。
+妻は妊娠しています。
+私たちの赤ちゃんは2月に予定されています。
+
+2. **Romaji**:
+Musuko wa seichou shiteimasu.
+Musuko wa tomarimasen.
+Tsuma wa ninshin shiteimasu.
+Watashitachi no akachan wa nigatsu ni yotei sareteimasu.
+
+3. **Sentence Breakdown**:
+   - 息子は成長しています。(Musuko wa seichou shiteimasu.)
+     - 息子 (musuko): "son" - noun
+     - は (wa): topic particle
+     - 成長しています (seichou shiteimasu): "is growing"
+       - 成長する (seichou suru): "to grow"
+       - しています (shiteimasu): polite present progressive form
+   - 息子は止まりません。(Musuko wa tomarimasen.)
+     - 息子 (musuko): "son" - noun
+     - は (wa): topic particle
+     - 止まりません (tomarimasen): "doesn’t stop"
+       - 止まる (tomaru): "to stop"
+       - ません (masen): negative form
+   - 妻は妊娠しています。(Tsuma wa ninshin shiteimasu.)
+     - 妻 (tsuma): "wife" - noun
+     - は (wa): topic particle
+     - 妊娠しています (ninshin shiteimasu): "is pregnant"
+       - 妊娠する (ninshin suru): "to be pregnant"
+       - しています (shiteimasu): polite present progressive form
+   - 私たちの赤ちゃんは2月に予定されています。(Watashitachi no akachan wa nigatsu ni yotei sareteimasu.)
+     - 私たちの (watashitachi no): "our"
+     - 赤ちゃん (akachan): "baby" - noun
+     - は (wa): topic particle
+     - 2月に (nigatsu ni): "in February"
+     - 予定されています (yotei sareteimasu): "is due"
+       - 予定する (yotei suru): "to be scheduled"
+       - されています (sareteimasu): passive and polite present progressive form
+
+4. **Vocabulary List**:
+   - 息子 (musuko)
+     - Meaning: son
+     - Noun
+   - 成長する (seichou suru)
+     - Meaning: to grow
+     - Verb
+   - 止まる (tomaru)
+     - Meaning: to stop
+     - Verb
+   - 妻 (tsuma)
+     - Meaning: wife
+     - Noun
+   - 妊娠する (ninshin suru)
+     - Meaning: to be pregnant
+     - Verb
+   - 赤ちゃん (akachan)
+     - Meaning: baby
+     - Noun
+   - 予定する (yotei suru)
+     - Meaning: to be scheduled
+     - Verb
+
+5. **Original English Text**:
+My son is growing.
+My son doesn’t stop moving.
+My wife is pregnant.
+Our baby is due in February.

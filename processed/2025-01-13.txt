@@ -1,0 +1,48 @@
+1. **Translation**:
+   - もう一つ会議があります。
+   - 残り物を終わらせましょう。
+   - 疲れました。
+   - 寝坊しました。
+
+2. **Romaji**:
+   - Mou hitotsu kaigi ga arimasu.
+   - Nokorimono o owarasemashou.
+   - Tsukaremashita.
+   - Neboushimashita.
+
+3. **Sentence Breakdown**:
+   - もう一つ会議があります。 (Mou hitotsu kaigi ga arimasu.)
+     - もう (mou) - "more; another"
+     - 一つ (hitotsu) - "one"
+     - 会議 (kaigi) - "meeting"
+     - が (ga) - indicates the subject of the sentence
+     - あります (arimasu) - polite form of the verb "aru" (to exist/have)
+
+   - 残り物を終わらせましょう。 (Nokorimono o owarasemashou.)
+     - 残り物 (nokorimono) - "leftovers"
+     - を (o) - indicates the direct object of the verb
+     - 終わらせましょう (owarasemashou) - "let's finish" (volitional form of the verb "owaru" meaning "to finish")
+
+   - 疲れました。 (Tsukaremashita.)
+     - 疲れました (tsukaremashita) - "got tired"
+   
+   - 寝坊しました。 (Neboushimashita.)
+     - 寝坊 (nebou) - "oversleeping"
+     - しました (shimashita) - polite past tense of the verb "suru" (to do)
+
+4. **Vocabulary List**:
+   - もう (mou) - more; another (adverb)
+   - 一つ (hitotsu) - one (counter)
+   - 会議 (kaigi) - meeting (noun)
+   - あります (arimasu) - to exist; to have (verb)
+   - 残り物 (nokorimono) - leftovers (noun)
+   - 終わらせる (owarasu) - to finish (verb)
+   - 疲れました (tsukaremashita) - got tired (phrase)
+   - 寝坊 (nebou) - oversleeping (noun)
+   - しました (shimashita) - did (polite verb)
+
+5. **Original English Text**:
+I have one more meeting.
+Let’s finish the leftovers.
+I feel tired.
+I slept in.
