@@ -1,0 +1,55 @@
+1. **Translation**:
+私はそれを仕事を終わらせました。
+もう一度そこへ行きましょう。
+それはとても失礼です。
+私がランチを作ります。
+
+2. **Romaji**:
+Watashi wa sore o shigoto o owarimashita.
+Mou ichido soko e ikimashou.
+Sore wa totemo shitsurei desu.
+Watashi ga ranchi o tsukurimasu.
+
+3. **Sentence Breakdown**:
+- 私はそれを仕事を終わらせました。
+  - 私は (watashi wa) - I
+  - それを (sore o) - that (object marker)
+  - 仕事を (shigoto o) - work (object of the verb)
+  - 終わらせました (owarimashita) - finished (past tense)
+  - This sentence follows the subject-object-verb order which is common in Japanese sentences.
+
+- もう一度そこへ行きましょう。
+  - もう一度 (mou ichido) - again
+  - そこへ (soko e) - there (to that place)
+  - 行きましょう (ikimashou) - let's go (volitional form)
+  - The volitional form 行きましょう is used to make a suggestion or proposal.
+
+- それはとても失礼です。
+  - それは (sore wa) - That is
+  - とても (totemo) - very
+  - 失礼です (shitsurei desu) - is rude
+  - In Japanese, adjectives like 失礼 are placed before the copula です to modify nouns.
+
+- 私がランチを作ります。
+  - 私が (watashi ga) - I (subject marker)
+  - ランチを (ranchi o) - lunch (object marker)
+  - 作ります (tsukurimasu) - will make
+  - The verb 作ります is in the will-future tense form to indicate a volitional action in the future.
+
+4. **Vocabulary List**:
+- 私は (watashi wa) - I; me (pronoun)
+- それ (sore) - that (pronoun)
+- 仕事 (shigoto) - work (noun)
+- 終わらせました (owarimashita) - finished (verb)
+- もう一度 (mou ichido) - again (adverb)
+- 行きましょう (ikimashou) - let's go (phrase)
+- とても (totemo) - very (adverb)
+- 失礼です (shitsurei desu) - is rude (phrase)
+- ランチ (ranchi) - lunch (noun)
+- 作ります (tsukurimasu) - will make (verb)
+
+5. **Original English Text**:
+I finished working on that.  
+Let’s go there again.  
+That is so rude.  
+I’ll make lunch.  
