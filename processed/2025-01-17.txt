@@ -1,0 +1,28 @@
+1. **Translation**:
+映画を見ながらたくさん泣きました。
+昼寝をしました。
+
+2. **Romaji**:
+Eiga o minagara takusan nakimashita.
+Hirune o shimashita.
+
+3. **Sentence Breakdown**:
+   - 映画を見ながらたくさん泣きました。
+     - 映画を (eiga o) - movie (object particle)
+     - 見ながら (minagara) - while watching
+     - たくさん (takusan) - a lot
+     - 泣きました (nakimashita) - cried (cry, past tense)
+   - 昼寝をしました。
+     - 昼寝を (hirune o) - nap (object particle)
+     - しました (shimashita) - took (take, past polite)
+
+4. **Vocabulary List**:
+   - 映画 (eiga) - movie (noun)
+   - 見る (miru) - to watch (verb)
+   - 泣く (naku) - to cry (verb)
+   - 昼寝 (hirune) - nap (noun)
+   - する (suru) - to do (verb)
+
+5. **Original English Text**:
+We cried a lot watching a movie. 
+I took a nap.
