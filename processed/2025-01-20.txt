@@ -1,0 +1,50 @@
+1. **Translation**:
+キッチンをきれいに掃除してもらえますか？
+散歩に行きたいですか？
+もっと枕が必要です。
+
+2. **Romaji**:
+Kicchin o kirei ni souji shite moraemasu ka?
+Sanpo ni ikitai desu ka?
+Motto makura ga hitsuyou desu.
+
+3. **Sentence Breakdown**:
+   - キッチンをきれいに掃除してもらえますか？(Kicchin o kirei ni souji shite moraemasu ka?)
+     - キッチン (kicchin) - noun: "kitchen"
+     - を (o) - particle: indicates the object of the action
+     - きれいに (kirei ni) - adverb: "cleanly"
+     - 掃除して (souji shite) - verb: "clean" (stem form)
+     - もらえますか (moraemasu ka) - verb: "to receive" (potential form), question marker
+     - か (ka) - particle: question marker
+     - Translation: "Can you clean the kitchen nicely for me?"
+
+   - 散歩に行きたいですか？(Sanpo ni ikitai desu ka?)
+     - 散歩 (sanpo) - noun: "walking"
+     - に (ni) - particle: indicates the purpose or direction of an action
+     - 行きたい (ikitai) - verb: "want to go" (potential form)
+     - です (desu) - copula: to be
+     - か (ka) - particle: question marker
+     - Translation: "Do you want to go for a walk?"
+
+   - もっと枕が必要です。(Motto makura ga hitsuyou desu.)
+     - もっと (motto) - adverb: "more"
+     - 枕 (makura) - noun: "pillow"
+     - が (ga) - particle: indicates the subject
+     - 必要です (hitsuyou desu) - adjective: "necessary," (desu: polite form)
+     - Translation: "I need more pillows."
+
+4. **Vocabulary List**:
+   - キッチン (kicchin) - noun: kitchen
+   - きれいに (kirei ni) - adverb: cleanly
+   - 掃除する (souji suru) - verb: to clean
+   - もらう (morau) - verb: to receive
+   - 散歩 (sanpo) - noun: walking
+   - 行きたい (ikitai) - verb: want to go
+   - もっと (motto) - adverb: more
+   - 枕 (makura) - noun: pillow
+   - 必要 (hitsuyou) - adjective: necessary
+
+5. **Original English Text**:
+Can you clean the kitchen?
+Want to go for a walk?
+I need more pillows.
