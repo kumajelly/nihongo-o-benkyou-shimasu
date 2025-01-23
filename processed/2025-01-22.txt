@@ -1,0 +1,46 @@
+1. **Translation**:
+料理してくれてありがとう。
+彼は元気ですか？
+十分な水を飲みましたか？
+
+2. **Romaji**:
+Ryouri shite kurete arigatou.
+Kare wa genki desu ka?
+Jyubun na mizu o nomimashita ka?
+
+3. **Sentence Breakdown**:
+   - 料理してくれてありがとう。 (Ryouri shite kurete arigatou.)
+     - 料理 (ryouri): noun meaning "cooking"
+     - して (shite): te-form of the verb "suru" meaning "to do"
+     - くれて (kurete): te-form of the verb "kureru" meaning "to do for (me)"
+     - ありがとう (arigatou): interjection meaning "thank you"
+
+   - 彼は元気ですか？ (Kare wa genki desu ka?)
+     - 彼 (kare): pronoun meaning "he"
+     - は (wa): topic particle
+     - 元気 (genki): noun meaning "healthy; energetic"
+     - です (desu): copula, polite form of "to be"
+     - か (ka): question marker
+
+   - 十分な水を飲みましたか？ (Jyubun na mizu o nomimashita ka?)
+     - 十分な (jyubun na): na-adjective meaning "enough"
+     - 水 (mizu): noun meaning "water"
+     - を (o): object particle
+     - 飲みました (nomimashita): past tense of the verb "nomu" meaning "to drink"
+     - か (ka): question marker
+
+4. **Vocabulary List**:
+   - 料理 (ryouri): cooking (noun)
+   - して (shite): te-form of "suru" - to do (verb)
+   - ありがとう (arigatou): thank you (interjection)
+   - 彼 (kare): he (pronoun)
+   - 元気 (genki): healthy; energetic (noun)
+   - メール (meiru): email (noun)
+   - 十分な (jyubun na): enough (na-adjective)
+   - 水 (mizu): water (noun)
+   - 飲む (nomu): to drink (verb)
+
+5. **Original English Text**:
+Thank you for cooking.
+How is he doing?
+Did you drink enough water?
