@@ -26,11 +26,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+        pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
 
     - name: Process translation file
       env:
-        GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
       run: |
         mkdir -p processed-audio
         python <<EOF
@@ -72,17 +72,31 @@ jobs:
         print(f"Translation to process: {translation}")
 
         # Decode Google API key
-        encoded_key = os.getenv("GOOGLE_API_KEY")
+        encoded_key = os.getenv("GOOGLE_SERVICE_ACCOUNT")
         if not encoded_key:
-            print("Error: GOOGLE_API_KEY is not set.")
+            print("Error: GOOGLE_SERVICE_ACCOUNT is not set.")
             exit(1)
 
-        key_json = base64.b64decode(encoded_key).decode("utf-8")
-        credentials_info = json.loads(key_json)
+        # Add padding to the base64-encoded key if needed
+        missing_padding = len(encoded_key) % 4
+        if missing_padding:
+            encoded_key += "=" * (4 - missing_padding)
+
+        try:
+            key_json = base64.b64decode(encoded_key).decode("utf-8")
+            credentials_info = json.loads(key_json)
+        except Exception as e:
+            print(f"Error decoding the service account key: {e}")
+            exit(1)
+
         credentials = Credentials.from_service_account_info(credentials_info)
 
         # Build the Text-to-Speech client
-        client = build("texttospeech", "v1", credentials=credentials)
+        try:
+            client = build("texttospeech", "v1", credentials=credentials)
+        except Exception as e:
+            print(f"Error building Text-to-Speech client: {e}")
+            exit(1)
 
         # Prepare the request payload
         request_body = {
@@ -97,7 +111,11 @@ jobs:
         }
 
         # Call the API
-        response = client.text().synthesize(body=request_body).execute()
+        try:
+            response = client.text().synthesize(body=request_body).execute()
+        except Exception as e:
+            print(f"Error calling Text-to-Speech API: {e}")
+            exit(1)
 
         # Save the audio file
         if 'audioContent' in response:
@@ -111,16 +129,3 @@ jobs:
             print("Error: No audio content received from the API.")
             exit(1)
         EOF
-
-    - name: Verify generated audio
-      run: |
-        echo "Checking processed-audio directory contents:"
-        ls -l processed-audio || echo "No files generated"
-
-    - name: Commit and push audio file
-      run: |
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        git add processed-audio/*.mp3
-        git commit -m "Add generated audio for file"
-        git push
