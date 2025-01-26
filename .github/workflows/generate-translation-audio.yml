@@ -33,17 +33,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      # Step 4: Extract Translation and Generate Audio
-      - name: Generate Audio Directly
+      # Step 4: Generate and Run Python Script
+      - name: Run Translation Audio Generator
         env:
           ELEVEN_LABS_API_KEY: ${{ secrets.ELEVEN_LABS_API_KEY }}
         run: |
+          cat <<EOF > generate_audio.py
           import os
           import re
           import requests
-          from datetime import datetime
 
-          # Constants and Directories
           ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
           API_URL = "https://api.elevenlabs.io/v1/text-to-speech"
           VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB"
@@ -64,13 +63,12 @@ jobs:
               # Process all files in automatic mode
               files_to_process = [os.path.join(processed_dir, f) for f in os.listdir(processed_dir) if f.endswith(".txt")]
 
-          # Functions
           def extract_translation(filepath):
               with open(filepath, 'r', encoding='utf-8') as file:
                   content = file.read()
-              match = re.search(r"\\*\\*Translation\\*\\*:\\n(.*?)\\n\\n", content, re.DOTALL)
+              match = re.search(r"\*\*Translation\*\*:\n(.*?)\n\n", content, re.DOTALL)
               if match:
-                  return match.group(1).strip().split("\\n")
+                  return match.group(1).strip().split("\n")
               return []
 
           def generate_audio(text, output_path):
@@ -90,7 +88,6 @@ jobs:
               else:
                   print(f"Failed to generate audio: {response.text}")
 
-          # Process Files
           for filepath in files_to_process:
               translations = extract_translation(filepath)
               if translations:
@@ -98,3 +95,6 @@ jobs:
                   for idx, line in enumerate(translations, start=1):
                       audio_output_path = os.path.join(output_dir, f"{base_filename}-{idx}.mp3")
                       generate_audio(line, audio_output_path)
+          EOF
+
+          python generate_audio.py
