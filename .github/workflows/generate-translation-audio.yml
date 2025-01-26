@@ -1,9 +1,9 @@
-name: Generate Audio using Google Text-to-Speech
+name: Generate Audio from Translation
 
 on:
   push:
     paths:
-      - processed/**
+      - processed/**  # Automatically trigger on new files in the processed directory
   workflow_dispatch:
     inputs:
       file_date:
@@ -26,9 +26,9 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests
+        pip install requests google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
 
-    - name: Process translation file and generate audio
+    - name: Process translation file
       env:
         GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
       run: |
@@ -36,8 +36,11 @@ jobs:
         python <<EOF
         import os
         import re
-        import requests
+        import json
+        import base64
         from datetime import datetime
+        from google.oauth2.service_account import Credentials
+        from googleapiclient.discovery import build
 
         # Get inputs
         input_date = "${{ github.event.inputs.file_date }}" or datetime.utcnow().strftime("%Y-%m-%d")
@@ -68,35 +71,44 @@ jobs:
         translation = match.group(1).strip()
         print(f"Translation to process: {translation}")
 
-        # Set up the Google Text-to-Speech API request
-        api_url = "https://texttospeech.googleapis.com/v1/text:synthesize"
-        headers = {
-            "Authorization": f"Bearer {os.getenv('GOOGLE_API_KEY')}",
-            "Content-Type": "application/json"
-        }
-        payload = {
+        # Decode Google API key
+        encoded_key = os.getenv("GOOGLE_API_KEY")
+        if not encoded_key:
+            print("Error: GOOGLE_API_KEY is not set.")
+            exit(1)
+
+        key_json = base64.b64decode(encoded_key).decode("utf-8")
+        credentials_info = json.loads(key_json)
+        credentials = Credentials.from_service_account_info(credentials_info)
+
+        # Build the Text-to-Speech client
+        client = build("texttospeech", "v1", credentials=credentials)
+
+        # Prepare the request payload
+        request_body = {
             "input": {"text": translation},
             "voice": {
                 "languageCode": "ja-JP",
                 "name": "ja-JP-Standard-A"
             },
             "audioConfig": {
-                "audioEncoding": "LINEAR16"
+                "audioEncoding": "MP3"
             }
         }
 
         # Call the API
-        response = requests.post(api_url, json=payload, headers=headers)
-        if response.status_code == 200:
-            audio_content = response.json()["audioContent"]
+        response = client.text().synthesize(body=request_body).execute()
+
+        # Save the audio file
+        if 'audioContent' in response:
             os.makedirs(processed_audio_dir, exist_ok=True)
             base_filename = os.path.basename(target_file).replace(".txt", "")
-            output_path = os.path.join(processed_audio_dir, f"{base_filename}-audio.wav")
+            output_path = os.path.join(processed_audio_dir, f"{base_filename}-audio.mp3")
             with open(output_path, "wb") as audio_file:
-                audio_file.write(audio_content.encode("ISO-8859-1"))  # Decode Base64 string into binary
-            print(f"Audio content written to file: {output_path}")
+                audio_file.write(base64.b64decode(response['audioContent']))
+            print(f"Audio saved to {output_path}")
         else:
-            print("Error generating audio:", response.text)
+            print("Error: No audio content received from the API.")
             exit(1)
         EOF
 
@@ -109,6 +121,6 @@ jobs:
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
-        git add processed-audio/*.wav
+        git add processed-audio/*.mp3
         git commit -m "Add generated audio for file"
         git push
