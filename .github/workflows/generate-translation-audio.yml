@@ -1,6 +1,9 @@
 name: Generate Audio
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -8,65 +11,73 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      # Step 2: Set up Python environment (if needed for debugging purposes)
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.x"
 
-      # Step 3: Debug Environment Variables
-      - name: Debug Secrets and Variables
-        run: |
-          echo "Debugging Secrets and Variables..."
-          if [[ -z "${{ secrets.ELEVEN_LABS_API_KEY }}" ]]; then
-            echo "ELEVEN_LABS_API_KEY is not set!"
-            exit 1
-          else
-            echo "ELEVEN_LABS_API_KEY is set."
-          fi
-          echo "Using VOICE_ID: Mv8AjrYZCBkdsmDHNwcB"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
 
-      # Step 4: Send API Request Using cURL
-      - name: Generate Audio
-        env:
-          ELEVEN_LABS_API_KEY: ${{ secrets.ELEVEN_LABS_API_KEY }}
-        run: |
-          # Set Variables
-          API_URL="https://api.elevenlabs.io/v1/text-to-speech/Mv8AjrYZCBkdsmDHNwcB"
-          OUTPUT_FILE="processed-audio/test.mp3"
-          PAYLOAD='{"text": "こんにちは、元気ですか？"}'
+    - name: Generate audio
+      env:
+        ELEVEN_LABS_API_KEY: ${{ secrets.ELEVEN_LABS_API_KEY }}
+      run: |
+        cat <<EOF > generate_audio_https.py
+        import os
+        import requests
 
-          # Debugging: Log Variables
-          echo "API URL: $API_URL"
-          echo "Payload: $PAYLOAD"
+        # Load API key
+        ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
+        if not ELEVEN_LABS_API_KEY:
+            print("Error: ELEVEN_LABS_API_KEY is not set.")
+            exit(1)
 
-          # Create output directory
-          mkdir -p processed-audio
+        print(f"ELEVEN_LABS_API_KEY (partial): {ELEVEN_LABS_API_KEY[:5]}...")
 
-          # Make the API Request
-          echo "Sending request to Eleven Labs API..."
-          curl -X POST "$API_URL" \
-            -H "xi-api-key: $ELEVEN_LABS_API_KEY" \
-            -H "Content-Type: application/json" \
-            -d "$PAYLOAD" \
-            --output "$OUTPUT_FILE" \
-            --silent --show-error --fail
+        # Set API URL and headers
+        VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB".strip()
+        API_URL = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
+        headers = {
+            "xi-api-key": ELEVEN_LABS_API_KEY.strip(),
+            "Content-Type": "application/json",
+        }
 
-          # Verify Output
-          if [[ -f "$OUTPUT_FILE" ]]; then
-            echo "Audio successfully saved to $OUTPUT_FILE"
-          else
-            echo "Failed to generate audio. Please check the API response."
-            exit 1
-          fi
+        # Voice settings (adjust pitch, speed, or other options if needed)
+        voice_settings = {
+            "stability": 0.75,
+            "similarity_boost": 0.85
+        }
 
-      # Step 5: Optional Debugging - Log Output File (if generated)
-      - name: Log Output File
-        if: success()
-        run: |
-          echo "Output file contents (hex):"
-          xxd processed-audio/test.mp3 || echo "Output file not found."
+        # Payload
+        payload = {
+            "text": "こんにちは、元気ですか？",
+            "voice_settings": voice_settings
+        }
+
+        print("Payload:", payload)
+        print("Headers:", headers)
+
+        # Make the request
+        response = requests.post(API_URL, json=payload, headers=headers)
+        print("Response Code:", response.status_code)
+        print("Response Body:", response.text)
+
+        # Save the file if successful
+        if response.status_code == 200:
+            OUTPUT_DIR = "processed-audio"
+            os.makedirs(OUTPUT_DIR, exist_ok=True)
+            output_path = os.path.join(OUTPUT_DIR, "test.mp3")
+            with open(output_path, "wb") as audio_file:
+                audio_file.write(response.content)
+            print(f"Audio saved to {output_path}")
+        else:
+            print("Error:", response.text)
+        EOF
+
+        python generate_audio_https.py
