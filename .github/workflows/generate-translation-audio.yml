@@ -97,8 +97,8 @@ jobs:
         payload = {
             "text": kana_translation,
             "voice_settings": {
-                "stability": 0.5,
-                "similarity_boost": 0.75
+                "stability": 0.4,       # Balanced stability for more natural delivery
+                "similarity_boost": 0.85 # High similarity for conversational tone
             }
         }
 
