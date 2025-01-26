@@ -33,11 +33,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      # Step 4: Generate Audio
+      # Step 4: Write and Execute Python Script
       - name: Generate Audio Directly
         env:
           ELEVEN_LABS_API_KEY: ${{ secrets.ELEVEN_LABS_API_KEY }}
         run: |
+          cat <<EOF > generate_audio.py
           import os
           import requests
 
@@ -73,3 +74,6 @@ jobs:
           test_text = "こんにちは、元気ですか？"
           test_output_path = os.path.join(output_dir, "test.mp3")
           generate_audio(test_text, test_output_path)
+          EOF
+
+          python generate_audio.py
