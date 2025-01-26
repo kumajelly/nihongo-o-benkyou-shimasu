@@ -1,6 +1,9 @@
-name: Generate and Debug Audio
+name: Generate Audio
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -21,56 +24,64 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
 
-    - name: Generate audio with debugging
+    - name: Generate audio
       env:
         ELEVEN_LABS_API_KEY: ${{ secrets.ELEVEN_LABS_API_KEY }}
       run: |
-        echo "Setting up API call..."
-        mkdir -p processed-audio
-
-        python - <<EOF
+        cat <<EOF > generate_audio_https.py
         import os
         import requests
 
-        # Load API key and validate
+        # Load API key
         ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
         if not ELEVEN_LABS_API_KEY:
             print("Error: ELEVEN_LABS_API_KEY is not set.")
             exit(1)
 
+        print(f"ELEVEN_LABS_API_KEY (partial): {ELEVEN_LABS_API_KEY[:5]}...")
+
         # Set API URL and headers
-        VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB"
+        VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB".strip()
         API_URL = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
         headers = {
-            "xi-api-key": ELEVEN_LABS_API_KEY,
+            "xi-api-key": ELEVEN_LABS_API_KEY.strip(),
             "Content-Type": "application/json",
         }
+
         payload = {"text": "こんにちは、元気ですか？"}
-
-        # Log headers and payload
-        print("Headers:", headers)
         print("Payload:", payload)
+        print("Headers:", headers)
 
-        # Make API call
+        # Make the request
         response = requests.post(API_URL, json=payload, headers=headers)
-
-        # Log response details
         print("Response Code:", response.status_code)
         print("Response Headers:", response.headers)
-        print("Response Body:", response.text)
 
-        # Save audio file if successful
+        # Save response content for debugging
+        debug_path = "response_debug.txt"
+        with open(debug_path, "w") as debug_file:
+            debug_file.write(response.text)
+
+        # Save the file if successful
         if response.status_code == 200:
-            output_path = "processed-audio/test.mp3"
-            with open(output_path, "wb") as f:
-                f.write(response.content)
-            print(f"Audio file saved at {output_path}")
+            WORKSPACE = os.getenv("GITHUB_WORKSPACE", ".")
+            OUTPUT_DIR = os.path.join(WORKSPACE, "processed-audio")
+            os.makedirs(OUTPUT_DIR, exist_ok=True)
+            output_path = os.path.join(OUTPUT_DIR, "test.mp3")
+            with open(output_path, "wb") as audio_file:
+                audio_file.write(response.content)
+            print(f"Audio saved to {output_path}")
         else:
-            print(f"Failed to generate audio. Error: {response.status_code}, {response.text}")
-            exit(1)
+            print("Error:", response.text)
         EOF
 
-    - name: List processed files
-      run: |
-        echo "Listing files in processed-audio directory:"
-        ls -l processed-audio || echo "No files found in processed-audio directory."
+        python generate_audio_https.py
+
+    - name: List generated files
+      run: ls -l processed-audio || echo "No files generated"
+
+    - name: Upload audio artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: generated-audio
+        path: processed-audio/test.mp3
