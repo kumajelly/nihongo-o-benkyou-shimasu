@@ -17,23 +17,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Step 2: Setup Python environment
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      # Step 3: Install Dependencies
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests
 
-      # Step 4: Generate Audio via HTTPS
       - name: Generate Audio Directly
         env:
           ELEVEN_LABS_API_KEY: ${{ secrets.ELEVEN_LABS_API_KEY }}
@@ -44,7 +40,14 @@ jobs:
 
           # Configuration
           ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
-          VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB".strip()  # Ensure no trailing spaces
+          if not ELEVEN_LABS_API_KEY:
+              print("Error: ELEVEN_LABS_API_KEY is not set.")
+              exit(1)
+
+          # Debugging: Log the partial API key (for debugging purposes only)
+          print(f"ELEVEN_LABS_API_KEY (partial): {ELEVEN_LABS_API_KEY[:5]}...")
+
+          VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB".strip()
           API_URL = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
           OUTPUT_DIR = "processed-audio"
           os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -60,9 +63,12 @@ jobs:
               }
               print("Sending request to ElevenLabs API...")
               print(f"Payload: {payload}")
+              print(f"Headers: {headers}")
+
               response = requests.post(API_URL, json=payload, headers=headers)
               print("Response Code:", response.status_code)
               print("Response Headers:", response.headers)
+              print("Response Body:", response.text)
 
               if response.status_code == 200:
                   with open(output_path, "wb") as audio_file:
