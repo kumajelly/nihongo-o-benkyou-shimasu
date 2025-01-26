@@ -80,7 +80,12 @@ jobs:
             "xi-api-key": ELEVEN_LABS_API_KEY.strip(),
             "Content-Type": "application/json",
         }
-        payload = {"text": translation}
+        payload = {
+            "text": translation,
+            "voice_settings": {
+                "language_code": "ja-JP"  # Explicitly set the language to Japanese
+            }
+        }
 
         # Generate audio
         response = requests.post(API_URL, json=payload, headers=headers)
