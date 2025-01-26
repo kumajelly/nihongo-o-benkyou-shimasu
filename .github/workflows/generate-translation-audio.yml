@@ -91,9 +91,9 @@ jobs:
         payload = {
             "text": sanitized_translation,
             "voice_settings": {
-                "language_code": "ja-JP",  # Japanese language code
-                "stability": 0.2,          # Balanced stability for smoother pronunciation
-                "similarity_boost": 0.8    # High similarity for natural, conversational tone
+                "language_code": "ja",  # Corrected language code for Japanese
+                "stability": 0.2,       # Balanced stability for smoother pronunciation
+                "similarity_boost": 0.8 # High similarity for natural, conversational tone
             }
         }
 
