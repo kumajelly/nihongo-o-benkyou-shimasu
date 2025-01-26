@@ -82,7 +82,7 @@ jobs:
             print("Error: ELEVEN_LABS_API_KEY is not set.")
             exit(1)
 
-        VOICE_ID = "3JDquces8E8bkmvbh6Bc"
+        VOICE_ID = "3JDquces8E8bkmvbh6Bc"  # Multilingual v2 model voice ID
         API_URL = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
         headers = {
             "xi-api-key": ELEVEN_LABS_API_KEY.strip(),
@@ -92,8 +92,8 @@ jobs:
             "text": sanitized_translation,
             "voice_settings": {
                 "language_code": "ja",  # Correct language code for Japanese
-                "stability": 0.3,       # Adjusted for conversational tone
-                "similarity_boost": 0.9 # Enhances natural delivery
+                "stability": 1.0,       # Maximum stability
+                "similarity_boost": 0.0 # Minimum style for neutral tone
             }
         }
 
