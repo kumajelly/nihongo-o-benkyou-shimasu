@@ -84,8 +84,8 @@ jobs:
             "text": translation,
             "voice_settings": {
                 "language_code": "ja-JP",  # Explicitly set the language to Japanese
-                "stability": 0.5,           # Default value for stability
-                "similarity_boost": 0.8    # Default value for similarity boost
+                "stability": 0.3,          # More expressive for conversational tone
+                "similarity_boost": 0.9    # Closely match original voice's tone
             }
         }
 
