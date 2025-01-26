@@ -88,7 +88,7 @@ jobs:
             print("Error: ELEVEN_LABS_API_KEY is not set.")
             exit(1)
 
-        VOICE_ID = "3JDquces8E8bkmvbh6Bc"  # Updated voice ID
+        VOICE_ID = "j210dv0vWm7fCknyQpbA"  # Updated voice ID
         API_URL = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
         headers = {
             "xi-api-key": ELEVEN_LABS_API_KEY.strip(),
