@@ -70,7 +70,7 @@ jobs:
             os.makedirs(OUTPUT_DIR, exist_ok=True)
 
             # Use the current date as filename
-            current_date = datetime.now().strftime("%Y-%m-%d")
+            current_date = datetime.utcnow().strftime("%Y-%m-%d")
             output_path = os.path.join(OUTPUT_DIR, f"{current_date}.mp3")
             with open(output_path, "wb") as audio_file:
                 audio_file.write(response.content)
