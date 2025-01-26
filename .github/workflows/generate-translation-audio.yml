@@ -1,10 +1,16 @@
 name: Generate Translation Audio
 
 on:
-  workflow_dispatch: # Allows manual triggering of the workflow
-  push: # Automatically triggers on new file uploads
+  workflow_dispatch: # Allows manual triggering of the workflow with input
+    inputs:
+      date:
+        description: "Date to process (e.g., 2025-01-10)"
+        required: true
+        default: ""
+
+  push: # Automatically triggers when daily summaries are processed
     paths:
-      - processed/*.txt # Trigger when new processed files are added to the 'processed' directory
+      - processed/*.txt # Monitor the 'processed' directory for new files
 
 jobs:
   generate-audio:
@@ -35,10 +41,27 @@ jobs:
           import os
           import re
           import requests
+          from datetime import datetime
 
           ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
           API_URL = "https://api.elevenlabs.io/v1/text-to-speech"
           VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB"  # Voice ID provided
+          processed_dir = "processed"
+          output_dir = "processed-audio"
+          os.makedirs(output_dir, exist_ok=True)
+
+          # Fetch the selected date from GitHub Actions input
+          selected_date = os.getenv("INPUT_DATE")
+          if selected_date:
+              filename = f"{processed_dir}/{selected_date}.txt"
+              if os.path.exists(filename):
+                  files_to_process = [filename]
+              else:
+                  print(f"File for date {selected_date} not found!")
+                  exit(1)
+          else:
+              # Automatic trigger will process all new files
+              files_to_process = [os.path.join(processed_dir, f) for f in os.listdir(processed_dir) if f.endswith(".txt")]
 
           def extract_translation(filepath):
               with open(filepath, 'r', encoding='utf-8') as file:
@@ -65,15 +88,10 @@ jobs:
               else:
                   print(f"Failed to generate audio: {response.text}")
 
-          processed_dir = "processed"
-          output_dir = "processed-audio"
-          os.makedirs(output_dir, exist_ok=True)
-
-          for filename in os.listdir(processed_dir):
-              if filename.endswith(".txt"):
-                  filepath = os.path.join(processed_dir, filename)
-                  translations = extract_translation(filepath)
-                  if translations:
-                      for idx, line in enumerate(translations, start=1):
-                          audio_output_path = os.path.join(output_dir, f"{filename}-{idx}.mp3")
-                          generate_audio(line, audio_output_path)
+          for filepath in files_to_process:
+              translations = extract_translation(filepath)
+              if translations:
+                  base_filename = os.path.basename(filepath).replace(".txt", "")
+                  for idx, line in enumerate(translations, start=1):
+                      audio_output_path = os.path.join(output_dir, f"{base_filename}-{idx}.mp3")
+                      generate_audio(line, audio_output_path)
