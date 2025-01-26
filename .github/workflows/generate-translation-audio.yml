@@ -86,8 +86,8 @@ jobs:
         response = requests.post(API_URL, json=payload, headers=headers)
         if response.status_code == 200:
             os.makedirs(processed_audio_dir, exist_ok=True)
-            current_date = datetime.utcnow().strftime("%Y-%m-%d")
-            output_path = os.path.join(processed_audio_dir, f"{current_date}.mp3")
+            base_filename = os.path.basename(target_file).replace(".txt", "")
+            output_path = os.path.join(processed_audio_dir, f"{base_filename}-audio.mp3")
             with open(output_path, "wb") as audio_file:
                 audio_file.write(response.content)
             print(f"Audio saved to {output_path}")
@@ -106,5 +106,5 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add processed-audio/*.mp3
-        git commit -m "Add generated audio for ${GITHUB_EVENT_NAME}"
+        git commit -m "Add generated audio for file"
         git push
