@@ -68,13 +68,8 @@ jobs:
         translation = match.group(1).strip()
         print(f"Original translation to process: {translation}")
 
-        # Sanitize the extracted translation text to ensure Japanese-only content
-        sanitized_translation = "".join(filter(lambda x: re.match(r"[\u3000-\u30FF\u4E00-\u9FFF]", x), translation))
-        if not sanitized_translation:
-            print("Error: No valid Japanese text found in the translation section.")
-            exit(1)
-
-        print(f"Sanitized translation to process: {sanitized_translation}")
+        # Wrap the translation in a phoneme tag for Japanese
+        phoneme_translation = f'<phoneme alphabet="ipa" lang="ja">{translation}</phoneme>'
 
         # Load API key and set headers
         ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
@@ -82,16 +77,16 @@ jobs:
             print("Error: ELEVEN_LABS_API_KEY is not set.")
             exit(1)
 
-        VOICE_ID = "3JDquces8E8bkmvbh6Bc"  # Multilingual v2 model voice ID
+        VOICE_ID = "eleven_turbo_v2"  # Updated to use the Eleven Turbo v2 model
         API_URL = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
         headers = {
             "xi-api-key": ELEVEN_LABS_API_KEY.strip(),
             "Content-Type": "application/json",
         }
         payload = {
-            "text": sanitized_translation,
+            "text": phoneme_translation,
             "voice_settings": {
-                "language_code": "ja",  # Correct language code for Japanese
+                "language_code": "ja",  # Explicitly set to Japanese
                 "stability": 1.0,       # Maximum stability
                 "similarity_boost": 0.0 # Minimum style for neutral tone
             }
