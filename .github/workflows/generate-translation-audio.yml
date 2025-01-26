@@ -40,12 +40,18 @@ jobs:
         import requests
         import fugashi  # For tokenizing Japanese text
 
-        # Helper function to convert text to Hiragana and Katakana
-        def to_hiragana_katakana(text):
+        # Helper function to convert Kanji to Hiragana/Katakana
+        def kanji_to_hiragana_katakana(text):
             tagger = fugashi.Tagger()
-            hiragana = ''.join(token.feature.kana or token.surface for token in tagger(text))
-            katakana = ''.join(token.feature.katakana or token.surface for token in tagger(text))
-            return hiragana, katakana
+            result = []
+            for token in tagger(text):
+                kana = token.feature.kana or token.surface  # Convert Kanji to Kana
+                if kana:
+                    if token.feature.katakana:  # Preserve Katakana for loanwords
+                        result.append(token.surface)  # Keep Katakana as-is
+                    else:
+                        result.append(kana)  # Convert everything else to Hiragana
+            return ''.join(result)
 
         # Get inputs
         input_date = "${{ github.event.inputs.file_date }}" or datetime.utcnow().strftime("%Y-%m-%d")
@@ -76,10 +82,9 @@ jobs:
         translation = match.group(1).strip()
         print(f"Original translation to process: {translation}")
 
-        # Convert translation to Hiragana and Katakana
-        hiragana_translation, katakana_translation = to_hiragana_katakana(translation)
-        print(f"Hiragana text: {hiragana_translation}")
-        print(f"Katakana text: {katakana_translation}")
+        # Convert Kanji text to a mix of Hiragana/Katakana
+        processed_translation = kanji_to_hiragana_katakana(translation)
+        print(f"Processed translation to process: {processed_translation}")
 
         # Load API key and set headers
         ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
@@ -94,30 +99,26 @@ jobs:
             "Content-Type": "application/json",
         }
 
-        # Function to send translation to ElevenLabs API
-        def generate_audio(text, suffix):
-            payload = {
-                "text": text,
-                "voice_settings": {
-                    "stability": 1.0,       # Maximum stability for consistent pronunciation
-                    "similarity_boost": 0.0 # Neutral tone for the voice
-                }
+        # Generate audio
+        payload = {
+            "text": processed_translation,
+            "voice_settings": {
+                "stability": 1.0,       # Maximum stability for consistent pronunciation
+                "similarity_boost": 0.0 # Neutral tone for the voice
             }
-            response = requests.post(API_URL, json=payload, headers=headers)
-            if response.status_code == 200:
-                os.makedirs(processed_audio_dir, exist_ok=True)
-                base_filename = os.path.basename(target_file).replace(".txt", f"-audio-{suffix}.mp3")
-                output_path = os.path.join(processed_audio_dir, base_filename)
-                with open(output_path, "wb") as audio_file:
-                    audio_file.write(response.content)
-                print(f"Audio saved to {output_path}")
-            else:
-                print(f"Error generating audio for {suffix}:", response.text)
-                exit(1)
+        }
 
-        # Generate audio for both Hiragana and Katakana translations
-        generate_audio(hiragana_translation, "hiragana")
-        generate_audio(katakana_translation, "katakana")
+        response = requests.post(API_URL, json=payload, headers=headers)
+        if response.status_code == 200:
+            os.makedirs(processed_audio_dir, exist_ok=True)
+            base_filename = os.path.basename(target_file).replace(".txt", "")
+            output_path = os.path.join(processed_audio_dir, f"{base_filename}-audio.mp3")
+            with open(output_path, "wb") as audio_file:
+                audio_file.write(response.content)
+            print(f"Audio saved to {output_path}")
+        else:
+            print("Error generating audio:", response.text)
+            exit(1)
         EOF
 
     - name: Verify generated audio
@@ -130,5 +131,5 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add processed-audio/*.mp3
-        git commit -m "Add generated audio files for translations"
+        git commit -m "Add generated audio file for translation"
         git push
