@@ -1,34 +1,38 @@
-name: Generate Audio with ElevenLabs
+name: Generate Audio
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   generate-audio:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v3
 
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.x
+        python-version: "3.x"
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install requests
 
-    - name: Generate audio file
+    - name: Generate audio
+      env:
+        ELEVEN_LABS_API_KEY: ${{ secrets.ELEVEN_LABS_API_KEY }}
       run: |
         cat <<EOF > generate_audio_https.py
         import os
         import requests
 
+        # Load API key
         ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
         if not ELEVEN_LABS_API_KEY:
             print("Error: ELEVEN_LABS_API_KEY is not set.")
@@ -36,26 +40,27 @@ jobs:
 
         print(f"ELEVEN_LABS_API_KEY (partial): {ELEVEN_LABS_API_KEY[:5]}...")
 
+        # Set API URL and headers
         VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB".strip()
         API_URL = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
-        OUTPUT_DIR = "processed-audio"
-        os.makedirs(OUTPUT_DIR, exist_ok=True)
-
         headers = {
-            "Authorization": f"Bearer {ELEVEN_LABS_API_KEY.strip()}",
+            "xi-api-key": ELEVEN_LABS_API_KEY.strip(),
             "Content-Type": "application/json",
         }
-        payload = {"text": "こんにちは、元気ですか？"}
 
-        print("Sending request to ElevenLabs API...")
+        payload = {"text": "こんにちは、元気ですか？"}
         print("Payload:", payload)
         print("Headers:", headers)
 
+        # Make the request
         response = requests.post(API_URL, json=payload, headers=headers)
         print("Response Code:", response.status_code)
         print("Response Body:", response.text)
 
+        # Save the file if successful
         if response.status_code == 200:
+            OUTPUT_DIR = "processed-audio"
+            os.makedirs(OUTPUT_DIR, exist_ok=True)
             output_path = os.path.join(OUTPUT_DIR, "test.mp3")
             with open(output_path, "wb") as audio_file:
                 audio_file.write(response.content)
@@ -65,5 +70,3 @@ jobs:
         EOF
 
         python generate_audio_https.py
-      env:
-        ELEVEN_LABS_API_KEY: ${{ secrets.ELEVEN_LABS_API_KEY }}
