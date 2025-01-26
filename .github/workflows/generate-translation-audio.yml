@@ -29,13 +29,11 @@ jobs:
         import os
         import requests
 
-        # Configuration
         ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
         if not ELEVEN_LABS_API_KEY:
             print("Error: ELEVEN_LABS_API_KEY is not set.")
             exit(1)
 
-        # Debugging: Log the partial API key (for debugging purposes only)
         print(f"ELEVEN_LABS_API_KEY (partial): {ELEVEN_LABS_API_KEY[:5]}...")
 
         VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB".strip()
@@ -43,35 +41,27 @@ jobs:
         OUTPUT_DIR = "processed-audio"
         os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-        # Function to generate audio
-        def generate_audio(text, output_path):
-            headers = {
-                "Authorization": f"Bearer {ELEVEN_LABS_API_KEY}",
-                "Content-Type": "application/json",
-            }
-            payload = {
-                "text": text,
-            }
-            print("Sending request to ElevenLabs API...")
-            print(f"Payload: {payload}")
-            print(f"Headers: {headers}")
+        headers = {
+            "Authorization": f"Bearer {ELEVEN_LABS_API_KEY.strip()}",
+            "Content-Type": "application/json",
+        }
+        payload = {"text": "こんにちは、元気ですか？"}
 
-            response = requests.post(API_URL, json=payload, headers=headers)
-            print("Response Code:", response.status_code)
-            print("Response Headers:", response.headers)
-            print("Response Body:", response.text)
+        print("Sending request to ElevenLabs API...")
+        print("Payload:", payload)
+        print("Headers:", headers)
 
-            if response.status_code == 200:
-                with open(output_path, "wb") as audio_file:
-                    audio_file.write(response.content)
-                print(f"Audio saved to {output_path}")
-            else:
-                print("Error:", response.text)
+        response = requests.post(API_URL, json=payload, headers=headers)
+        print("Response Code:", response.status_code)
+        print("Response Body:", response.text)
 
-        # Test example
-        test_text = "こんにちは、元気ですか？"
-        test_output_path = os.path.join(OUTPUT_DIR, "test.mp3")
-        generate_audio(test_text, test_output_path)
+        if response.status_code == 200:
+            output_path = os.path.join(OUTPUT_DIR, "test.mp3")
+            with open(output_path, "wb") as audio_file:
+                audio_file.write(response.content)
+            print(f"Audio saved to {output_path}")
+        else:
+            print("Error:", response.text)
         EOF
 
         python generate_audio_https.py
