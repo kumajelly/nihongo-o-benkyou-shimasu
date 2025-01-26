@@ -50,7 +50,7 @@ jobs:
               sys.exit(1)
 
           API_URL = "https://api.elevenlabs.io/v1/text-to-speech"
-          VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB"
+          VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB".strip()  # Ensure no trailing spaces
           output_dir = "processed-audio"
           os.makedirs(output_dir, exist_ok=True)
 
