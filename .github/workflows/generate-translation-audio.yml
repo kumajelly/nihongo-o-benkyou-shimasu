@@ -26,7 +26,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests fugashi unidic-lite
+        pip install requests fugashi unidic-lite pykakasi
 
     - name: Process translation file
       env:
@@ -38,20 +38,19 @@ jobs:
         import re
         from datetime import datetime
         import requests
-        import fugashi  # For tokenizing Japanese text
+        import fugashi
+        import pykakasi
 
-        # Helper function to convert Kanji to Hiragana/Katakana
-        def kanji_to_hiragana_katakana(text):
-            tagger = fugashi.Tagger()
-            result = []
-            for token in tagger(text):
-                kana = token.feature.kana or token.surface  # Convert Kanji to Kana
-                if kana:
-                    if token.feature.katakana:  # Preserve Katakana for loanwords
-                        result.append(token.surface)  # Keep Katakana as-is
-                    else:
-                        result.append(kana)  # Convert everything else to Hiragana
-            return ''.join(result)
+        # Helper function to convert text into phonetic Japanese
+        def convert_to_phonetic_japanese(text):
+            kakasi = pykakasi.kakasi()
+            kakasi.setMode("H", "a")  # Convert Hiragana to Roman
+            kakasi.setMode("K", "a")  # Convert Katakana to Roman
+            kakasi.setMode("J", "a")  # Convert Kanji to Roman
+            kakasi.setMode("r", "Hepburn")  # Use Hepburn Romanization
+            converter = kakasi.getConverter()
+            result = converter.do(text)
+            return result
 
         # Get inputs
         input_date = "${{ github.event.inputs.file_date }}" or datetime.utcnow().strftime("%Y-%m-%d")
@@ -82,9 +81,9 @@ jobs:
         translation = match.group(1).strip()
         print(f"Original translation to process: {translation}")
 
-        # Convert Kanji text to a mix of Hiragana/Katakana
-        processed_translation = kanji_to_hiragana_katakana(translation)
-        print(f"Processed translation to process: {processed_translation}")
+        # Convert text to phonetic Japanese
+        phonetic_translation = convert_to_phonetic_japanese(translation)
+        print(f"Phonetic translation to process: {phonetic_translation}")
 
         # Load API key and set headers
         ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
@@ -101,7 +100,7 @@ jobs:
 
         # Generate audio
         payload = {
-            "text": processed_translation,
+            "text": phonetic_translation,
             "voice_settings": {
                 "stability": 1.0,       # Maximum stability for consistent pronunciation
                 "similarity_boost": 0.0 # Neutral tone for the voice
