@@ -28,7 +28,8 @@ jobs:
       env:
         ELEVEN_LABS_API_KEY: ${{ secrets.ELEVEN_LABS_API_KEY }}
       run: |
-        cat <<EOF > generate_audio_https.py
+        mkdir -p processed-audio
+        python <<EOF
         import os
         import requests
         from datetime import datetime
@@ -39,8 +40,6 @@ jobs:
             print("Error: ELEVEN_LABS_API_KEY is not set.")
             exit(1)
 
-        print(f"ELEVEN_LABS_API_KEY (partial): {ELEVEN_LABS_API_KEY[:5]}...")
-
         # Set API URL and headers
         VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB".strip()
         API_URL = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
@@ -50,18 +49,9 @@ jobs:
         }
 
         payload = {"text": "こんにちは、元気ですか？"}
-        print("Payload:", payload)
-        print("Headers:", headers)
 
         # Make the request
         response = requests.post(API_URL, json=payload, headers=headers)
-        print("Response Code:", response.status_code)
-        print("Response Headers:", response.headers)
-
-        # Save response content for debugging
-        debug_path = "response_debug.txt"
-        with open(debug_path, "w") as debug_file:
-            debug_file.write(response.text)
 
         # Save the file if successful
         if response.status_code == 200:
@@ -79,10 +69,10 @@ jobs:
             print("Error:", response.text)
         EOF
 
-        python generate_audio_https.py
-
-    - name: List generated files
-      run: ls -l processed-audio || echo "No files generated"
+    - name: Verify generated audio
+      run: |
+        echo "Checking processed-audio directory contents:"
+        ls -l processed-audio || echo "No files generated"
 
     - name: Upload audio artifact
       uses: actions/upload-artifact@v4
