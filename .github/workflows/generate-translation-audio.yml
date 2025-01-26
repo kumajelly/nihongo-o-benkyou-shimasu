@@ -71,16 +71,13 @@ jobs:
 
     - name: Verify generated audio
       run: |
-        echo "Checking processed-audio directory contents BEFORE uploading:"
+        echo "Checking processed-audio directory contents BEFORE commit:"
         ls -l processed-audio || echo "No files generated"
 
-    - name: Upload audio artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: generated-audio
-        path: processed-audio/*.mp3
-
-    - name: Verify artifact upload
+    - name: Commit audio file to repository
       run: |
-        echo "Checking processed-audio directory contents AFTER uploading:"
-        ls -l processed-audio || echo "No files found"
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add processed-audio/
+        git commit -m "Add generated audio file for $(date -u +'%Y-%m-%d')"
+        git push
