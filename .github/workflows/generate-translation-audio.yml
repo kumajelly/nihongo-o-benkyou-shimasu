@@ -33,44 +33,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      # Step 4: Generate and Run Python Script
-      - name: Run Translation Audio Generator
+      # Step 4: Generate Audio
+      - name: Generate Audio Directly
         env:
           ELEVEN_LABS_API_KEY: ${{ secrets.ELEVEN_LABS_API_KEY }}
         run: |
-          cat <<EOF > generate_audio.py
           import os
-          import re
           import requests
 
+          # Configuration
           ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
           API_URL = "https://api.elevenlabs.io/v1/text-to-speech"
           VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB"
-          processed_dir = "processed"
           output_dir = "processed-audio"
           os.makedirs(output_dir, exist_ok=True)
 
-          # Fetch manual input date (if any)
-          selected_date = "${{ github.event.inputs.date }}"
-          if selected_date:
-              filename = f"{processed_dir}/{selected_date}.txt"
-              if os.path.exists(filename):
-                  files_to_process = [filename]
-              else:
-                  print(f"File for date {selected_date} not found!")
-                  exit(1)
-          else:
-              # Process all files in automatic mode
-              files_to_process = [os.path.join(processed_dir, f) for f in os.listdir(processed_dir) if f.endswith(".txt")]
-
-          def extract_translation(filepath):
-              with open(filepath, 'r', encoding='utf-8') as file:
-                  content = file.read()
-              match = re.search(r"\*\*Translation\*\*:\n(.*?)\n\n", content, re.DOTALL)
-              if match:
-                  return match.group(1).strip().split("\n")
-              return []
-
+          # Function to generate audio
           def generate_audio(text, output_path):
               headers = {
                   "Authorization": f"Bearer {ELEVEN_LABS_API_KEY}",
@@ -78,23 +56,20 @@ jobs:
               }
               payload = {
                   "text": text,
-                  "voice_id": VOICE_ID
+                  "voice_id": VOICE_ID,
               }
               response = requests.post(API_URL, json=payload, headers=headers)
+              print(f"Payload: {payload}")
+              print(f"Response Code: {response.status_code}")
+              print(f"Response: {response.text}")
               if response.status_code == 200:
                   with open(output_path, "wb") as audio_file:
                       audio_file.write(response.content)
                   print(f"Audio saved to {output_path}")
               else:
-                  print(f"Failed to generate audio: {response.text}")
+                  print(f"Failed to generate audio: {response.status_code}, {response.text}")
 
-          for filepath in files_to_process:
-              translations = extract_translation(filepath)
-              if translations:
-                  base_filename = os.path.basename(filepath).replace(".txt", "")
-                  for idx, line in enumerate(translations, start=1):
-                      audio_output_path = os.path.join(output_dir, f"{base_filename}-{idx}.mp3")
-                      generate_audio(line, audio_output_path)
-          EOF
-
-          python generate_audio.py
+          # Test example
+          test_text = "こんにちは、元気ですか？"
+          test_output_path = os.path.join(output_dir, "test.mp3")
+          generate_audio(test_text, test_output_path)
