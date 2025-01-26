@@ -1,4 +1,4 @@
-name: Generate Audio from Translation
+name: Generate Audio from Kana Translation
 
 on:
   push:
@@ -26,7 +26,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests fugashi unidic-lite pykakasi
+        pip install requests pykakasi
 
     - name: Process translation file
       env:
@@ -36,21 +36,18 @@ jobs:
         python <<EOF
         import os
         import re
+        import pykakasi
         from datetime import datetime
         import requests
-        import fugashi
-        import pykakasi
 
-        # Helper function to convert text into phonetic Japanese
-        def convert_to_phonetic_japanese(text):
+        # Helper function to convert Kanji to Kana
+        def convert_to_kana(text):
             kakasi = pykakasi.kakasi()
-            kakasi.setMode("H", "a")  # Convert Hiragana to Roman
-            kakasi.setMode("K", "a")  # Convert Katakana to Roman
-            kakasi.setMode("J", "a")  # Convert Kanji to Roman
-            kakasi.setMode("r", "Hepburn")  # Use Hepburn Romanization
+            kakasi.setMode("H", "H")  # Preserve Hiragana
+            kakasi.setMode("K", "K")  # Preserve Katakana
+            kakasi.setMode("J", "H")  # Convert Kanji to Hiragana
             converter = kakasi.getConverter()
-            result = converter.do(text)
-            return result
+            return converter.do(text)
 
         # Get inputs
         input_date = "${{ github.event.inputs.file_date }}" or datetime.utcnow().strftime("%Y-%m-%d")
@@ -68,10 +65,10 @@ jobs:
         with open(target_file, "r", encoding="utf-8") as file:
             content = file.read()
 
-        # Use regex for fuzzy matching to extract the translation section
+        # Use regex to extract the translation section
         match = re.search(
-            r"1[.\s]*(?:\*\*Translation\*\*|Translation):?\s*(.*?)(?=\n[2-9][.\s]|$)", 
-            content, 
+            r"1[.\s]*(?:\*\*Translation\*\*|Translation):?\s*(.*?)(?=\n[2-9][.\s]|$)",
+            content,
             re.S
         )
         if not match:
@@ -81,9 +78,9 @@ jobs:
         translation = match.group(1).strip()
         print(f"Original translation to process: {translation}")
 
-        # Convert text to phonetic Japanese
-        phonetic_translation = convert_to_phonetic_japanese(translation)
-        print(f"Phonetic translation to process: {phonetic_translation}")
+        # Convert the translation to Kana
+        kana_translation = convert_to_kana(translation)
+        print(f"Kana translation to process: {kana_translation}")
 
         # Load API key and set headers
         ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
@@ -91,22 +88,21 @@ jobs:
             print("Error: ELEVEN_LABS_API_KEY is not set.")
             exit(1)
 
-        VOICE_ID = "3JDquces8E8bkmvbh6Bc"  # Voice ID
+        VOICE_ID = "3JDquces8E8bkmvbh6Bc"  # Updated voice ID
         API_URL = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
         headers = {
             "xi-api-key": ELEVEN_LABS_API_KEY.strip(),
             "Content-Type": "application/json",
         }
-
-        # Generate audio
         payload = {
-            "text": phonetic_translation,
+            "text": kana_translation,
             "voice_settings": {
-                "stability": 1.0,       # Maximum stability for consistent pronunciation
-                "similarity_boost": 0.0 # Neutral tone for the voice
+                "stability": 0.5,
+                "similarity_boost": 0.75
             }
         }
 
+        # Generate audio
         response = requests.post(API_URL, json=payload, headers=headers)
         if response.status_code == 200:
             os.makedirs(processed_audio_dir, exist_ok=True)
@@ -125,10 +121,10 @@ jobs:
         echo "Checking processed-audio directory contents:"
         ls -l processed-audio || echo "No files generated"
 
-    - name: Commit and push audio files
+    - name: Commit and push audio file
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add processed-audio/*.mp3
-        git commit -m "Add generated audio file for translation"
+        git commit -m "Add generated audio for file"
         git push
