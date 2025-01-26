@@ -39,10 +39,6 @@ jobs:
         from datetime import datetime
         import requests
         import fugashi  # For tokenizing Japanese text
-        from unidic_lite import download
-
-        # Download unidic-lite dictionary if not already present
-        download()
 
         # Helper function to convert text to Hiragana
         def to_hiragana(text):
