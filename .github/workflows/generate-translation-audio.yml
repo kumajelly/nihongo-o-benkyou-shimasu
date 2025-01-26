@@ -40,10 +40,12 @@ jobs:
         import requests
         import fugashi  # For tokenizing Japanese text
 
-        # Helper function to convert text to Hiragana
-        def to_hiragana(text):
+        # Helper function to convert text to Hiragana and Katakana
+        def to_hiragana_katakana(text):
             tagger = fugashi.Tagger()
-            return ''.join(token.feature.kana or token.surface for token in tagger(text))
+            hiragana = ''.join(token.feature.kana or token.surface for token in tagger(text))
+            katakana = ''.join(token.feature.katakana or token.surface for token in tagger(text))
+            return hiragana, katakana
 
         # Get inputs
         input_date = "${{ github.event.inputs.file_date }}" or datetime.utcnow().strftime("%Y-%m-%d")
@@ -74,9 +76,10 @@ jobs:
         translation = match.group(1).strip()
         print(f"Original translation to process: {translation}")
 
-        # Convert translation to Hiragana
-        hiragana_translation = to_hiragana(translation)
-        print(f"Converted Hiragana text: {hiragana_translation}")
+        # Convert translation to Hiragana and Katakana
+        hiragana_translation, katakana_translation = to_hiragana_katakana(translation)
+        print(f"Hiragana text: {hiragana_translation}")
+        print(f"Katakana text: {katakana_translation}")
 
         # Load API key and set headers
         ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
@@ -84,32 +87,37 @@ jobs:
             print("Error: ELEVEN_LABS_API_KEY is not set.")
             exit(1)
 
-        VOICE_ID = "3JDquces8E8bkmvbh6Bc"  # Updated voice ID
+        VOICE_ID = "3JDquces8E8bkmvbh6Bc"  # Voice ID
         API_URL = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
         headers = {
             "xi-api-key": ELEVEN_LABS_API_KEY.strip(),
             "Content-Type": "application/json",
         }
-        payload = {
-            "text": hiragana_translation,
-            "voice_settings": {
-                "stability": 1.0,       # Maximum stability for consistent pronunciation
-                "similarity_boost": 0.0 # Neutral tone for the voice
-            }
-        }
 
-        # Generate audio
-        response = requests.post(API_URL, json=payload, headers=headers)
-        if response.status_code == 200:
-            os.makedirs(processed_audio_dir, exist_ok=True)
-            base_filename = os.path.basename(target_file).replace(".txt", "")
-            output_path = os.path.join(processed_audio_dir, f"{base_filename}-audio.mp3")
-            with open(output_path, "wb") as audio_file:
-                audio_file.write(response.content)
-            print(f"Audio saved to {output_path}")
-        else:
-            print("Error generating audio:", response.text)
-            exit(1)
+        # Function to send translation to ElevenLabs API
+        def generate_audio(text, suffix):
+            payload = {
+                "text": text,
+                "voice_settings": {
+                    "stability": 1.0,       # Maximum stability for consistent pronunciation
+                    "similarity_boost": 0.0 # Neutral tone for the voice
+                }
+            }
+            response = requests.post(API_URL, json=payload, headers=headers)
+            if response.status_code == 200:
+                os.makedirs(processed_audio_dir, exist_ok=True)
+                base_filename = os.path.basename(target_file).replace(".txt", f"-audio-{suffix}.mp3")
+                output_path = os.path.join(processed_audio_dir, base_filename)
+                with open(output_path, "wb") as audio_file:
+                    audio_file.write(response.content)
+                print(f"Audio saved to {output_path}")
+            else:
+                print(f"Error generating audio for {suffix}:", response.text)
+                exit(1)
+
+        # Generate audio for both Hiragana and Katakana translations
+        generate_audio(hiragana_translation, "hiragana")
+        generate_audio(katakana_translation, "katakana")
         EOF
 
     - name: Verify generated audio
@@ -117,10 +125,10 @@ jobs:
         echo "Checking processed-audio directory contents:"
         ls -l processed-audio || echo "No files generated"
 
-    - name: Commit and push audio file
+    - name: Commit and push audio files
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add processed-audio/*.mp3
-        git commit -m "Add generated audio for file"
+        git commit -m "Add generated audio files for translations"
         git push
