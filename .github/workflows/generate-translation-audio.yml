@@ -1,86 +1,79 @@
-name: Generate Translation Audio
+name: Generate Audio with ElevenLabs
 
 on:
-  workflow_dispatch: # Allows manual triggering of the workflow with input
-    inputs:
-      date:
-        description: "Date to process (e.g., 2025-01-10)"
-        required: false
-        default: ""
-
-  push: # Automatically triggers when new processed files are added
-    paths:
-      - processed/*.txt
+  push:
+    branches:
+      - main
 
 jobs:
   generate-audio:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.x
 
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
 
-      - name: Generate Audio Directly
-        env:
-          ELEVEN_LABS_API_KEY: ${{ secrets.ELEVEN_LABS_API_KEY }}
-        run: |
-          cat <<EOF > generate_audio_https.py
-          import os
-          import requests
+    - name: Generate audio file
+      run: |
+        cat <<EOF > generate_audio_https.py
+        import os
+        import requests
 
-          # Configuration
-          ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
-          if not ELEVEN_LABS_API_KEY:
-              print("Error: ELEVEN_LABS_API_KEY is not set.")
-              exit(1)
+        # Configuration
+        ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
+        if not ELEVEN_LABS_API_KEY:
+            print("Error: ELEVEN_LABS_API_KEY is not set.")
+            exit(1)
 
-          # Debugging: Log the partial API key (for debugging purposes only)
-          print(f"ELEVEN_LABS_API_KEY (partial): {ELEVEN_LABS_API_KEY[:5]}...")
+        # Debugging: Log the partial API key (for debugging purposes only)
+        print(f"ELEVEN_LABS_API_KEY (partial): {ELEVEN_LABS_API_KEY[:5]}...")
 
-          VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB".strip()
-          API_URL = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
-          OUTPUT_DIR = "processed-audio"
-          os.makedirs(OUTPUT_DIR, exist_ok=True)
+        VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB".strip()
+        API_URL = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
+        OUTPUT_DIR = "processed-audio"
+        os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-          # Function to generate audio
-          def generate_audio(text, output_path):
-              headers = {
-                  "Authorization": f"Bearer {ELEVEN_LABS_API_KEY}",
-                  "Content-Type": "application/json",
-              }
-              payload = {
-                  "text": text,
-              }
-              print("Sending request to ElevenLabs API...")
-              print(f"Payload: {payload}")
-              print(f"Headers: {headers}")
+        # Function to generate audio
+        def generate_audio(text, output_path):
+            headers = {
+                "Authorization": f"Bearer {ELEVEN_LABS_API_KEY}",
+                "Content-Type": "application/json",
+            }
+            payload = {
+                "text": text,
+            }
+            print("Sending request to ElevenLabs API...")
+            print(f"Payload: {payload}")
+            print(f"Headers: {headers}")
 
-              response = requests.post(API_URL, json=payload, headers=headers)
-              print("Response Code:", response.status_code)
-              print("Response Headers:", response.headers)
-              print("Response Body:", response.text)
+            response = requests.post(API_URL, json=payload, headers=headers)
+            print("Response Code:", response.status_code)
+            print("Response Headers:", response.headers)
+            print("Response Body:", response.text)
 
-              if response.status_code == 200:
-                  with open(output_path, "wb") as audio_file:
-                      audio_file.write(response.content)
-                  print(f"Audio saved to {output_path}")
-              else:
-                  print("Error:", response.text)
+            if response.status_code == 200:
+                with open(output_path, "wb") as audio_file:
+                    audio_file.write(response.content)
+                print(f"Audio saved to {output_path}")
+            else:
+                print("Error:", response.text)
 
-          # Test example
-          test_text = "こんにちは、元気ですか？"
-          test_output_path = os.path.join(OUTPUT_DIR, "test.mp3")
-          generate_audio(test_text, test_output_path)
-          EOF
+        # Test example
+        test_text = "こんにちは、元気ですか？"
+        test_output_path = os.path.join(OUTPUT_DIR, "test.mp3")
+        generate_audio(test_text, test_output_path)
+        EOF
 
-          python generate_audio_https.py
+        python generate_audio_https.py
+      env:
+        ELEVEN_LABS_API_KEY: ${{ secrets.ELEVEN_LABS_API_KEY }}
