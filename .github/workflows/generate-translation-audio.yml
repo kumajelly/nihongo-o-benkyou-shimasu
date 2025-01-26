@@ -41,9 +41,14 @@ jobs:
           cat <<EOF > generate_audio.py
           import os
           import requests
+          import sys
 
           # Configuration
           ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
+          if not ELEVEN_LABS_API_KEY:
+              print("Error: ELEVEN_LABS_API_KEY is not set.")
+              sys.exit(1)
+
           API_URL = "https://api.elevenlabs.io/v1/text-to-speech"
           VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB"
           output_dir = "processed-audio"
@@ -59,16 +64,18 @@ jobs:
                   "text": text,
                   "voice_id": VOICE_ID,
               }
+              print("Request Headers:", headers)
+              print("Request Payload:", payload)
               response = requests.post(API_URL, json=payload, headers=headers)
-              print(f"Payload: {payload}")
-              print(f"Response Code: {response.status_code}")
-              print(f"Response: {response.text}")
+              print("Response Code:", response.status_code)
+              print("Response Body:", response.text)
               if response.status_code == 200:
                   with open(output_path, "wb") as audio_file:
                       audio_file.write(response.content)
                   print(f"Audio saved to {output_path}")
               else:
                   print(f"Failed to generate audio: {response.status_code}, {response.text}")
+                  sys.exit(1)
 
           # Test example
           test_text = "こんにちは、元気ですか？"
