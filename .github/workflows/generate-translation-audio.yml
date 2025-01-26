@@ -31,6 +31,7 @@ jobs:
         cat <<EOF > generate_audio_https.py
         import os
         import requests
+        from datetime import datetime
 
         # Load API key
         ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
@@ -67,7 +68,10 @@ jobs:
             WORKSPACE = os.getenv("GITHUB_WORKSPACE", ".")
             OUTPUT_DIR = os.path.join(WORKSPACE, "processed-audio")
             os.makedirs(OUTPUT_DIR, exist_ok=True)
-            output_path = os.path.join(OUTPUT_DIR, "test.mp3")
+
+            # Use the current date as filename
+            current_date = datetime.now().strftime("%Y-%m-%d")
+            output_path = os.path.join(OUTPUT_DIR, f"{current_date}.mp3")
             with open(output_path, "wb") as audio_file:
                 audio_file.write(response.content)
             print(f"Audio saved to {output_path}")
@@ -81,7 +85,7 @@ jobs:
       run: ls -l processed-audio || echo "No files generated"
 
     - name: Upload audio artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: generated-audio
-        path: processed-audio/test.mp3
+        path: processed-audio/*.mp3
