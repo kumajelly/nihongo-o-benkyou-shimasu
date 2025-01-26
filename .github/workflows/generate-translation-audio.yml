@@ -66,7 +66,15 @@ jobs:
             exit(1)
 
         translation = match.group(1).strip()
-        print(f"Translation to process: {translation}")
+        print(f"Original translation to process: {translation}")
+
+        # Sanitize the extracted translation text to ensure Japanese-only content
+        sanitized_translation = "".join(filter(lambda x: re.match(r"[\u3000-\u30FF\u4E00-\u9FFF]", x), translation))
+        if not sanitized_translation:
+            print("Error: No valid Japanese text found in the translation section.")
+            exit(1)
+
+        print(f"Sanitized translation to process: {sanitized_translation}")
 
         # Load API key and set headers
         ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
@@ -81,11 +89,11 @@ jobs:
             "Content-Type": "application/json",
         }
         payload = {
-            "text": translation,
+            "text": sanitized_translation,
             "voice_settings": {
-                "language_code": "ja-JP",  # Explicitly set the language to Japanese
-                "stability": 0.3,          # More expressive for conversational tone
-                "similarity_boost": 0.9    # Closely match original voice's tone
+                "language_code": "ja-JP",  # Japanese language code
+                "stability": 0.2,          # Balanced stability for smoother pronunciation
+                "similarity_boost": 0.8    # High similarity for natural, conversational tone
             }
         }
 
