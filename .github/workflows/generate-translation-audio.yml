@@ -1,10 +1,14 @@
-name: Generate Audio
+name: Generate Audio from Translation
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - processed/**  # Automatically trigger on new files in the processed directory
   workflow_dispatch:
+    inputs:
+      file_date:
+        description: "Date of the file to process (YYYY-MM-DD)"
+        required: false
 
 jobs:
   generate-audio:
@@ -24,60 +28,83 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
 
-    - name: Generate audio
+    - name: Process translation file
       env:
         ELEVEN_LABS_API_KEY: ${{ secrets.ELEVEN_LABS_API_KEY }}
       run: |
         mkdir -p processed-audio
         python <<EOF
         import os
-        import requests
+        import re
         from datetime import datetime
+        import requests
 
-        # Load API key
+        # Get inputs
+        input_date = "${{ github.event.inputs.file_date }}" or datetime.utcnow().strftime("%Y-%m-%d")
+        workspace = os.getenv("GITHUB_WORKSPACE", ".")
+        processed_dir = os.path.join(workspace, "processed")
+        processed_audio_dir = os.path.join(workspace, "processed-audio")
+
+        # Find the target file
+        target_file = os.path.join(processed_dir, f"{input_date}.txt")
+        if not os.path.exists(target_file):
+            print(f"Error: File '{target_file}' does not exist.")
+            exit(1)
+
+        # Extract "1. Translation" section
+        with open(target_file, "r", encoding="utf-8") as file:
+            content = file.read()
+
+        # Use regex for fuzzy matching to extract the translation section
+        match = re.search(
+            r"1[.\s]*(?:\*\*Translation\*\*|Translation):?\s*(.*?)(?=\n[2-9][.\s]|$)", 
+            content, 
+            re.S
+        )
+        if not match:
+            print(f"Error: '1. Translation' section not found in {target_file}.")
+            exit(1)
+
+        translation = match.group(1).strip()
+        print(f"Translation to process: {translation}")
+
+        # Load API key and set headers
         ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
         if not ELEVEN_LABS_API_KEY:
             print("Error: ELEVEN_LABS_API_KEY is not set.")
             exit(1)
 
-        # Set API URL and headers
-        VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB".strip()
+        VOICE_ID = "Mv8AjrYZCBkdsmDHNwcB"
         API_URL = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
         headers = {
             "xi-api-key": ELEVEN_LABS_API_KEY.strip(),
             "Content-Type": "application/json",
         }
+        payload = {"text": translation}
 
-        payload = {"text": "こんにちは、元気ですか？"}
-
-        # Make the request
+        # Generate audio
         response = requests.post(API_URL, json=payload, headers=headers)
-
-        # Save the file if successful
         if response.status_code == 200:
-            WORKSPACE = os.getenv("GITHUB_WORKSPACE", ".")
-            OUTPUT_DIR = os.path.join(WORKSPACE, "processed-audio")
-            os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-            # Use the current date as filename
+            os.makedirs(processed_audio_dir, exist_ok=True)
             current_date = datetime.utcnow().strftime("%Y-%m-%d")
-            output_path = os.path.join(OUTPUT_DIR, f"{current_date}.mp3")
+            output_path = os.path.join(processed_audio_dir, f"{current_date}.mp3")
             with open(output_path, "wb") as audio_file:
                 audio_file.write(response.content)
             print(f"Audio saved to {output_path}")
         else:
-            print("Error:", response.text)
+            print("Error generating audio:", response.text)
+            exit(1)
         EOF
 
     - name: Verify generated audio
       run: |
-        echo "Checking processed-audio directory contents BEFORE commit:"
+        echo "Checking processed-audio directory contents:"
         ls -l processed-audio || echo "No files generated"
 
-    - name: Commit audio file to repository
+    - name: Commit and push audio file
       run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git add processed-audio/
-        git commit -m "Add generated audio file for $(date -u +'%Y-%m-%d')"
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add processed-audio/*.mp3
+        git commit -m "Add generated audio for ${GITHUB_EVENT_NAME}"
         git push
