@@ -31,7 +31,9 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
 
 **Tools and Technologies**
 - **Language:** YAML (GitHub Actions workflows), Bash scripting, JSON (API requests and responses).
-- **APIs:** OpenAI API for translation and study sheet generation.
+- **APIs:**
+   - OpenAI API for translation and study sheet generation.
+   - Google Cloud Text to Speech API for audio generation.
 - **Automation:** GitHub Actions to manage workflows.
 - **Applications:**
    - Drafts for quickly writing and saving daily summaries.
@@ -77,6 +79,27 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
 
 ### **OpenAI Integration**:
   - Leveraging the OpenAI API, the project generates translations and detailed annotations. This ensures high-quality language outputs while saving time on manual translations.
+
+### 4. **Audio Generation from Translations**
+- Using Google Cloud Text-to-Speech API, the system converts the translated Japanese summaries into audio files.
+- Each processed daily summary's Japanese text is turned into a natural-sounding audio file, stored in the `audio-files` directory.
+- **How It Helps**:
+  - **Listening Practice**: Hear the correct pronunciation of sentences and vocabulary.
+  - **Comprehension Training**: Understand the rhythm, tone, and flow of Japanese sentences.
+  - **Accessibility**: Allows study on-the-go through audio playback.
+- The audio generation happens as part of the GitHub Actions workflow, ensuring automation and consistency.
+
+*Audio File on PC*
+![](/images/processed-audio.png)
+
+### **Audio Workflow Details**
+1. **Input**:
+   - The Japanese text from the processed daily summaries.
+2. **Processing**:
+   - Google Cloud Text-to-Speech API generates MP3 files using the "ja-JP" voice settings for natural pronunciation.
+3. **Output**:
+   - Files are saved in the `audio-files` directory with names corresponding to the summary file (e.g., `2025-01-01.mp3` for `2025-01-01.txt`).
+   - A sample audio file is embedded below for reference:
 
 ---
 
@@ -138,10 +161,11 @@ The email-based system ensures:
 
 ## **Future Enhancements**
 
-- AI Text to Speech for translations for (input) listening practice.
-- Expanding vocabulary insights with advanced grammar analysis.
-- Adding support for higher JLPT levels as proficiency improves.
-- Incorporating writing feedback into the summaries to refine grammar and style.
+- [x] AI Text to Speech for translations for (input) listening practice.
+- [ ] Expanding vocabulary insights with advanced grammar analysis.
+- [ ] Adding support for higher JLPT levels as proficiency improves.
+- [ ] Incorporating writing feedback into the summaries to refine grammar and style.
+- [ ] Creating a UI to interact with study sheets and audio.
 
 ---
 

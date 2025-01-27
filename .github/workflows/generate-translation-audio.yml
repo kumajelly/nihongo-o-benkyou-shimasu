@@ -1,0 +1,139 @@
+name: Generate Audio from Translation
+
+on:
+  push:
+    paths:
+      - processed/**  # Automatically trigger on new files in the processed directory
+  workflow_dispatch:
+    inputs:
+      file_date:
+        description: "Date of the file to process (YYYY-MM-DD)"
+        required: false
+
+jobs:
+  generate-audio:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.x"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install google-api-python-client google-auth google-auth-oauthlib google-auth-httplib2
+
+    - name: Process translation file
+      env:
+        GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+      run: |
+        mkdir -p processed-audio
+        python <<EOF
+        import os
+        import re
+        import json
+        import base64
+        from datetime import datetime
+        from google.oauth2.service_account import Credentials
+        from googleapiclient.discovery import build
+
+        # Get inputs
+        input_date = "${{ github.event.inputs.file_date }}" or datetime.utcnow().strftime("%Y-%m-%d")
+        workspace = os.getenv("GITHUB_WORKSPACE", ".")
+        processed_dir = os.path.join(workspace, "processed")
+        processed_audio_dir = os.path.join(workspace, "processed-audio")
+
+        # Find the target file
+        target_file = os.path.join(processed_dir, f"{input_date}.txt")
+        if not os.path.exists(target_file):
+            print(f"Error: File '{target_file}' does not exist.")
+            exit(1)
+
+        # Extract "1. Translation" section
+        with open(target_file, "r", encoding="utf-8") as file:
+            content = file.read()
+
+        # Use regex for fuzzy matching to extract the translation section
+        match = re.search(
+            r"1[.\s]*(?:\*\*Translation\*\*|Translation):?\s*(.*?)(?=\n[2-9][.\s]|$)", 
+            content, 
+            re.S
+        )
+        if not match:
+            print(f"Error: '1. Translation' section not found in {target_file}.")
+            exit(1)
+
+        translation = match.group(1).strip()
+        print(f"Translation to process: {translation}")
+
+        # Decode Google API key
+        encoded_key = os.getenv("GOOGLE_SERVICE_ACCOUNT")
+        if not encoded_key:
+            print("Error: GOOGLE_SERVICE_ACCOUNT is not set.")
+            exit(1)
+
+        # Fix padding for base64 decoding
+        missing_padding = len(encoded_key) % 4
+        if missing_padding:
+            encoded_key += '=' * (4 - missing_padding)
+
+        try:
+            key_json = base64.b64decode(encoded_key).decode("utf-8")
+            credentials_info = json.loads(key_json)
+            credentials = Credentials.from_service_account_info(credentials_info)
+        except Exception as e:
+            print(f"Error decoding GOOGLE_SERVICE_ACCOUNT: {e}")
+            exit(1)
+
+        # Build the Text-to-Speech client
+        client = build("texttospeech", "v1", credentials=credentials)
+
+        # Prepare the request payload
+        request_body = {
+            "input": {"text": translation},
+            "voice": {
+                "languageCode": "ja-JP",
+                "name": "ja-JP-Standard-A"
+            },
+            "audioConfig": {
+                "audioEncoding": "MP3"
+            }
+        }
+
+        # Call the API
+        try:
+            response = client.text().synthesize(body=request_body).execute()
+        except Exception as e:
+            print(f"Error calling Text-to-Speech API: {e}")
+            exit(1)
+
+        # Save the audio file
+        if 'audioContent' in response:
+            os.makedirs(processed_audio_dir, exist_ok=True)
+            base_filename = os.path.basename(target_file).replace(".txt", "")
+            output_path = os.path.join(processed_audio_dir, f"{base_filename}-audio.mp3")
+            with open(output_path, "wb") as audio_file:
+                audio_file.write(base64.b64decode(response['audioContent']))
+            print(f"Audio saved to {output_path}")
+        else:
+            print("Error: No audio content received from the API.")
+            exit(1)
+        EOF
+
+    - name: Verify generated audio
+      run: |
+        echo "Checking processed-audio directory contents:"
+        ls -l processed-audio || echo "No files generated"
+
+    - name: Commit and push audio file
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add processed-audio/*.mp3
+        git commit -m "Add generated audio for file"
+        git push
