@@ -1,0 +1,45 @@
+1. **Translation**:
+明日、朝ごはんにはトーストにあんこを食べるつもりです。
+息子、大好きです。
+今夜は映画の夜でした。
+
+2. **Romaji**:
+Ashita, asagohan ni wa toosuto ni anko o taberu tsumori desu. 
+Musuko, daisuki desu. 
+Konya wa eiga no yoru deshita.
+
+3. **Sentence Breakdown**:
+   - 明日、朝ごはんにはトーストにあんこを食べるつもりです。
+     - 明日 (ashita): "tomorrow"
+     - 朝ごはんには (asagohan ni wa): "for breakfast"
+     - トースト (toosuto): "toast"
+     - に (ni): marks "toast" as the object of the verb
+     - あんこ (anko): "red bean paste"
+     - を (o): marks "red bean paste" as the object of the verb
+     - 食べる (taberu): "to eat" (dictionary form)
+     - つもりです (tsumori desu): "intend to" 
+   - 息子、大好きです。
+     - 息子 (musuko): "son"
+     - 、 (comma): comma in the sentence
+     - 大好きです (daisuki desu): "love" 
+   - 今夜は映画の夜でした。
+     - 今夜は (konya wa): "tonight"
+     - 映画の (eiga no): "movie"
+     - 夜でした (yoru deshita): "was night"
+
+4. **Vocabulary List**:
+   - 明日 (ashita): tomorrow (noun)
+   - 朝ごはん (asagohan): breakfast (noun)
+   - トースト (toosuto): toast (noun)
+   - あんこ (anko): red bean paste (noun)
+   - 食べる (taberu): to eat (verb)
+   - 息子 (musuko): son (noun)
+   - 大好き (daisuki): love (na-adjective)
+   - 今夜 (konya): tonight (noun)
+   - 映画 (eiga): movie (noun)
+   - 夜 (yoru): night (noun)
+
+5. **Original English Text**:
+Tomorrow, I will have toast with red bean paste for breakfast. 
+I love you, son. 
+Tonight was movie night.
