@@ -101,12 +101,6 @@ This project serves as a bridge between my Japanese learning goals, meaningful f
    - Files are saved in the `audio-files` directory with names corresponding to the summary file (e.g., `2025-01-01.mp3` for `2025-01-01.txt`).
    - A sample audio file is embedded below for reference:
 
-#### Sample Audio
-<audio controls>
-  <source src="/processed-audio/2025-01-13.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
-
 ---
 
 ## **A Seamless Workflow**
