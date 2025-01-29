@@ -1,0 +1,49 @@
+1. **Translation**:
+後で電話します。
+髪を切りたいです。
+何を食べたいですか？
+
+2. **Romaji**:
+Ato de denwa shimasu.
+Kami wo kiritai desu.
+Nani wo tabetai desu ka?
+
+3. **Sentence Breakdown**:
+   - 後で電話します。(Ato de denwa shimasu.)
+     - 後で (ato de) = later
+     - 電話します (denwa shimasu) = will call
+     - "Later, I will call (you)."
+   - 髪を切りたいです。(Kami wo kiritai desu.)
+     - 髪 (kami) = hair
+     - 切りたいです (kiritai desu) = want to cut
+     - "I want to cut (my) hair."
+   - 何を食べたいですか？(Nani wo tabetai desu ka?)
+     - 何 (nani) = what
+     - 食べたいです (tabetai desu) = want to eat
+     - か (ka) = question marker
+     - "What do you want to eat?"
+
+4. **Vocabulary List**:
+   - 後で (ato de)
+     - Meaning: later
+     - Part of speech: adverbial phrase
+   - 電話します (denwa shimasu)
+     - Meaning: will call
+     - Part of speech: verb
+   - 髪 (kami)
+     - Meaning: hair
+     - Part of speech: noun
+   - 切りたいです (kiritai desu)
+     - Meaning: want to cut
+     - Part of speech: verb
+   - 食べたいです (tabetai desu)
+     - Meaning: want to eat
+     - Part of speech: verb
+   - 何 (nani)
+     - Meaning: what
+     - Part of speech: pronoun
+
+5. **Original English Text**:
+I’ll call you later. 
+I need a haircut. 
+What do you want to eat?
