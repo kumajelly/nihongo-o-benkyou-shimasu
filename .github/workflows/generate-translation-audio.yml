@@ -37,12 +37,15 @@ jobs:
         import re
         import json
         import base64
-        from datetime import datetime
+        from datetime import datetime, timedelta
         from google.oauth2.service_account import Credentials
         from googleapiclient.discovery import build
 
         # Get inputs
-        input_date = "${{ github.event.inputs.file_date }}" or datetime.utcnow().strftime("%Y-%m-%d")
+        input_date = "${{ github.event.inputs.file_date }}"
+        if not input_date:
+            input_date = (datetime.utcnow() - timedelta(days=1)).strftime("%Y-%m-%d")
+        
         workspace = os.getenv("GITHUB_WORKSPACE", ".")
         processed_dir = os.path.join(workspace, "processed")
         processed_audio_dir = os.path.join(workspace, "processed-audio")
@@ -57,7 +60,6 @@ jobs:
         with open(target_file, "r", encoding="utf-8") as file:
             content = file.read()
 
-        # Use regex for fuzzy matching to extract the translation section
         match = re.search(
             r"1[.\s]*(?:\*\*Translation\*\*|Translation):?\s*(.*?)(?=\n[2-9][.\s]|$)", 
             content, 
@@ -76,7 +78,6 @@ jobs:
             print("Error: GOOGLE_SERVICE_ACCOUNT is not set.")
             exit(1)
 
-        # Fix padding for base64 decoding
         missing_padding = len(encoded_key) % 4
         if missing_padding:
             encoded_key += '=' * (4 - missing_padding)
@@ -89,10 +90,8 @@ jobs:
             print(f"Error decoding GOOGLE_SERVICE_ACCOUNT: {e}")
             exit(1)
 
-        # Build the Text-to-Speech client
         client = build("texttospeech", "v1", credentials=credentials)
 
-        # Prepare the request payload
         request_body = {
             "input": {"text": translation},
             "voice": {
@@ -104,14 +103,12 @@ jobs:
             }
         }
 
-        # Call the API
         try:
             response = client.text().synthesize(body=request_body).execute()
         except Exception as e:
             print(f"Error calling Text-to-Speech API: {e}")
             exit(1)
 
-        # Save the audio file
         if 'audioContent' in response:
             os.makedirs(processed_audio_dir, exist_ok=True)
             base_filename = os.path.basename(target_file).replace(".txt", "")
