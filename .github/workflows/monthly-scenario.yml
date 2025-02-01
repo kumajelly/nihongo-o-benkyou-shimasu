@@ -24,7 +24,7 @@ jobs:
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install tiktoken
+          pip install tiktoken jq
 
       - name: Determine Year and Month
         id: determine_date
@@ -56,7 +56,7 @@ jobs:
             exit 1
           fi
 
-      - name: Generate Scenario Using OpenAI API with Streaming and Exact Token Count
+      - name: Generate Scenario Using OpenAI API with Streaming and Proper Response Handling
         id: generate_scenario
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -67,34 +67,27 @@ jobs:
           python - <<EOF
           import tiktoken
 
-          # Load GPT-4 tokenizer
           enc = tiktoken.encoding_for_model("gpt-4")
-
-          # Constants
-          SYSTEM_MESSAGE_TOKENS = 60  # Shortened system message
+          SYSTEM_MESSAGE_TOKENS = 60
           MAX_COMPLETION_TOKENS = 1000
           MAX_TOTAL_TOKENS = 8192
           MAX_INPUT_TOKENS = MAX_TOTAL_TOKENS - SYSTEM_MESSAGE_TOKENS - MAX_COMPLETION_TOKENS
 
-          # Read input
           with open("$INPUT_FILE", "r", encoding="utf-8") as f:
               summary = f.read()
 
-          # Get token count
           tokens = enc.encode(summary)
           token_count = len(tokens)
 
           print(f"Exact Token Count: {token_count}")
           print(f"Maximum Allowed Input Tokens: {MAX_INPUT_TOKENS}")
 
-          # If too long, truncate input
           if token_count > MAX_INPUT_TOKENS:
               print("Input exceeds token limit. Truncating...")
-              tokens = tokens[:MAX_INPUT_TOKENS]  # Hard limit tokens
+              tokens = tokens[:MAX_INPUT_TOKENS]
               summary = enc.decode(tokens)
               print(f"Input truncated to {len(tokens)} tokens.")
 
-          # Save processed summary
           with open("processed_summary.txt", "w", encoding="utf-8") as f:
               f.write(summary)
           EOF
@@ -102,7 +95,7 @@ jobs:
           # Read back truncated summary
           SUMMARY=$(cat processed_summary.txt)
 
-          # Create API payload with streaming enabled
+          # Create API payload
           PAYLOAD=$(jq -n --arg summary "$SUMMARY" '{
             model: "gpt-4",
             stream: true,
@@ -121,15 +114,15 @@ jobs:
 
           echo "Sending request to OpenAI API with streaming enabled..."
 
-          # Process streamed response and save to file
-          RESPONSE=$(echo "$PAYLOAD" | curl -s https://api.openai.com/v1/chat/completions \
+          # Process streamed response and extract content correctly
+          curl -s https://api.openai.com/v1/chat/completions \
             -H "Authorization: Bearer $OPENAI_API_KEY" \
             -H "Content-Type: application/json" \
-            -d @- | tee "$OUTPUT_FILE")
+            -d "$PAYLOAD" | jq -r 'select(.choices[].delta.content != null) | .choices[].delta.content' > "$OUTPUT_FILE"
 
-          # Check if the response contains an error
-          if grep -q '"error"' <<< "$RESPONSE"; then
-            echo "Error during scenario generation: $(jq -r '.error.message' <<< "$RESPONSE")"
+          # Check if output is empty (API error or refusal)
+          if [ ! -s "$OUTPUT_FILE" ]; then
+            echo "Error: API response was empty or contained only errors."
             exit 1
           fi
 
