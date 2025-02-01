@@ -24,7 +24,7 @@ jobs:
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install tiktoken openai
+          pip install openai tiktoken
 
       - name: Determine Year and Month
         id: determine_date
@@ -56,16 +56,18 @@ jobs:
             exit 1
           fi
 
-      - name: Process and Reduce Token Count Before API Call
-        id: reduce_token_count
+      - name: Reduce Token Count Before API Call
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           python - <<EOF
-          import tiktoken
           import openai
+          import tiktoken
 
+          openai.api_key = "${{ secrets.OPENAI_API_KEY }}"
           enc = tiktoken.encoding_for_model("gpt-4")
           SYSTEM_MESSAGE_TOKENS = 50
-          MAX_COMPLETION_TOKENS = 800  # Reduced completion limit
+          MAX_COMPLETION_TOKENS = 800
           MAX_TOTAL_TOKENS = 8192
           MAX_INPUT_TOKENS = MAX_TOTAL_TOKENS - SYSTEM_MESSAGE_TOKENS - MAX_COMPLETION_TOKENS
 
@@ -83,8 +85,8 @@ jobs:
           if token_count > MAX_INPUT_TOKENS:
               print("Input exceeds token limit. Reducing content...")
 
-              # Summarization using OpenAI API
-              summary_response = openai.ChatCompletion.create(
+              # Summarization using OpenAI API (Updated Syntax)
+              response = openai.chat.completions.create(
                   model="gpt-4",
                   messages=[
                       {"role": "system", "content": "Summarize the following text into key sentences while keeping necessary details for a dialogue scenario. Ensure that no sentence is overly long."},
@@ -94,7 +96,7 @@ jobs:
                   temperature=0.7
               )
 
-              summary = summary_response["choices"][0]["message"]["content"]
+              summary = response.choices[0].message.content
               print(f"Reduced token count: {len(enc.encode(summary))}")
 
           # Save processed summary
