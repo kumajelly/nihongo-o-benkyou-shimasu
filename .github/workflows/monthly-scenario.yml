@@ -51,16 +51,16 @@ jobs:
             exit 1
           fi
 
-      - name: Generate Scenario Using OpenAI API with Streaming
+      - name: Generate Scenario Using OpenAI API with Streaming and Adjusted Token Limit
         id: generate_scenario
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           SUMMARY=$(cat "$INPUT_FILE")
 
-          # Estimate token count using character approximation
+          # Estimate token count using a more conservative approximation
           TOKEN_COUNT=$(echo "$SUMMARY" | wc -m) # Character count
-          TOKEN_ESTIMATE=$((TOKEN_COUNT / 4))    # Approximate tokens (1 token ≈ 4 characters)
+          TOKEN_ESTIMATE=$((TOKEN_COUNT / 5))    # Approximate tokens (1 token ≈ 5 characters)
           SYSTEM_MESSAGE_TOKENS=80              # Shortened system message size
           MAX_COMPLETION_TOKENS=1000            # Limit output to 1000 tokens
           MAX_INPUT_TOKENS=$((8192 - SYSTEM_MESSAGE_TOKENS - MAX_COMPLETION_TOKENS))
@@ -68,10 +68,10 @@ jobs:
           echo "Estimated Token Count: $TOKEN_ESTIMATE"
           echo "Maximum Allowed Input Tokens: $MAX_INPUT_TOKENS"
 
-          # Truncate if token estimate exceeds limit
+          # Truncate input based on conservative character-to-token ratio (5 chars per token)
           if [ "$TOKEN_ESTIMATE" -gt "$MAX_INPUT_TOKENS" ]; then
             echo "Input exceeds token limit. Truncating..."
-            MAX_CHARACTERS=$((MAX_INPUT_TOKENS * 4))  # Approximate max characters
+            MAX_CHARACTERS=$((MAX_INPUT_TOKENS * 5))  # Conservative max character count
             SUMMARY=$(echo "$SUMMARY" | head -c "$MAX_CHARACTERS")
             echo "Input truncated to $MAX_CHARACTERS characters."
           fi
