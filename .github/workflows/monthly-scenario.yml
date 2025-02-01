@@ -24,7 +24,7 @@ jobs:
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install tiktoken jq
+          pip install tiktoken openai
 
       - name: Determine Year and Month
         id: determine_date
@@ -56,78 +56,95 @@ jobs:
             exit 1
           fi
 
-      - name: Generate Scenario Using OpenAI API with Streaming and Fix `jq` Parsing
-        id: generate_scenario
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Process and Reduce Token Count Before API Call
+        id: reduce_token_count
         run: |
-          SUMMARY=$(cat "$INPUT_FILE")
-
-          # Python script to get exact token count and truncate if needed
           python - <<EOF
           import tiktoken
+          import openai
 
           enc = tiktoken.encoding_for_model("gpt-4")
-          SYSTEM_MESSAGE_TOKENS = 60
-          MAX_COMPLETION_TOKENS = 1000
+          SYSTEM_MESSAGE_TOKENS = 50
+          MAX_COMPLETION_TOKENS = 800  # Reduced completion limit
           MAX_TOTAL_TOKENS = 8192
           MAX_INPUT_TOKENS = MAX_TOTAL_TOKENS - SYSTEM_MESSAGE_TOKENS - MAX_COMPLETION_TOKENS
 
+          # Read input file
           with open("$INPUT_FILE", "r", encoding="utf-8") as f:
               summary = f.read()
 
+          # Tokenize and count
           tokens = enc.encode(summary)
           token_count = len(tokens)
 
-          print(f"Exact Token Count: {token_count}")
+          print(f"Original Token Count: {token_count}")
           print(f"Maximum Allowed Input Tokens: {MAX_INPUT_TOKENS}")
 
           if token_count > MAX_INPUT_TOKENS:
-              print("Input exceeds token limit. Truncating...")
-              tokens = tokens[:MAX_INPUT_TOKENS]
-              summary = enc.decode(tokens)
-              print(f"Input truncated to {len(tokens)} tokens.")
+              print("Input exceeds token limit. Reducing content...")
 
+              # Summarization using OpenAI API
+              summary_response = openai.ChatCompletion.create(
+                  model="gpt-4",
+                  messages=[
+                      {"role": "system", "content": "Summarize the following text into key sentences while keeping necessary details for a dialogue scenario. Ensure that no sentence is overly long."},
+                      {"role": "user", "content": summary}
+                  ],
+                  max_tokens=MAX_INPUT_TOKENS,
+                  temperature=0.7
+              )
+
+              summary = summary_response["choices"][0]["message"]["content"]
+              print(f"Reduced token count: {len(enc.encode(summary))}")
+
+          # Save processed summary
           with open("processed_summary.txt", "w", encoding="utf-8") as f:
               f.write(summary)
           EOF
 
-          # Read back truncated summary
+      - name: Generate Scenario Using OpenAI API (Non-Streaming)
+        id: generate_scenario
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          # Read reduced summary
           SUMMARY=$(cat processed_summary.txt)
 
-          # Create API payload
+          # Create API payload (non-streaming)
           PAYLOAD=$(jq -n --arg summary "$SUMMARY" '{
             model: "gpt-4",
-            stream: true,
             messages: [
               {
                 role: "system",
-                content: "Generate a realistic dialogue scenario. Output: 1. Japanese script, 2. Romaji, 3. English translation. Keep under 1000 tokens."
+                content: "Generate a realistic dialogue scenario. Output: 1. Japanese script, 2. Romaji, 3. English translation. Keep under 800 tokens."
               },
               {
                 role: "user",
                 content: $summary
               }
             ],
-            max_tokens: 1000
+            max_tokens: 800
           }')
 
-          echo "Sending request to OpenAI API with streaming enabled..."
+          echo "Sending request to OpenAI API (non-streaming)..."
 
-          # Properly extract and concatenate streamed responses
-          curl -s https://api.openai.com/v1/chat/completions \
+          # Make API request
+          RESPONSE=$(curl -s https://api.openai.com/v1/chat/completions \
             -H "Authorization: Bearer $OPENAI_API_KEY" \
             -H "Content-Type: application/json" \
-            -d "$PAYLOAD" | jq -c -r 'select(.choices[].delta.content != null) | .choices[].delta.content' > streamed_output.txt
+            -d "$PAYLOAD")
 
-          # Ensure proper formatting of the output file
-          tr -d '\n' < streamed_output.txt > "$OUTPUT_FILE"
+          # Extract scenario content
+          SCENARIO=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Error: Unable to process scenario."')
 
-          # Check if output is empty (API error or refusal)
-          if [ ! -s "$OUTPUT_FILE" ]; then
-            echo "Error: API response was empty or contained only errors."
+          # Ensure response is not empty
+          if [[ "$SCENARIO" == "Error"* ]]; then
+            echo "Error during scenario generation: $SCENARIO"
             exit 1
           fi
+
+          # Save final output
+          echo -e "$SCENARIO" > "$OUTPUT_FILE"
 
       - name: Commit and Push Scenario to Repo
         env:
