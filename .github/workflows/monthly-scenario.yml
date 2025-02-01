@@ -21,6 +21,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tiktoken
+
       - name: Determine Year and Month
         id: determine_date
         run: |
@@ -51,33 +56,51 @@ jobs:
             exit 1
           fi
 
-      - name: Generate Scenario Using OpenAI API with Streaming and Adjusted Token Limit
+      - name: Generate Scenario Using OpenAI API with Streaming and Exact Token Count
         id: generate_scenario
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           SUMMARY=$(cat "$INPUT_FILE")
 
-          # Estimate token count using a more conservative approximation
-          TOKEN_COUNT=$(echo "$SUMMARY" | wc -m) # Character count
-          TOKEN_ESTIMATE=$((TOKEN_COUNT / 5))    # Approximate tokens (1 token ≈ 5 characters)
-          SYSTEM_MESSAGE_TOKENS=80              # Shortened system message size
-          MAX_COMPLETION_TOKENS=1000            # Limit output to 1000 tokens
-          MAX_INPUT_TOKENS=$((8192 - SYSTEM_MESSAGE_TOKENS - MAX_COMPLETION_TOKENS))
+          # Python script to get exact token count and truncate if needed
+          python - <<EOF
+          import tiktoken
 
-          echo "Estimated Token Count: $TOKEN_ESTIMATE"
-          echo "Maximum Allowed Input Tokens: $MAX_INPUT_TOKENS"
+          # Load GPT-4 tokenizer
+          enc = tiktoken.encoding_for_model("gpt-4")
 
-          # Truncate input based on conservative character-to-token ratio (5 chars per token)
-          if [ "$TOKEN_ESTIMATE" -gt "$MAX_INPUT_TOKENS" ]; then
-            echo "Input exceeds token limit. Truncating..."
-            MAX_CHARACTERS=$((MAX_INPUT_TOKENS * 5))  # Conservative max character count
-            SUMMARY=$(echo "$SUMMARY" | head -c "$MAX_CHARACTERS")
-            echo "Input truncated to $MAX_CHARACTERS characters."
-          fi
+          # Constants
+          SYSTEM_MESSAGE_TOKENS = 60  # Shortened system message
+          MAX_COMPLETION_TOKENS = 1000
+          MAX_TOTAL_TOKENS = 8192
+          MAX_INPUT_TOKENS = MAX_TOTAL_TOKENS - SYSTEM_MESSAGE_TOKENS - MAX_COMPLETION_TOKENS
 
-          # Create output directory if it doesn't exist
-          mkdir -p $(dirname "$OUTPUT_FILE")
+          # Read input
+          with open("$INPUT_FILE", "r", encoding="utf-8") as f:
+              summary = f.read()
+
+          # Get token count
+          tokens = enc.encode(summary)
+          token_count = len(tokens)
+
+          print(f"Exact Token Count: {token_count}")
+          print(f"Maximum Allowed Input Tokens: {MAX_INPUT_TOKENS}")
+
+          # If too long, truncate input
+          if token_count > MAX_INPUT_TOKENS:
+              print("Input exceeds token limit. Truncating...")
+              tokens = tokens[:MAX_INPUT_TOKENS]  # Hard limit tokens
+              summary = enc.decode(tokens)
+              print(f"Input truncated to {len(tokens)} tokens.")
+
+          # Save processed summary
+          with open("processed_summary.txt", "w", encoding="utf-8") as f:
+              f.write(summary)
+          EOF
+
+          # Read back truncated summary
+          SUMMARY=$(cat processed_summary.txt)
 
           # Create API payload with streaming enabled
           PAYLOAD=$(jq -n --arg summary "$SUMMARY" '{
@@ -86,7 +109,7 @@ jobs:
             messages: [
               {
                 role: "system",
-                content: "Generate a realistic dialogue scenario based on the provided summary. The output should include three sections: 1. Japanese script, 2. Romaji, 3. English translation. Keep it under 1000 tokens."
+                content: "Generate a realistic dialogue scenario. Output: 1. Japanese script, 2. Romaji, 3. English translation. Keep under 1000 tokens."
               },
               {
                 role: "user",
