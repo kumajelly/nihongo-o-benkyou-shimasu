@@ -1,0 +1,52 @@
+1. **Translation**:
+今日は散歩に行きました。
+絵理はソファーで昼寝をしました。
+明日、病院に行きます。
+
+2. **Romaji**:
+Kyou wa sanpo ni ikimashita.
+Eri wa sofaa de hirune o shimashita.
+Ashita, byouin ni ikimasu.
+
+3. **Sentence Breakdown**:
+   - 今日は散歩に行きました。(Kyou wa sanpo ni ikimashita.)
+     - 今日 (kyou): noun meaning "today."
+     - は (wa): topic marking particle.
+     - 散歩 (sanpo): noun meaning "walk."
+     - に (ni): particle indicating direction or goal.
+     - 行きました (ikimashita): verb 行く (iku) in past tense, meaning "went."
+     - The verb 行く (iku) is conjugated to its past polite form 行きました (ikimashita) to show the action of going for a walk.
+
+   - 絵理はソファーで昼寝をしました。(Eri wa sofaa de hirune o shimashita.)
+     - 絵理 (Eri): proper noun, the name "Eri."
+     - は (wa): topic marking particle.
+     - ソファー (sofaa): noun meaning "couch" or "sofa."
+     - で (de): particle indicating location.
+     - 昼寝 (hirune): noun meaning "nap."
+     - を (o): direct object marking particle.
+     - しました (shimashita): verb する (suru) in past tense, meaning "did."
+     - The verb する (suru) is conjugated to its past polite form しました (shimashita) to show the action of taking a nap.
+
+   - 明日、病院に行きます。(Ashita, byouin ni ikimasu.)
+     - 明日 (ashita): noun meaning "tomorrow."
+     - 、: comma, marking a pause.
+     - 病院 (byouin): noun meaning "hospital."
+     - に (ni): particle indicating direction or goal.
+     - 行きます (ikimasu): verb 行く (iku) in non-past polite form, meaning "will go."
+     - The verb 行く (iku) is conjugated to its non-past polite form 行きます (ikimasu) to show the future action of going to the doctors.
+
+4. **Vocabulary List**:
+   - 今日 (kyou): today (noun)
+   - 散歩 (sanpo): walk (noun)
+   - 行く (iku): to go (verb)
+   - 絵理 (Eri): Eri (proper noun)
+   - ソファー (sofaa): couch/sofa (noun)
+   - 昼寝 (hirune): nap (noun)
+   - する (suru): to do (verb)
+   - 明日 (ashita): tomorrow (noun)
+   - 病院 (byouin): hospital (noun)
+
+5. **Original English Text**:
+We went for a walk today. 
+Eri took a nap on the couch. 
+Tomorrow we go to the doctors.
