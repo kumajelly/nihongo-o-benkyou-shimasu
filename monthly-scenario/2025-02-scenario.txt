@@ -1,0 +1,8 @@
+1. **Japanese Script**:
+「今日は散歩に行きました。絵理はソファーで昼寝をしました。明日、病院に行きます。」
+
+2. **Romaji**:
+"Kyou wa sanpo ni ikimashita. Eri wa sofaa de hirune wo shimashita. Ashita, byouin ni ikimasu."
+
+3. **English Translation**:
+"Today, we went for a walk. Eri took a nap on the sofa. Tomorrow, we are going to the hospital."
